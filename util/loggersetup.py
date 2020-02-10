@@ -12,7 +12,7 @@ levels = {'CRITICAL' : logging.CRITICAL,
 class loggersetup():
 
     def __init__(self, classname, filelevel='INFO', printlevel='WARNING'):
-        print(filelevel)
+
         logging.basicConfig(filename='EcoSysLog.log', filemode='w', level=levels[filelevel])
         self.logger = logging.getLogger(classname)
 

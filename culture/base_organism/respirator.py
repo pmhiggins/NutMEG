@@ -152,6 +152,7 @@ class respirator:
         """Update the rate of reaction in the last state this object
         was left in.
         """
+        self.G_A = self.net_pathway.molar_gibbs
         f = (-self.G_A-self.G_C)
         # ^ the net of energy released, thermodynamic driving force.
         if f <= 0:

@@ -45,25 +45,20 @@ class horde(NutMEG.base_organism):
           dry_mass=dry_mass,
           E_synth=E_synth,
           *args, **kwargs)
-        print(self.maintenance.net_dict)
+
         self.maintenance = maintainer(self,
           Tdef=kwargs.pop('Tdef', 'None'), pHdef=kwargs.pop('pHdef', 'None'),
           Basal=kwargs.pop('Basal',0.0))
-        print(self.maintenance.net_dict)
-        print('\n')
+
 
         self.volume=self.num*self.base_volume*self.biomass_cell_ratio
         self.output = horde_output(self)
         self.historicnum=[]
 
     def workoutID(self):
-        print(self.maintenance.net_dict)
         self.output = horde_output(self)
-        print(self.maintenance.net_dict)
         self.dbh.workoutID()
-        print(self.maintenance.net_dict)
         self.output = horde_output(self)
-        print(self.maintenance.net_dict)
 
     def reproduce(self):
         """Hordes don't reproduce, throw an error if something tries to

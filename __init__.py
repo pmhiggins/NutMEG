@@ -5,6 +5,7 @@
 # from .reaction import reaction
 from .ecosystem import ecosystem
 from .ecosystem_dbhelper import db_helper
+from .environment import environment
 
 
 
