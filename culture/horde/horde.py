@@ -1,0 +1,224 @@
+import NutMEG
+from .horde_output import horde_output
+from copy import deepcopy
+from NutMEG.culture.base_organism.maintainer import maintainer
+
+import NutMEG.util.NutMEGparams as nmp
+from NutMEG.util.loggersetup import loggersetup as logset
+logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.printlevel)
+
+
+class horde(NutMEG.base_organism):
+    """Class for a horde or organisms acting as one for better efficiency.,
+    albeit losing some fidelity.
+    """
+    molecons=0
+    num = 0 #number of individuals in the horde
+    deathnum = 0 # number of inactive/dead cells
+    historicnum = [] # for death rates, monitor number of cells.
+
+    P_growth=0
+    P_s=0
+
+
+    base_volume = 1.e-18 # base volume of each individual cell
+    biomass_cell_ratio = 1.5 # mean volume of a cell / base volume
+      # (e.g. halfway grown)
+    OrgID=''
+
+    def __init__(self, name, locale, metabolism, num,
+      maintenance=None,
+      CHNOPS=None,
+      mass=1e-15,
+      dry_mass=3e-16,
+      E_synth=8e-10,
+      *args, **kwargs):
+
+        self.name = name
+        self.num = num
+
+        NutMEG.base_organism.__init__(self, name, locale,
+          metabolism,
+          maintenance=None,
+          CHNOPS=CHNOPS,
+          mass=mass,
+          dry_mass=dry_mass,
+          E_synth=E_synth,
+          *args, **kwargs)
+        print(self.maintenance.net_dict)
+        self.maintenance = maintainer(self,
+          Tdef=kwargs.pop('Tdef', 'None'), pHdef=kwargs.pop('pHdef', 'None'),
+          Basal=kwargs.pop('Basal',0.0))
+        print(self.maintenance.net_dict)
+        print('\n')
+
+        self.volume=self.num*self.base_volume*self.biomass_cell_ratio
+        self.output = horde_output(self)
+        self.historicnum=[]
+
+    def workoutID(self):
+        print(self.maintenance.net_dict)
+        self.output = horde_output(self)
+        print(self.maintenance.net_dict)
+        self.dbh.workoutID()
+        print(self.maintenance.net_dict)
+        self.output = horde_output(self)
+        print(self.maintenance.net_dict)
+
+    def reproduce(self):
+        """Hordes don't reproduce, throw an error if something tries to
+        make it do so.
+        """
+        raise TypeError('Horde objects cannot reproduce! Did you mean'+\
+          'to call update_num?')
+
+
+    def update_num(self, t):
+        """After updating the volume, correct the number of organisms."""
+
+        change = round((self.volume) / \
+          (self.base_volume * self.biomass_cell_ratio)) - self.num
+        self.num += change
+
+        if self.base_life_span < float('inf'):
+            # cells can die, so keep an eye on them.
+            self.historicnum.append(change)
+
+            if self.age > self.base_life_span:
+                # remove the organisms which have reached their life span.
+                lsstep = round((self.age-self.base_life_span)/t) #the step 1 life span ago
+                self.num -= self.historicnum[lsstep]
+                self.deathnum = self.deathnum + self.historicnum[lsstep]
+                self.volume -= (self.historicnum[lsstep] * \
+                  (self.base_volume * self.biomass_cell_ratio))
+
+
+
+
+
+    def take_step(self, t):
+        logger.debug(self.OrgID + ' taking step.')
+
+        self.age += t
+
+        self.P_s = self.get_supplied_power(update_energetics=True)
+        logger.debug(self.OrgID+' supplied power = ' + str(self.P_s))
+
+        self.P_growth = self.maintenance.compute_P_growth(
+          self.P_s)
+        logger.debug(self.OrgID+' growth power = ' + str(self.P_growth))
+
+        self.E_store += self.maintenance.get_P_store()*self.num*t
+        logger.debug(self.OrgID+' energy store = ' + str(self.E_store))
+
+        E_growth_step = self.P_growth*t*self.num # the amount of energy
+          # going into growth this step for the whole horde
+        logger.debug(self.OrgID+' net growth energy available = ' + str(E_growth_step))
+
+        if E_growth_step >0:
+            #this needs a big check
+            E_back = self.CHNOPS.grow_with_nutrients(E_growth_step, t, numcells=self.num)
+        else:
+            E_back = 0
+
+        self.E_growth += (E_growth_step - E_back)
+        logger.debug(self.OrgID+' total energy to be used for growth = ' + str(self.E_growth))
+
+        startnum = deepcopy(self.num)
+
+        if self.E_growth > 0.:
+
+            new_biomass_cells = self.E_growth/self.E_synth
+
+            # new_biomass_cells, left = divmod(self.E_growth/self.E_synth, 1.0)
+            # self.E_growth = left*self.E_synth
+
+
+            moles_consumed = ((1-(E_back/(self.num*self.P_s*t))) * \
+              self.num*self.respiration.rate*t)
+
+
+            # ((self.E_growth/E_growth_step) * \
+            #   self.num*self.respiration.rate*t)
+              # The fraction on the front corrects for CHNOPS limitation: the
+              # metabolism doesn't need to run so fast.
+            logger.debug('Performing '+self.OrgID+"'s reaction with "+str(moles_consumed)+' mol.')
+            self.locale.perform_reaction(self.respiration.net_pathway.equation,
+              moles_consumed, re_type=type(self.respiration.net_pathway))
+
+            self.E_growth=0
+            self.volume += new_biomass_cells*self.base_volume
+            self.update_num(t)
+
+        else:
+            # no growth, but we still need to perform the metabolic reaction.
+            moles_consumed = self.respiration.rate*t*self.num
+
+            if self.respiration.net_pathway.molar_gibbs != 0:
+                logger.debug('Performing '+self.OrgID+"'s reaction with "+str(moles_consumed)+' mol.')
+                self.locale.perform_reaction(self.respiration.net_pathway.equation,
+                  moles_consumed, re_type=type(self.respiration.net_pathway))
+            else:
+                logger.warning('Not enough energy in reactor! Holding '+self.OrgID+'in stasis...')
+
+                self.E_growth = 0
+            self.update_num(t)
+
+        self.output.appendvals(startnum, t)
+
+        self.molecons += moles_consumed
+
+
+
+    def select_timestep(self, factorup=1.01):
+        """work out a suitable time step for the horde to grow by 1% """
+        dt = 0.005/1.2
+        cop = deepcopy(self)
+        while cop.volume < factorup*self.volume:
+
+            dt = dt*1.2 #make the timestep 20% bigger
+            logger.debug('Trying: ' + str(dt) + ' ... Prev. Volume = '
+              + str(cop.volume) + ' m^-3')
+
+            if dt > 365*24*3600*1e9:
+                # There is no growth in a billion years
+                # pass this as the maximum time step
+                return 365*24*3600*1e9
+
+            cop = deepcopy(self) # as not to meddle with the organism.
+
+            """ TRY / ACCEPT FOR STEPS? """
+            try:
+                cop.take_step(dt)
+            except:
+                logger.debug('Error encountered while trying this timestep')
+
+        logger.info('Min timestep for ' + self.name + ': ' + str(dt) + ' s')
+
+        return dt
+
+
+
+    def get_mass(self, inactive=False):
+        """return the total (approximate) biomass of the horde in kg"""
+        if inactive:
+            return ((self.num+self.deathnum) * self.mass * \
+              self.biomass_cell_ratio)
+        else:
+            return self.num*self.mass*self.biomass_cell_ratio
+
+    def get_volume(self, inactive=False):
+        """return the total volume of the horde in m^3"""
+        if inactive:
+            #include the volume of inactive biomass
+            return self.volume + (self.deathnum * self.base_volume * \
+              self.biomass_cell_ratio)
+        else:
+            return self.volume
+
+    def get_population(self, inactive=False):
+        """Return total number of cells in the horde"""
+        if inactive:
+            return self.num + self.deathnum
+        else:
+            return self.num
