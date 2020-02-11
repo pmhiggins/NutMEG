@@ -1,5 +1,5 @@
 # NutMEG
-Nutrients, Maintenance, Energy &amp; Growth.  A model for predicting energetic habitability.
+### Nutrients, Maintenance, Energy &amp; Growth.  A model for predicting energetic habitability.
 
 To use, download the repo and use the NutMEG folder as if a python package e.g. `import NutMEG`. Thorough examples for using this can be found in the [NutMEG-Implementations respository](http://github.com/pmhiggins/NutMEG-Implementations)
 
