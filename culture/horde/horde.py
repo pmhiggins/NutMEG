@@ -112,7 +112,8 @@ class horde(NutMEG.base_organism):
 
         if E_growth_step >0:
             #this needs a big check
-            E_back = self.CHNOPS.grow_with_nutrients(E_growth_step, t, numcells=self.num)
+            E_back = self.CHNOPS.check_nutrients(E_growth_step, t, numcells=self.num)
+            # E_back = self.CHNOPS.grow_with_nutrients(E_growth_step, t, numcells=self.num)
         else:
             E_back = 0
 
@@ -122,6 +123,7 @@ class horde(NutMEG.base_organism):
         startnum = deepcopy(self.num)
 
         if self.E_growth > 0.:
+            self.CHNOPS.grow_with_nutrients(E_growth_step, t, checknutrients=False, ret=E_back)
 
             new_biomass_cells = self.E_growth/self.E_synth
 

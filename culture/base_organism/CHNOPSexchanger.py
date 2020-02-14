@@ -80,7 +80,7 @@ class CHNOPSexchanger:
             value[0][0] = factor*value[0][1]*(self.host.locale.volume*1000) # convert to L
 
 
-    def grow_with_nutrients(self, E_growth, t, updatenutrients=True, checknutrients=True, numcells=1):
+    def grow_with_nutrients(self, E_growth, t, updatenutrients=True, checknutrients=True, ret=0.0, numcells=1):
         """Exchange nutrients with the locale in order to convert as much
         of E_growth into biomass as possible in time t
 
@@ -88,8 +88,6 @@ class CHNOPSexchanger:
         """
         if checknutrients:
             ret = self.check_nutrients(E_growth, t, updatenutrients=updatenutrients, numcells=numcells)
-        else:
-            ret = 0.0
 
         if self.limiter=='Energy':
             # throttle how much we take up to match the incoming growth energy
