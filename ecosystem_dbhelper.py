@@ -435,6 +435,17 @@ class db_helper:
         db.close()
 
     @staticmethod
+    def printtable(tabname, dbpath=nmp.std_dbpath, col=None):
+        db=sqlite3.connect(dbpath)
+        print('\n \t '+tabname+' \n')
+        if col==None:
+            print(pd.read_sql_query("SELECT * FROM "+tabname+" ", db))
+        else:
+            print(pd.read_sql_query("SELECT "+col+" FROM "+tabname+" ", db))
+
+        db.close()
+
+    @staticmethod
     def create_major_tables(replace=False, dbpath=nmp.std_dbpath):
         """Create the major tables in the ecosystem database inside the
         file passsed. If replace is True, any tables of the same name will

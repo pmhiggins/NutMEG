@@ -44,7 +44,7 @@ class ecosystem:
         stVolume_Fraction = {'Max':0.99, 'Min':0., 'Consistency':0, 'Count':0}
         stMaintenance_Fraction = {'Max':1.0, 'Min':-0.1, 'Consistency':10, 'Count':0}
         stMetabolic_Rate = {'Max':float('inf'), 'Min':1e-40, 'Consistency':10, 'Count':0}
-        stGrowth_Rate = {'Max':float('inf'), 'Min':0.0001, 'Consistency':50, 'Count':0}
+        stGrowth_Rate = {'Max':float('inf'), 'Min':0.00001, 'Consistency':50, 'Count':0}
         stPopulation = {'Max':float('inf'), 'Min':0, 'Consistency':0, 'Count':0}
 
         return {'Volume_Fraction' : stVolume_Fraction,
