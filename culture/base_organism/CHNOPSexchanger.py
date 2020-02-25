@@ -100,7 +100,7 @@ class CHNOPSexchanger:
             # where there are multiple sources pick a random one
             comps = [self.host.locale.composition[f.name].activity for f in value[1]]
             food = random.choices(value[1], comps)[0]
-            if food.name != 'H2O(l)' and food.activity >=1e-12:
+            if food.name != 'H2O(l)':# and food.activity >=1e-12:
                 # only remove the fraction we have actually picked up
                 # because check_nutrients has throttled E_growth
                 self.host.locale.composition[food.name].activity -= (fraction_used*value[0][0]*t)
@@ -138,6 +138,10 @@ class CHNOPSexchanger:
             # (moved to grow_with_nutrients)
             #for key, value in self.nutrients.items():
             #    value[0][0] = value[0][0]*self.g/self.maxg
+        elif self.maxg <= 0.0:
+            logger.debug('organism(s) fatally substrate limited by '+self.limiter+'!')
+            self.host.throttling = 'substrate: '+self.limiter
+            return E_growth
         else:
             logger.debug('organism(s) are substrate limited')
             self.host.throttling = 'substrate: '+self.limiter
