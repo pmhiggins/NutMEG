@@ -115,7 +115,7 @@ class db_helper:
         return dicti
     """
 
-    def dict_to_db(self, dicti, end=False):
+    def dict_to_db(self, dicti, end=False, finonly=False):
         """Save all info in dictionaries to the database, and refreshs the
         dictionaries.
         """
@@ -135,12 +135,24 @@ class db_helper:
         names = str(tuple(names))
         values = tuple(values)
 
+        if not finonly:
+            for i in range(0,len(dicti['Time'])):
+                values = []
+                for key in sorted(dicti):
 
-        for i in range(0,len(dicti['Time'])):
+                    values.append(dicti[key][i])
+                qmarks='(?'
+                for r in range(1,len(values)):
+                    qmarks += ',?'
+                qmarks += ')'
+                values = tuple(values)
+
+                cursor.execute(' INSERT INTO FullResults_Sim_'+self.SimID+
+                  ' '+str(names)+' VALUES'+str(qmarks), values)
+        else:
             values = []
             for key in sorted(dicti):
-
-                values.append(dicti[key][i])
+                values.append(dicti[key][-1])
             qmarks='(?'
             for r in range(1,len(values)):
                 qmarks += ',?'
