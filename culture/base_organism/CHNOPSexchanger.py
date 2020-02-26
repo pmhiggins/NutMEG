@@ -80,7 +80,7 @@ class CHNOPSexchanger:
             value[0][0] = factor*value[0][1]*(self.host.locale.volume*1000) # convert to L
 
 
-    def grow_with_nutrients(self, E_growth, t, updatenutrients=True, checknutrients=True, numcells=1):
+    def grow_with_nutrients(self, E_growth, t, updatenutrients=True, checknutrients=True, ret=0.0, numcells=1):
         """Exchange nutrients with the locale in order to convert as much
         of E_growth into biomass as possible in time t
 
@@ -88,8 +88,6 @@ class CHNOPSexchanger:
         """
         if checknutrients:
             ret = self.check_nutrients(E_growth, t, updatenutrients=updatenutrients, numcells=numcells)
-        else:
-            ret = 0.0
 
         if self.limiter=='Energy':
             # throttle how much we take up to match the incoming growth energy
@@ -102,7 +100,7 @@ class CHNOPSexchanger:
             # where there are multiple sources pick a random one
             comps = [self.host.locale.composition[f.name].activity for f in value[1]]
             food = random.choices(value[1], comps)[0]
-            if food.name != 'H2O(l)' and food.activity >=1e-12:
+            if food.name != 'H2O(l)':# and food.activity >=1e-12:
                 # only remove the fraction we have actually picked up
                 # because check_nutrients has throttled E_growth
                 self.host.locale.composition[food.name].activity -= (fraction_used*value[0][0]*t)
@@ -140,6 +138,10 @@ class CHNOPSexchanger:
             # (moved to grow_with_nutrients)
             #for key, value in self.nutrients.items():
             #    value[0][0] = value[0][0]*self.g/self.maxg
+        elif self.maxg <= 0.0:
+            logger.debug('organism(s) fatally substrate limited by '+self.limiter+'!')
+            self.host.throttling = 'substrate: '+self.limiter
+            return E_growth
         else:
             logger.debug('organism(s) are substrate limited')
             self.host.throttling = 'substrate: '+self.limiter

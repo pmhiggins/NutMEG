@@ -44,7 +44,7 @@ class ecosystem:
         stVolume_Fraction = {'Max':0.99, 'Min':0., 'Consistency':0, 'Count':0}
         stMaintenance_Fraction = {'Max':1.0, 'Min':-0.1, 'Consistency':10, 'Count':0}
         stMetabolic_Rate = {'Max':float('inf'), 'Min':1e-40, 'Consistency':10, 'Count':0}
-        stGrowth_Rate = {'Max':float('inf'), 'Min':0.0001, 'Consistency':50, 'Count':0}
+        stGrowth_Rate = {'Max':float('inf'), 'Min':-0.5, 'Consistency':50, 'Count':0}
         stPopulation = {'Max':float('inf'), 'Min':0, 'Consistency':0, 'Count':0}
 
         return {'Volume_Fraction' : stVolume_Fraction,
@@ -55,7 +55,7 @@ class ecosystem:
 
 
     def predict_growth(self, tmax=1e17, volmax=0.99, kmin=1e-23,
-      max_growthrate=1.0, endMF=True, dt=None, factorup=1.01):
+      max_growthrate=1.0, endMF=True, dt=None, factorup=1.01, staticdt=False):
         """Predict how a single colony will evolve in a single environment.
 
         Simulate the colony growing at a self-determined timestep up until
@@ -96,7 +96,7 @@ class ecosystem:
         step=1
         while t < tmax:
             timestartstep=timer.time()
-            step = 1+round(t/dt)
+            step = step + 1#1+round(t/dt)
 
             logger.debug('\n Starting step '+ str(step))
 
@@ -217,11 +217,20 @@ class ecosystem:
                 logger.info('Saving Data')
                 if t>=tmax:
                     full_results = self.dbh.dict_to_db(resultsdict, end=True)
+                #elif step >=10000:
+                    # this is a long simulation, so only save every 100th step
+                #    full_results = self.dbh.dict_to_db(resultsdict, end=False, finonly=True)
                 else:
                     full_results = self.dbh.dict_to_db(resultsdict, end=False)
                 self.output_step_data(step, full_results)
 
                 resultsdict = self.dbh.buildresultsdict()
+
+                if (step/10000).is_integer() and not staticdt:
+                    # significant local changes are likely, adapt the timestep to compensate
+                    dt = self.c.getmin_timestep(factorup=factorup)
+                    logger.debug('\n Simulation timestep selected: '+ str(dt))
+                    self.stoppingdict['Growth_Rate']['Min'] = self.stoppingdict['Growth_Rate']['Min']/dt
 
 
 
