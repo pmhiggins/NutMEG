@@ -31,7 +31,6 @@ class horde(NutMEG.base_organism):
       CHNOPS=None,
       mass=1e-15,
       dry_mass=3e-16,
-      E_synth=8e-10,
       *args, **kwargs):
 
         self.name = name
@@ -43,7 +42,6 @@ class horde(NutMEG.base_organism):
           CHNOPS=CHNOPS,
           mass=mass,
           dry_mass=dry_mass,
-          E_synth=E_synth,
           *args, **kwargs)
 
         self.maintenance = maintainer(self,

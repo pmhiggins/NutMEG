@@ -10,7 +10,7 @@ class organism(NutMEG.base_organism):
       maintenance=None,
       CHNOPS=None,
       mass=1.e-16,
-      E_synth=8e-10,
+      E_synth=None,
       volume=1.e-18):
         NutMEG.base_organism.__init__(self, name=name, locale=locale,
           metabolism=metabolism,
