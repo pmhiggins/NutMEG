@@ -8,6 +8,7 @@ from .maintainer import maintainer
 from .CHNOPSexchanger import CHNOPSexchanger
 from .respirator import respirator
 from .base_organism_dbhelper import bodb_helper
+from .synthesis.cell_synthesis import cell_synthesis as synth
 
 
 import NutMEG.util.NutMEGparams as nmp
@@ -30,6 +31,7 @@ class base_organism:
     issplitting=False
     E_growth = 0
     isactive=True
+    proteinfraction=0.55
 
 
 
@@ -39,7 +41,6 @@ class base_organism:
       workoutID=True,
       mass=1.e-15,
       dry_mass=3e-16,
-      E_synth=8e-10,
       volume=1.e-18,
       *args, **kwargs):
         self.name=name
@@ -49,16 +50,21 @@ class base_organism:
 
         self.mass=mass
         self.dry_mass=dry_mass
-        self.E_synth = E_synth
+        self.volume = volume
+        self.base_volume = volume
+        self.E_synth = kwargs.pop('E_synth', None) #was 8e-10
+        if self.E_synth == None:
+            self.get_ESynth(AA=True)
+        print(self.E_synth)
         self.update_metabolic_rate()
-        self.volume=volume
-        self.base_volume=volume
         self.E_store = kwargs.pop('E_store', 0.)
         self.pH_interior = kwargs.pop('pH_interior', 7.0)
         self.memb_pot = kwargs.pop('memb_pot', 1e-5)
         self.PermH = kwargs.pop('PermH', 1e-10)
         self.PermOH = kwargs.pop('PermOH', 1e-10)
         self.surfacearea = kwargs.pop('surfacearea', SAget(volume))
+
+
         self.base_life_span = kwargs.pop('base_life_span', float('inf'))
 
         if maintenance == None:
@@ -130,6 +136,19 @@ class base_organism:
             self.respiration.net_pathway.rate_constant_env = ( \
               self.respiration.net_pathway.rate_constant_RTP * \
               (2**((self.locale.env.T-298)/10)))
+
+
+    def get_ESynth(self, AA=True, comp=None):
+        """Use the synthesis module to get the synthesis energy for this organism.
+
+        By default use E Coli parameters as built into synthesis. A future update might extend this, meaning we'll have to add comp """
+
+        #using comp in this way calls a  database which is already populated
+        # passing host will only change results byt this organisms' proteinfraction
+
+        E_dens = synth.get_ESynth_density(self.locale.env.T, AA=AA, compute=comp) #cost of sythesis per dry gram of cells
+        #update E_synth for this organsim from the calculated density.
+        self.E_synth = E_dens*self.dry_mass*1000
 
 
 
