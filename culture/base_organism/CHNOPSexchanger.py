@@ -33,7 +33,7 @@ class CHNOPSexchanger:
 
 
 
-    def __init__(self, host, *args, *kwargs):
+    def __init__(self, host, *args, **kwargs):
 
         self.host = host
         self.uptake_consts.update(kwargs.pop('uptake_consts', {}))
