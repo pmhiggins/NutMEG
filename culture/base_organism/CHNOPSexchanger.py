@@ -5,33 +5,40 @@ import NutMEG.util.NutMEGparams as nmp
 from NutMEG.util.loggersetup import loggersetup as logset
 logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.printlevel)
 
+
+
+
 class CHNOPSexchanger:
     """When this gets an overhaul, don't for get to change take_step
     in organism getCHNOPSut in colony
     """
 
     limiter='' # information as to what the limiter is at the moment
+    uptake_consts = {'C':1e-10, 'H':1e-10, 'N':1e-10,
+      'O':1e-10, 'P':1e-10, 'S':1e-10}
 
     def get_default_nutrients(self):
         # in an ideal world, we would have uptakes and constants from individual
         # chemicals rather than just the elements as shown here.
         return {
-          'C':[[0.0, 0.50/12.0, 0.0, 1e-10], []],
-          'H':[[0.0, 0.09, 0.0, 1e-10], []],
-          'N':[[0.0, 0.15/14.0, 0.0, 1e-10], []],
-          'O':[[0.0, 0.20/16.0, 0.0, 1e-10], []],
-          'P':[[0.0, 0.04/31.0, 0.0, 1e-10], []],
-          'S':[[0.0, 0.02/32.0, 0.0, 1e-10], []]}
+          'C':[[0.0, 0.50/12.0, 0.0, self.uptake_consts['C']], []],
+          'H':[[0.0, 0.09, 0.0, self.uptake_consts['H']], []],
+          'N':[[0.0, 0.15/14.0, 0.0, self.uptake_consts['N']], []],
+          'O':[[0.0, 0.20/16.0, 0.0, self.uptake_consts['O']], []],
+          'P':[[0.0, 0.04/31.0, 0.0, self.uptake_consts['P']], []],
+          'S':[[0.0, 0.02/32.0, 0.0, self.uptake_consts['S']], []]}
       # in the format [rate of moles to be used, % needed, amount in reactor, max rate constant per cell]
       # followed by a list containing the reactants which can be used
       # approx, adapted slightly from microbiology book
 
 
 
-    def __init__(self, host):
+    def __init__(self, host, *args, *kwargs):
 
         self.host = host
+        self.uptake_consts.update(kwargs.pop('uptake_consts', {}))
         self.find_nutrients(init=True)
+
 
 
     def find_nutrients(self, init=False):
