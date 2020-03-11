@@ -74,7 +74,7 @@ class base_organism:
         else:
             self.maintenance = maintenance
         if CHNOPS == None:
-            self.CHNOPS = CHNOPSexchanger(self)
+            self.CHNOPS = CHNOPSexchanger(self, *args, **kwargs)
         else:
             self.CHNOPS = CHNOPS
 
