@@ -83,9 +83,9 @@ class base_organism:
             self.dbh.workoutID()
 
     @classmethod
-    def bo_from_db(cls, name, locale, OrgID, num=1):
+    def bo_from_db(cls, name, locale, OrgID, num=1, dbpath=nmp.std_dbpath):
 
-        dbdict = bodb_helper.from_db(name, OrgID, dbpath=nmp.std_dbpath)
+        dbdict = bodb_helper.from_db(name, OrgID, dbpath=dbpath)
 
         # CHNOPS!
         O = cls(name, locale, dbdict['Respiration'][1], num=num,

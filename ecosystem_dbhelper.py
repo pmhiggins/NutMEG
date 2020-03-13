@@ -363,7 +363,7 @@ class db_helper:
 
 
     @staticmethod
-    def extract_param_db_OrgLoc(OrgIDs, LocID, OrgNums, param):
+    def extract_param_db_OrgLoc(OrgIDs, LocID, OrgNums, param, dbpath=nmp.std_dbpath):
         """Fetch a specific parameter from a simulation, using the relevant
         OrgID and LocIDs as passed. If the param is a Summary variable, this
         returns the final value from that simulation., if its one of the
@@ -373,8 +373,8 @@ class db_helper:
         # failed, a volume of 1e-18 and growth rate of 0 is returned. If its
         # one of the others, this returns the full list of results."""
 
-        SimID = db_helper.findSimID(OrgIDs, LocID, OrgNums)
-        return db_helper.extract_param_db_Sim(SimID, param)
+        SimID = db_helper.findSimID(OrgIDs, LocID, OrgNums, dbpath=dbpath)
+        return db_helper.extract_param_db_Sim(SimID, param, dbpath=dbpath)
         # db=sqlite3.connect(nmp.std_dbpath)
         # cursor = db.cursor()
         # # db.row_factory = lambda cursor, row: row[0]

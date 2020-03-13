@@ -46,9 +46,9 @@ class reactor:
             self.dbh.workoutID()
 
     @classmethod
-    def r_from_db(cls, name, LocID):
+    def r_from_db(cls, name, LocID, dbpath=nmp.std_dbpath):
 
-        dbdict = rdb_helper.from_db(name, LocID, dbpath=nmp.std_dbpath)
+        dbdict = rdb_helper.from_db(name, LocID, dbpath=dbpath)
 
         R = cls(name, env=environment(T = dbdict['Temperature'][1],
           P=dbdict['Pressure'][1], V=dbdict['Volume'][1]), pH=dbdict['pH'][1],

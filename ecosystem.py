@@ -24,7 +24,7 @@ class ecosystem:
     c = None # culture
 
 
-    def __init__(self, r, c, loggerlevel='INFO'):
+    def __init__(self, r, c, loggerlevel='INFO', dbpath=nmp.std_dbpath):
         """
         here r is the reactor and c is the culture for brevity.
         """
@@ -32,7 +32,7 @@ class ecosystem:
         self.c = c
         self.backup_r = deepcopy(r)
 
-        self.dbh = db_helper(self, nmp.std_dbpath)
+        self.dbh = db_helper(self, dbpath)
 
         self.stoppingdict=self.setup_stoppingdict()
 
