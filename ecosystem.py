@@ -55,7 +55,7 @@ class ecosystem:
 
 
     def predict_growth(self, tmax=1e17, volmax=0.99, kmin=1e-23,
-      max_growthrate=1.0, endMF=True, dt=None, factorup=1.01, staticdt=False):
+      max_growthrate=1.0, endMF=True, dt=None, factorup=1.01, staticdt=False, quiet=False):
         """Predict how a single colony will evolve in a single environment.
 
         Simulate the colony growing at a self-determined timestep up until
@@ -222,7 +222,8 @@ class ecosystem:
                 #    full_results = self.dbh.dict_to_db(resultsdict, end=False, finonly=True)
                 else:
                     full_results = self.dbh.dict_to_db(resultsdict, end=False)
-                self.output_step_data(step, full_results)
+                if not quiet:
+                    self.output_step_data(step, full_results)
 
                 resultsdict = self.dbh.buildresultsdict()
 
@@ -240,7 +241,8 @@ class ecosystem:
         if not (step/stepmax).is_integer() and step != 1:
             logger.info('Saving Data')
             full_results = self.dbh.dict_to_db(resultsdict, end=True)
-            self.output_step_data(step, full_results)
+            if not quiet:
+                self.output_step_data(step, full_results)
 
 
     def check_stopper(self, stopper_name, orglst, resultsdict, step):
