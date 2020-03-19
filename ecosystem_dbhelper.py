@@ -246,14 +246,13 @@ class db_helper:
 
         except sqlite3.IntegrityError as e:
             if 'columns' or 'UNIQUE' in str(e):
-                print(str(e))
-                print('\n This combination of culture and location has already been performed')
+                print('This combination of culture and location has already been performed')
 
                 curs.execute('SELECT SimID from Summary WHERE OrgIDs = ? '+\
                   'AND LocID = ? AND OrgNums = ?', (str(self.OrgIDs), self.e.r.LocID, str(self.OrgNums)))
                 self.SimID = curs.fetchone()[0]
 
-                print('The SimID of this is: '+self.SimID)
+                print('  The SimID of this is: '+self.SimID)
 
                 return False, self.SimID
             else:
