@@ -35,18 +35,19 @@ class NutMEmatcher:
         target : dict
             Target paramter(s) to get to. At the moment this only supports
             growth rate, but others will be added.
-            TODO: add other targets (final biomass?)
+            TODO: add other targets (final biomass? final conc?)
 
         """
+        print(paramsdict, target)
 
         e, SimID, OrgID = self.iterate_to_target(paramsdict, target) #TODO: matching method which generates efficiency
         # send paramsdict, if NutrientFrac==[1], only do main, if not.....?
 
         if level == 'Basic':
-            return e
+            return e, SimID, OrgID
         elif level == 'NutME':
             self.print_theory_estimates(SimID, OrgID)
-            return e
+            return e, SimID, OrgID
         else:
             raise ValueError('Level unrecognised')
 
@@ -92,7 +93,6 @@ class NutMEmatcher:
                 org2.maintenance.net_dict['Basal'] = MF*initialPS
 
                 LID, OID, SID = self.simulate_growth(org2, loc2)
-
                 result = self.exparam(k, SID, OID)
                 print(MF, result)
                 hl = self.higherorlower(k, v, result)
@@ -111,12 +111,12 @@ class NutMEmatcher:
 
     def higherorlower(self, param, value, result):
         """For passed param, see if we have an acceptable result.
-        Currently only works for GrowthRate.
+        Currently only works for GrowthRate and FinBM.
         """
         if 0.9 < result/value < 1.1:
             #regardless of value, if we're within 10%, call off optimisation
             return ':-)'
-        if 'GrowthRate' in param:
+        if 'GrowthRate' or 'Volume' in param:
             # use the in syntax, in case something like GrowthRateVol is passed.
             # the growth rate should be approx independent of vol, cell, kg anyway.
             if result > value:
@@ -173,7 +173,14 @@ class NutMEmatcher:
         """Return the requested simulation paramter in the exopnential phase of
         S=simulation SimID. """
         p = es.ecosystem_dbhelper.db_helper.extract_param_db_Sim(SimID, param+'_'+OrgID)
-        if 100 < 0.2*len(p):
-            return p[100][0]
+        if 'GrowthRate' in param:
+            # to be taken in the exponential phase
+            if 100 < 0.2*len(p):
+                return p[100][0]
+            else:
+                return p[int(0.2*len(p))][0]
+        elif 'Volume' in param:
+            # to be taken at the end of the simulation
+            return p[-1][0]
         else:
-            return p[int(0.2*len(p))][0]
+            raise ValueError('exparam does not recognise this parameter')
