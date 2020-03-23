@@ -114,14 +114,16 @@ class NutMEmatcher:
         Currently only works for GrowthRate.
         """
         if 0.9 < result/value < 1.1:
-            #regardless of value, if we're within 1%, call off optimisation
+            #regardless of value, if we're within 10%, call off optimisation
             return ':-)'
-        if param=='GrowthRate':
-                if result > value:
-                    #MF is TOO LOW.
-                    return '+'
-                else:
-                    return '-'
+        if 'GrowthRate' in param:
+            # use the in syntax, in case something like GrowthRateVol is passed.
+            # the growth rate should be approx independent of vol, cell, kg anyway.
+            if result > value:
+                #MF is TOO LOW.
+                return '+'
+            else:
+                return '-'
         else:
             raise ValueError('NutMEGmatch is not optimised for that parameter yet!')
 
