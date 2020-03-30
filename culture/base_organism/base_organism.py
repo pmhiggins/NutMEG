@@ -55,7 +55,6 @@ class base_organism:
         self.E_synth = kwargs.pop('E_synth', None) #was 8e-10
         if self.E_synth == None:
             self.get_ESynth(AA=True)
-        print(self.E_synth)
         self.update_metabolic_rate()
         self.E_store = kwargs.pop('E_store', 0.)
         self.pH_interior = kwargs.pop('pH_interior', 7.0)
@@ -86,7 +85,7 @@ class base_organism:
     def bo_from_db(cls, name, locale, OrgID, num=1, dbpath=nmp.std_dbpath):
 
         dbdict = bodb_helper.from_db(name, OrgID, dbpath=dbpath)
-
+        
         # CHNOPS!
         O = cls(name, locale, dbdict['Respiration'][1], num=num,
           maintenance = None,
