@@ -38,9 +38,10 @@ class NutMEmatcher:
             TODO: add other targets (final biomass? final conc?)
 
         """
-        print(paramsdict, target)
+        pd=deepcopy(paramsdict)
+        t=deepcopy(target)
 
-        e, SimID, OrgID = self.iterate_to_target(paramsdict, target) #TODO: matching method which generates efficiency
+        e, SimID, OrgID = self.iterate_to_target(pd, t) #TODO: matching method which generates efficiency
         # send paramsdict, if NutrientFrac==[1], only do main, if not.....?
 
         if level == 'Basic':
@@ -84,8 +85,9 @@ class NutMEmatcher:
         initialPS = cop.P_s
         met=False
         LID, OID, SID = None, None, None
+        MF=1
         for k,v in target.items():
-            while not met:
+            while not met and MF>0.001:
                 MF = (MFrange[1]+MFrange[0])/2.0
 
                 org2 = deepcopy(self.org)
