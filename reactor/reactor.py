@@ -49,13 +49,12 @@ class reactor:
     def r_from_db(cls, name, LocID, dbpath=nmp.std_dbpath):
 
         dbdict = rdb_helper.from_db(name, LocID, dbpath=dbpath)
-
         R = cls(name, env=environment(T = dbdict['Temperature'][1],
           P=dbdict['Pressure'][1], V=dbdict['Volume'][1]), pH=dbdict['pH'][1],
-          workoutID=False, composition_inputs=ast.literal_eval(dbdict['composition_inputs']))
+          workoutID=False, composition_inputs=ast.literal_eval(dbdict['composition_inputs'][1]))
 
-        R.rlist_from_ReactIDs(ast.literal_eval(dbdict['reactions'][1]))
         R.dbh.extract_from_Composition(dbdict['CompID'][1])
+        R.rlist_from_ReactIDs(ast.literal_eval(dbdict['reactions'][1]))
         R.CompID = dbdict['CompID'][1]
         R.LocID = LocID
         return R
@@ -145,6 +144,8 @@ class reactor:
                   "'s composition.'")
                 self.composition[rrxn.name] = rrxn
 
+
+
         for rrxn in rxxn.products.keys():
             inlist = False
             for c_name, c_rxt in self.composition.items():
@@ -183,6 +184,9 @@ class reactor:
 
     def change_T(self, T):
         self.env.T = float(T)
+
+    def change_P(self, P):
+        self.env.P = float(P)
 
 
     # def Comp_to_db(self, pH, CompID=None, dbpath=nmp.std_dbpath):
