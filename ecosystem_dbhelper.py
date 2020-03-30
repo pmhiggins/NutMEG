@@ -300,6 +300,26 @@ class db_helper:
 
 
     @staticmethod
+    def findOrgIDsLocID(SimID, dbpath=nmp.std_dbpath):
+        db=sqlite3.connect(dbpath)
+        curs = db.cursor()
+
+        try:
+            curs.execute('SELECT OrgIDs FROM Summary WHERE SimID = ?', (SimID,))
+            OrgIDs = curs.fetchone()[0]
+            curs.execute('SELECT LocID FROM Summary WHERE SimID = ?', (SimID,))
+            LocID = curs.fetchone()[0]
+            return OrgIDs, LocID
+        except sqlite3.Error as e:
+            print(str(e))
+            print('\n This SimID could not be found, are you sure it has been performed? \n')
+            #raise e
+            return None
+        finally:
+            db.close()
+
+
+    @staticmethod
     def findSimID(OrgIDs, LocID, OrgNums, dbpath=nmp.std_dbpath):
         """Look in the Summary table to see if a simulation has been done with these organisms and environments"""
 
