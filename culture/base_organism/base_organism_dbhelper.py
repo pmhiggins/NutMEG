@@ -44,13 +44,13 @@ class bodb_helper:
 
         # search in the database for the organism's identifiers
         try:
-            logger.info('Trying to find your organism with name: ' + \
+            logger.debug('Trying to find your organism with name: ' + \
               self.host.name + ' in the database')
             command, vals = sqlsc.ANDlst(self.dbdict)
             cursor.execute(sqlsc.SELECTpreamble(self.host.name, 'OrgID')+command, vals)
             op = cursor.fetchone()
             if op is not None:
-                logger.info("Success! Its OrgID is: "+op[0])
+                logger.debug("Success! Its OrgID is: "+op[0])
                 self.host.OrgID = op[0]
             else:
                 raise Exception('No organism found')
