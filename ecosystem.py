@@ -238,11 +238,11 @@ class ecosystem:
         logger.info('Simulation Complete')
         ex_time = timer.time()-timestart
         logger.info('This took '+str(ex_time)+' s  in real time')
-        if not (step/stepmax).is_integer() and step != 1:
-            logger.info('Saving Data')
-            full_results = self.dbh.dict_to_db(resultsdict, end=True)
-            if not quiet:
-                self.output_step_data(step, full_results)
+        # if not (step/stepmax).is_integer() and step != 1:
+        logger.info('Saving Data')
+        full_results = self.dbh.dict_to_db(resultsdict, end=True)
+        if not quiet:
+            self.output_step_data(step, full_results)
 
 
     def check_stopper(self, stopper_name, orglst, resultsdict, step):
