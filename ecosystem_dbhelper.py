@@ -365,7 +365,7 @@ class db_helper:
             for c in colnames:
                 if param == c:
                     # this is in Summary, which has one values for the simulation.
-                    cursor.execute('SELECT '+param+' FROM Summary WHERE SimID = ?' (SimID))
+                    cursor.execute('SELECT '+param+' FROM Summary WHERE SimID = ?', (SimID,))
                     return cursor.fetchone()[0]
 
             # if the param is not in Summary, look for it in FullResults.
@@ -374,9 +374,12 @@ class db_helper:
 
             return cursor.fetchall()
 
-        except:# sqlite3.Error or TypeError as e:
+        except sqlite3.Error or TypeError as e:
+            print(e)
             print('Problem retrieving data, check SimID and requested variables')
             return [0]
+        except Exception as e:
+            raise e
         finally:
             db.close()
 
