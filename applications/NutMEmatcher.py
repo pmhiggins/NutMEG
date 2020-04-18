@@ -1,5 +1,6 @@
 from copy import deepcopy
 import NutMEG as es
+import ast
 
 Tdef = ['Lever10pc', 'Lever2pc', 'Tijhuis']
 
@@ -13,6 +14,7 @@ class NutMEmatcher:
     def __init__(self, org, loc):
         self.org = org
         self.loc = loc
+        self.dbpath=self.org.dbh.dbpath
 
     def match(self, level='Basic',
       paramsdict={'MaintenanceFrac':[0,1]},
@@ -115,7 +117,7 @@ class NutMEmatcher:
         """For passed param, see if we have an acceptable result.
         Currently only works for GrowthRate and FinBM.
         """
-        if 0.9 < result/value < 1.1:
+        if 0.99 < result/value <= 1.0:
             #regardless of value, if we're within 10%, call off optimisation
             return ':-)'
         if 'GrowthRate' or 'Volume' in param:
@@ -136,7 +138,7 @@ class NutMEmatcher:
         loc2.dbh.workoutID()
         Cu = es.culture(hordes=[org2])
 
-        ES = es.ecosystem(loc2, Cu)
+        ES = es.ecosystem(loc2, Cu, dbpath=self.dbpath)
 
         ES.predict_growth(quiet=True)
 
@@ -164,8 +166,8 @@ class NutMEmatcher:
     def net_powers(self, SimID, OrgID):
         """Return the power supply and maintenance fraction in the exponential
         phase of the simulation SimID."""
-        PS = es.ecosystem_dbhelper.db_helper.extract_param_db_Sim(SimID, 'PowerSupply_'+OrgID)
-        MF = es.ecosystem_dbhelper.db_helper.extract_param_db_Sim(SimID, 'MaintenanceFrac_'+OrgID)
+        PS = es.ecosystem_dbhelper.db_helper.extract_param_db_Sim(SimID, 'PowerSupply_'+OrgID, dbpath=self.dbpath)
+        MF = es.ecosystem_dbhelper.db_helper.extract_param_db_Sim(SimID, 'MaintenanceFrac_'+OrgID, dbpath=self.dbpath)
         if 100 < 0.2*len(PS):
             return PS[100][0], MF[100][0]
         else:
@@ -174,13 +176,17 @@ class NutMEmatcher:
     def exparam(self, param, SimID, OrgID):
         """Return the requested simulation paramter in the exopnential phase of
         S=simulation SimID. """
-        p = es.ecosystem_dbhelper.db_helper.extract_param_db_Sim(SimID, param+'_'+OrgID)
+        p = es.ecosystem_dbhelper.db_helper.extract_param_db_Sim(SimID, param+'_'+OrgID, dbpath=self.dbpath)
         if 'GrowthRate' in param:
+            p = es.ecosystem_dbhelper.db_helper.extract_param_db_Sim(SimID, 'PeakGR', dbpath=self.dbpath)
+            return ast.literal_eval(p)[0]
             # to be taken in the exponential phase
+            """
             if 100 < 0.2*len(p):
                 return p[100][0]
             else:
                 return p[int(0.2*len(p))][0]
+            """
         elif 'Volume' in param:
             # to be taken at the end of the simulation
             return p[-1][0]
