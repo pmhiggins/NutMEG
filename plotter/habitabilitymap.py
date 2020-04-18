@@ -5,13 +5,14 @@ import os
 import math
 import matplotlib as mpl
 from matplotlib import gridspec
+import numpy as np
 
 std_dbpath=os.path.join(os.path.dirname(__file__), '../testDB')
 
 class habitabilitymap(nf.nutfig):
 
-    def __init__(self):
-        nf.nutfig.__init__(self, figsize=(7,7))
+    def __init__(self, fig=None):
+        super().__init__(fig=fig, figsize=(7,7))
 
     def add_map_plot(self, ax=None, xvals=[], yvals=[], zvals=[], labels=['','',''], show=False, save='', colorbar=True):
         """pass 1D lists of the x y and z coordinates of the proposed
@@ -38,7 +39,7 @@ class habitabilitymap(nf.nutfig):
         ax.set_xlabel(labels[0])
         ax.set_ylabel(labels[1])
 
-        ax.tricontourf(xvalsn, yvalsn, zvals, 100, vmin=min(zvals), vmax=max(zvals), cmap='gist_earth_r')
+        ax.tricontourf(xvalsn, yvalsn, np.array(zvals), 100, vmin=min(zvals), vmax=max(zvals), cmap='gist_earth_r')
 
         xa=ax.get_xticks().tolist()
         xa = [round(nf.nutfig.denormalise(aa, xma, xmi),3) for aa in xa]
