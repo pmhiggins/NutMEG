@@ -11,8 +11,19 @@ import NutMEG.reaction as reaction
 R=0.08206 # L atm / mol K, universal gas constant.
 
 # some solubility data for various gases.
-gases = {'H2': {'SolubilityCons':[-39.9611,53.9381,16.3135,-0.036249,0.017565,-0.0023010], 'SolubilityForm':'Beta'},
-  'CO2' : {'SolubilityCons':[-58.0931,90.5069,22.2940,0.027766,-0.025888,0.0050578], 'SolubilityForm':'K'}}
+gases = {
+  'H2(aq)': {
+    'SolubilityCons':[-39.9611, 53.9381, 16.3135, -0.036249,
+      0.017565,-0.0023010], 'SolubilityForm':'Beta'},
+  'CO2(aq)' : {
+    'SolubilityCons':[-58.0931, 90.5069, 22.2940, 0.027766,
+      -0.025888,0.0050578], 'SolubilityForm':'K'},
+  'O2(aq)' : {
+    'SolubilityCons':[-58.3877, 85.8079, 23.8439, -0.034892,
+      0.015568,-0.0019387], 'SolubilityForm':'Beta'},
+  'CH4(g)' : {
+    'SolubilityCons':[-68.8862, 101.4956, 28.7314, -0.076146,
+      0.043970,-0.006872], 'SolubilityForm':'Beta'}}
 
 
 class VenusDrop(reactor):
@@ -21,7 +32,7 @@ class VenusDrop(reactor):
 
     This is an instance of reactor, with added methods to estimate the
     composition from cloud ppm values and setup specific possible venusian
-    metabolisms. To start with, this only includes sulfate reduction.
+    metabolisms.
     """
 
     def __init__(self, H2ppm=25, HSact=1e-10, T=298, P=100000, V=1.13e-16,
@@ -45,16 +56,27 @@ class VenusDrop(reactor):
 
 
 
-    def initial_conditions(self, H2ppm, HSact=0.0, setupcomp=True, addreaction=True):
+    def initial_conditions(self, H2ppm, HSact=1e-10, setupcomp=True, addreaction=True):
+        """ Set up a basic configuration, with pH 0 sulfuric acid
+        droplet and dissolved H2.
+
+        H2ppm : float
+            H2 parts per million in the atmosphere around the droplet.
+        HSact : float
+            HS activity to use. Default is 1e-10
+        setupcomp : bool
+            Whether to set up the standard composition. Default True
+        addreaction : bool
+            Whether to include sulfate reduction in the reactionlist
+        """
 
         if setupcomp:
 
-            mol_H2 = VenusDrop.getgasconc('H2', self.env.P*H2ppm/(1e6),
+            mol_H2 = VenusDrop.getgasconc('H2(aq)', self.env.P*H2ppm/(1e6),
               self.env.T, P_bar=self.env.P)
-
             mol_SO4 = 0.5 # assume fully dissoiated at pH 0 (from H2SO4)
             mol_H = 1.0 # pH zero
-            mol_HS = 0.0 #? don't know, let's assume biogenic only.
+            mol_HS = HSact #? don't know, let's assume biogenic only.
 
 
             SO4 = reaction.reagent('SO4--', self.env, phase='aq', charge=-2,
@@ -74,12 +96,11 @@ class VenusDrop(reactor):
             self.composition.update({H2.name:H2, SO4.name:SO4,
               H.name:H, H2O.name:H2O, HS.name:HS})
 
-            # TODO: add in CHNOPS sources
 
         self.pH = 10**(self.composition['H+'].activity)
 
         if addreaction:
-            # put together an overall reaction
+            # put together an overall reaction fro sulfate reduction
             r = {self.composition['H2(aq)']:4, self.composition['SO4--']:1,
               self.composition['H+']:1}
             p = {self.composition['HS-']:1, self.composition['H2O(l)']:4}
@@ -88,9 +109,15 @@ class VenusDrop(reactor):
             # add this reaction to the VenusDrop reactor.
             self.add_reaction(thermaloa, overwrite=True)
 
-    def update_conditions(self, H2ppm, HSact=0.0):
+    def update_conditions(self, H2ppm, HSact=1e-10):
+        """Calculate dissolved concentratoins in the current reactor
+        environment for a standard VenusDrop
 
-        molH2 = VenusDrop.getgasconc('H2', self.env.P*H2ppm/(1e6),
+        H2ppm : float
+            Atmospheric ppm for H2
+        """
+
+        molH2 = VenusDrop.getgasconc('H2(aq)', self.env.P*H2ppm/(1e6),
           self.env.T, P_bar=self.env.P)
 
         self.composition['H2(aq)'].activity = molH2
@@ -99,29 +126,65 @@ class VenusDrop(reactor):
         self.composition['HS-'].conc = HSact
 
 
+    def update_reagent(self, name, ppm):
+        """ Update the concentration of a specific reagent based
+        on its atmospheric ppm
+
+        name : str
+            Name of the reagent to update
+        ppm : float
+            atmospheric concentration to use
+        """
+
+        mol_r = VenusDrop.getgasconc(name, self.env.P*ppm/(1e6),
+            self.env.T, P_bar=self.env.P)
+
+        r = reaction.reagent(name, self.env, phase='aq', charge=0,
+              conc=mol_r, activity=mol_r)
+
+        self.composition.update({r.name:r})
+
+
+
     @staticmethod
     def solubilityEQparams(A1, A2, A3, B1, B2, B3, T, S):
-        lnc = A1+(A2*100/T)+(A3*math.log(T/100)) + (S*(B1+(B2*T/100)+(B3*((T/100)**2))))
+        lnc = (A1+(A2*100/T)+(A3*math.log(T/100)) +
+          (S*(B1+(B2*T/100)+(B3*((T/100)**2)))))
         return math.exp(lnc)
 
     @staticmethod
     def solubilityEQ(gas_name, T, S):
         soldict = gases[gas_name]['SolubilityCons']
-        return VenusDrop.solubilityEQparams(soldict[0], soldict[1], soldict[2], soldict[3], soldict[4], soldict[5], T, S)
+        return VenusDrop.solubilityEQparams(soldict[0], soldict[1],
+          soldict[2], soldict[3], soldict[4], soldict[5], T, S)
 
     @staticmethod
     def getgasconc(gas_name, P_gas, T, P_bar=101325, S=0):
-        """P_gas ---partial pressure of gas in Pa"""
+        """From a partial pressure, get the dissolved gas
+        concentration.
 
-        Beta = VenusDrop.solubilityEQ(gas_name, T, S) #will end up in mL / mL atm ? or should
+        gas_name : str
+            Name of reagent
+        P_gas : float
+            partial pressure of gas in Pa
+        T : float
+            local temperature in K
+        P_bar : float
+            Local barometric pressure in Pa
+        S : float
+            Salinity of the droplet in parts per thousand
+
+        """
+
+        Beta = VenusDrop.solubilityEQ(gas_name, T, S)
+        # units mL / mL atm
+
         if gases[gas_name]['SolubilityForm']=='K':
-            #with bar on the end is risky
             Beta = Beta * R*298.15*P_bar/101325
-
 
         #calculate the volume of dissolved gas found per liter of water:
         C_gas = (P_gas/101325)*Beta
         #calculate no of moles per L of gas from ideal gas law:
         M_gas = (P_gas/101325)/(R*T)
         conc_gas = C_gas*M_gas
-        return(conc_gas)
+        return conc_gas
