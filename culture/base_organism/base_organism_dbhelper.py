@@ -71,6 +71,7 @@ class bodb_helper:
                 self.to_db()
         finally:
             db.close()
+            self.host.output.refreshparams()
 
 
     def createtable(self, replace=False):
