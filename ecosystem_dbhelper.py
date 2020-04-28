@@ -435,6 +435,20 @@ class db_helper:
 
 
     @staticmethod
+    def removesimdata(SimID, dbpath=nmp.std_dbpath):
+        # TODO: add in an option to delete the org and loc data too
+        db=sqlite3.connect(dbpath)
+        cursor = db.cursor()
+        # delete the entry from the summary table and
+        try:
+            cursor.execute('DROP TABLE FullResults_Sim_'+SimID)
+            cursor.execute('DELETE FROM Summary WHERE SimID = ?', (SimID,))
+        except Exception as e:
+            raise e
+        finally:
+            db.close()
+
+    @staticmethod
     def print_table(tabname, dbpath=nmp.std_dbpath):
         db=sqlite3.connect(dbpath)
         print('\t '+tabname+' \n')
