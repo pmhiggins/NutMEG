@@ -219,7 +219,27 @@ class bodb_helper:
         print(read_sql_query("SELECT * FROM " + self.host.name, db))
         db.close()
 
+    @staticmethod
+    def extract_param_db(orgname, OrgID, params, dbpath=nmp.std_dbpath):
+        """Fetch a specific parameter from a simulation, using its ID as
+        passed. If the param is a Summary variable this returns the final
+        value from that simulation, if its one of the others, this returns
+        the full list of results"""
+        db=sqlite3.connect(dbpath)
+        cursor = db.cursor()
+        try:
+            sel = sqlsc.SELECTcolumns(orgname, params, 'OrgID')
+            cursor.execute(sel, (OrgID,))
+            return cursor.fetchall()
 
+        except sqlite3.Error or TypeError as e:
+            print(e)
+            print('Problem retrieving data, check OrgID and requested variables')
+            return [0]
+        except Exception as e:
+            raise e
+        finally:
+            db.close()
 
 
     ####### HELPFUL STRING GENERATING FUNCTIONS FOR SQLITE QUERIES ########
