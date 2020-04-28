@@ -87,9 +87,13 @@ class NutMEmatcher:
         initialPS = cop.P_s
         met=False
         LID, OID, SID = None, None, None
-        MF=1
+        MF=0.5
+
         for k,v in target.items():
-            while not met and MF>0.001:
+            count=0
+            while not met and 0.999>MF and MF>0.001 and count<=20:
+                if count!=0:
+                    es.db_helper.removesimdata(SID, dbpath=self.dbpath)
                 MF = (MFrange[1]+MFrange[0])/2.0
 
                 org2 = deepcopy(self.org)
@@ -98,7 +102,7 @@ class NutMEmatcher:
 
                 LID, OID, SID = self.simulate_growth(org2, loc2)
                 result = self.exparam(k, SID, OID)
-                print(MF, result)
+                print(MF, result, v)
                 hl = self.higherorlower(k, v, result)
                 if hl =='+':
                     # need to increase MF for the next step.
@@ -109,6 +113,7 @@ class NutMEmatcher:
                     MFrange = [MF,MF]
                     met=True
                 print(MFrange)
+                count += 1
         return MFrange[0], SID, OID
 
 
@@ -117,7 +122,7 @@ class NutMEmatcher:
         """For passed param, see if we have an acceptable result.
         Currently only works for GrowthRate and FinBM.
         """
-        if 0.99 < result/value <= 1.0:
+        if 0.95 < result/value <= 1.0:
             #regardless of value, if we're within 10%, call off optimisation
             return ':-)'
         if 'GrowthRate' or 'Volume' in param:
