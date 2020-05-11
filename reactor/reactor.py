@@ -51,7 +51,7 @@ class reactor:
         dbdict = rdb_helper.from_db(name, LocID, dbpath=dbpath)
         R = cls(name, env=environment(T = dbdict['Temperature'][1],
           P=dbdict['Pressure'][1], V=dbdict['Volume'][1]), pH=dbdict['pH'][1],
-          workoutID=False, composition_inputs=ast.literal_eval(dbdict['composition_inputs'][1]))
+          workoutID=False, composition_inputs=ast.literal_eval(dbdict['composition_inputs'][1]), dbpath=dbpath)
 
         R.dbh.extract_from_Composition(dbdict['CompID'][1])
         R.rlist_from_ReactIDs(ast.literal_eval(dbdict['reactions'][1]))
