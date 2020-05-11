@@ -4,7 +4,7 @@ import sqlite3
 from datetime import date
 from itertools import chain
 import numpy as np
-import os
+import os, ast, re
 from NutMEG.util.sqlshortcuts import sqlshortcuts as sqlsc
 
 import NutMEG.util.NutMEGparams as nmp
@@ -441,8 +441,10 @@ class db_helper:
         cursor = db.cursor()
         # delete the entry from the summary table and
         try:
+
             cursor.execute('DROP TABLE FullResults_Sim_'+SimID)
-            cursor.execute('DELETE FROM Summary WHERE SimID = ?', (SimID,))
+            cursor.execute("DELETE FROM Summary WHERE SimID = ?", (SimID,))
+            db.commit()
         except Exception as e:
             raise e
         finally:
@@ -553,3 +555,10 @@ class db_helper:
 
         db.commit()
         db.close()
+
+
+    @staticmethod
+    def guess_name_from_ID(ID):
+        nl = ID.split('_')
+        nll = re.findall(r"[^\W\d_]+|\d+", str(nl))
+        return nll[0]
