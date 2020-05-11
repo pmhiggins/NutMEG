@@ -122,7 +122,7 @@ class NutMEmatcher:
         """For passed param, see if we have an acceptable result.
         Currently only works for GrowthRate and FinBM.
         """
-        if 0.95 < result/value <= 1.0:
+        if 0.995 < result/value <= 1.0:
             #regardless of value, if we're within 10%, call off optimisation
             return ':-)'
         if 'GrowthRate' or 'Volume' in param:
