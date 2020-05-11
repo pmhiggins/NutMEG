@@ -84,6 +84,8 @@ class ecosystem:
         if dt==None:
             dt = self.c.getmin_timestep(factorup=factorup)
             logger.debug('\n Simulation timestep selected: '+ str(dt))
+        else:
+            staticdt=True
         self.stoppingdict['Growth_Rate']['Min'] = self.stoppingdict['Growth_Rate']['Min']/dt
 
 
