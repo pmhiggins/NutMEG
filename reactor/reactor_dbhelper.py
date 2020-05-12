@@ -64,6 +64,9 @@ class rdb_helper:
                 logger.info("Other error encountered: "+str(e))
                 logger.info('Assuming this is a new reactor of type: ' + \
                   self.host.name + '. Adding  to database.')
+                logger.info('First make sure the table exists')
+                self.createtable()
+                logger.info('Now, adding an entry.')
                 self.to_db()
         finally:
             db.close()

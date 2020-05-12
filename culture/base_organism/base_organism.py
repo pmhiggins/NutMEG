@@ -55,7 +55,6 @@ class base_organism:
         self.E_synth = kwargs.pop('E_synth', None) #was 8e-10
         if self.E_synth == None:
             self.get_ESynth(AA=True)
-        print(self.E_synth)
         self.update_metabolic_rate()
         self.E_store = kwargs.pop('E_store', 0.)
         self.pH_interior = kwargs.pop('pH_interior', 7.0)
@@ -138,7 +137,7 @@ class base_organism:
               (2**((self.locale.env.T-298)/10)))
 
 
-    def get_ESynth(self, AA=True, comp=None):
+    def get_ESynth(self, AA=False, comp=None):
         """Use the synthesis module to get the synthesis energy for this organism.
 
         By default use E Coli parameters as built into synthesis. A future update might extend this, meaning we'll have to add comp """
@@ -146,9 +145,14 @@ class base_organism:
         #using comp in this way calls a  database which is already populated
         # passing host will only change results byt this organisms' proteinfraction
 
-        E_dens = synth.get_ESynth_density(self.locale.env.T, AA=AA, compute=comp) #cost of sythesis per dry gram of cells
+        synth_dict = synth.get_ESynth_density(self.locale.env.T, AA=AA, compute=comp) #cost of sythesis per dry gram of cells
         #update E_synth for this organsim from the calculated density.
-        self.E_synth = E_dens*self.dry_mass*1000
+        if AA:
+            self.E_synth = synth_dict*self.dry_mass*1000
+        else:
+            E_dens = []
+            [E_dens.append(v) for k,v in synth_dict]
+            self.E_synth = sum(E_dens)*self.dry_mass*1000
 
 
 

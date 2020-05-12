@@ -4,7 +4,7 @@ import sqlite3
 from datetime import date
 from itertools import chain
 import numpy as np
-import os
+import os, ast, re
 from NutMEG.util.sqlshortcuts import sqlshortcuts as sqlsc
 
 import NutMEG.util.NutMEGparams as nmp
@@ -246,14 +246,13 @@ class db_helper:
 
         except sqlite3.IntegrityError as e:
             if 'columns' or 'UNIQUE' in str(e):
-                print(str(e))
-                print('\n This combination of culture and location has already been performed')
+                print('This combination of culture and location has already been performed')
 
                 curs.execute('SELECT SimID from Summary WHERE OrgIDs = ? '+\
                   'AND LocID = ? AND OrgNums = ?', (str(self.OrgIDs), self.e.r.LocID, str(self.OrgNums)))
                 self.SimID = curs.fetchone()[0]
 
-                print('The SimID of this is: '+self.SimID)
+                print('  The SimID of this is: '+self.SimID)
 
                 return False, self.SimID
             else:
@@ -298,6 +297,26 @@ class db_helper:
     #     #     resultsdict = self.e.CRuniquemonitors(resultsdict, dt, startpop)
     #
     #     self.dict_to_db(resultsdict, end=True)
+
+
+    @staticmethod
+    def findOrgIDsLocID(SimID, dbpath=nmp.std_dbpath):
+        db=sqlite3.connect(dbpath)
+        curs = db.cursor()
+
+        try:
+            curs.execute('SELECT OrgIDs FROM Summary WHERE SimID = ?', (SimID,))
+            OrgIDs = curs.fetchone()[0]
+            curs.execute('SELECT LocID FROM Summary WHERE SimID = ?', (SimID,))
+            LocID = curs.fetchone()[0]
+            return OrgIDs, LocID
+        except sqlite3.Error as e:
+            print(str(e))
+            print('\n This SimID could not be found, are you sure it has been performed? \n')
+            #raise e
+            return None
+        finally:
+            db.close()
 
 
     @staticmethod
@@ -346,7 +365,7 @@ class db_helper:
             for c in colnames:
                 if param == c:
                     # this is in Summary, which has one values for the simulation.
-                    cursor.execute('SELECT '+param+' FROM Summary WHERE SimID = ?' (SimID))
+                    cursor.execute('SELECT '+param+' FROM Summary WHERE SimID = ?', (SimID,))
                     return cursor.fetchone()[0]
 
             # if the param is not in Summary, look for it in FullResults.
@@ -355,9 +374,12 @@ class db_helper:
 
             return cursor.fetchall()
 
-        except:# sqlite3.Error or TypeError as e:
+        except sqlite3.Error or TypeError as e:
+            print(e)
             print('Problem retrieving data, check SimID and requested variables')
             return [0]
+        except Exception as e:
+            raise e
         finally:
             db.close()
 
@@ -411,6 +433,22 @@ class db_helper:
         # finally:
         #     db.close()
 
+
+    @staticmethod
+    def removesimdata(SimID, dbpath=nmp.std_dbpath):
+        # TODO: add in an option to delete the org and loc data too
+        db=sqlite3.connect(dbpath)
+        cursor = db.cursor()
+        # delete the entry from the summary table and
+        try:
+
+            cursor.execute('DROP TABLE FullResults_Sim_'+SimID)
+            cursor.execute("DELETE FROM Summary WHERE SimID = ?", (SimID,))
+            db.commit()
+        except Exception as e:
+            raise e
+        finally:
+            db.close()
 
     @staticmethod
     def print_table(tabname, dbpath=nmp.std_dbpath):
@@ -517,3 +555,10 @@ class db_helper:
 
         db.commit()
         db.close()
+
+
+    @staticmethod
+    def guess_name_from_ID(ID):
+        nl = ID.split('_')
+        nll = re.findall(r"[^\W\d_]+|\d+", str(nl))
+        return nll[0]

@@ -10,12 +10,16 @@ class growthparams(nf.nutfig):
     cs='default', show=False):
         """plot the list of list values on a linear plot on the axis given.
         If no axis is passed, uses the whole figure."""
-        if not len(xvals) == len(yvals) == len(labels):
+        if not len(xvals) == len(yvals):
             raise ValueError('labels, xvals and yvals do not match')
 
         if colors == []:
             # empty color list, either use a specific style, or the default.
             colors, lines = growthparams.colorpicker(len(xvals), cs)
+        if labels == []:
+            #no labels
+            for x in xvals:
+                labels.append('')
 
         if ax== None:
             # no axes have been passed, so put it in the first one

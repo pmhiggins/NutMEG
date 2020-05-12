@@ -165,7 +165,7 @@ class horde(NutMEG.base_organism):
 
 
 
-    def select_timestep(self, factorup=1.01):
+    def select_timestep(self, factorup=1.01, returncop=False):
         """work out a suitable time step for the horde to grow by 1% """
         dt = 0.005/1.2
         cop = deepcopy(self)
@@ -190,7 +190,10 @@ class horde(NutMEG.base_organism):
 
         logger.info('Min timestep for ' + self.name + ': ' + str(dt) + ' s')
 
-        return dt
+        if returncop:
+            return dt, cop
+        else:
+            return dt
 
 
 

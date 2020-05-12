@@ -55,7 +55,7 @@ class ecosystem:
 
 
     def predict_growth(self, tmax=1e17, volmax=0.99, kmin=1e-23,
-      max_growthrate=1.0, endMF=True, dt=None, factorup=1.01, staticdt=False):
+      max_growthrate=1.0, endMF=True, dt=None, factorup=1.01, staticdt=False, quiet=False):
         """Predict how a single colony will evolve in a single environment.
 
         Simulate the colony growing at a self-determined timestep up until
@@ -84,6 +84,8 @@ class ecosystem:
         if dt==None:
             dt = self.c.getmin_timestep(factorup=factorup)
             logger.debug('\n Simulation timestep selected: '+ str(dt))
+        else:
+            staticdt=True
         self.stoppingdict['Growth_Rate']['Min'] = self.stoppingdict['Growth_Rate']['Min']/dt
 
 
@@ -222,7 +224,8 @@ class ecosystem:
                 #    full_results = self.dbh.dict_to_db(resultsdict, end=False, finonly=True)
                 else:
                     full_results = self.dbh.dict_to_db(resultsdict, end=False)
-                self.output_step_data(step, full_results)
+                if not quiet:
+                    self.output_step_data(step, full_results)
 
                 resultsdict = self.dbh.buildresultsdict()
 
@@ -237,9 +240,10 @@ class ecosystem:
         logger.info('Simulation Complete')
         ex_time = timer.time()-timestart
         logger.info('This took '+str(ex_time)+' s  in real time')
-        if not (step/stepmax).is_integer() and step != 1:
-            logger.info('Saving Data')
-            full_results = self.dbh.dict_to_db(resultsdict, end=True)
+        # if not (step/stepmax).is_integer() and step != 1:
+        logger.info('Saving Data')
+        full_results = self.dbh.dict_to_db(resultsdict, end=True)
+        if not quiet:
             self.output_step_data(step, full_results)
 
 
