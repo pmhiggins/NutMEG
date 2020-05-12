@@ -1,3 +1,5 @@
+""" functions for importing data """
+
 from BioMolecule import BioMolecule
 import os
 this_dir = os.path.dirname(__file__)
@@ -6,7 +8,6 @@ this_dir = os.path.dirname(__file__)
 def copies_moles(filename='EColiSynth_Ishihama2008_dataset3.csv'):
 
     dataset = open(this_dir+'/../../../data/synthesis/'+filename, "r")
-
 
     CopyNo = []
     MolMass = []
