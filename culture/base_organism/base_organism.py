@@ -85,7 +85,7 @@ class base_organism:
     def bo_from_db(cls, name, locale, OrgID, num=1, dbpath=nmp.std_dbpath):
 
         dbdict = bodb_helper.from_db(name, OrgID, dbpath=dbpath)
-        
+
         # CHNOPS!
         O = cls(name, locale, dbdict['Respiration'][1], num=num,
           maintenance = None,
@@ -137,7 +137,7 @@ class base_organism:
               (2**((self.locale.env.T-298)/10)))
 
 
-    def get_ESynth(self, AA=True, comp=None):
+    def get_ESynth(self, AA=False, comp=None):
         """Use the synthesis module to get the synthesis energy for this organism.
 
         By default use E Coli parameters as built into synthesis. A future update might extend this, meaning we'll have to add comp """
@@ -145,9 +145,14 @@ class base_organism:
         #using comp in this way calls a  database which is already populated
         # passing host will only change results byt this organisms' proteinfraction
 
-        E_dens = synth.get_ESynth_density(self.locale.env.T, AA=AA, compute=comp) #cost of sythesis per dry gram of cells
+        synth_dict = synth.get_ESynth_density(self.locale.env.T, AA=AA, compute=comp) #cost of sythesis per dry gram of cells
         #update E_synth for this organsim from the calculated density.
-        self.E_synth = E_dens*self.dry_mass*1000
+        if AA:
+            self.E_synth = synth_dict*self.dry_mass*1000
+        else:
+            E_dens = []
+            [E_dens.append(v) for k,v in synth_dict]
+            self.E_synth = sum(E_dens)*self.dry_mass*1000
 
 
 
