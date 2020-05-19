@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>NutMEG.environment package &#8212; NutMEG 1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+      <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
+          <span>NutMEG 1.0 documentation</span></a></h1>
+        <h2 class="heading"><span>NutMEG.environment package</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content" role="main">
+        
+        
+  <div class="section" id="nutmeg-environment-package">
+<h1>NutMEG.environment package<a class="headerlink" href="#nutmeg-environment-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-NutMEG.environment.environment">
+<span id="nutmeg-environment-environment-module"></span><h2>NutMEG.environment.environment module<a class="headerlink" href="#module-NutMEG.environment.environment" title="Permalink to this headline">¶</a></h2>
+<p>This is the environment module, kept seperate from the reaction module for clarity,
+though the two really do depend on each other. For now, any changes that a reaction
+makes on its environment will be contained in the reaction module and simply update
+our environment.</p>
+<p>&#64;author P M Higgins
+&#64;date 10/2017
+&#64;version 0.0.1</p>
+<dl class="py class">
+<dt id="NutMEG.environment.environment.environment">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.environment.environment.</code><code class="sig-name descname">environment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">T</span><span class="o">=</span><span class="default_value">298.15</span></em>, <em class="sig-param"><span class="n">V</span><span class="o">=</span><span class="default_value">0.001</span></em>, <em class="sig-param"><span class="n">P</span><span class="o">=</span><span class="default_value">101325.0</span></em>, <em class="sig-param"><span class="n">V_RTP</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">P_RTP</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.environment.environment.environment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to keep our environment parameters all in one place for use
+in various reactions. In its current form, this is a class of
+convenience i.e. it doesn’t really do anything — just stores all
+the physical variables of the world enclosed by volume V takes
+place in. This may well change in the future though.</p>
+<p>SI units are used throughout.</p>
+<dl class="py attribute">
+<dt id="NutMEG.environment.environment.environment.P">
+<code class="sig-name descname">P</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.environment.environment.environment.P" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.environment.environment.environment.P_RTP">
+<code class="sig-name descname">P_RTP</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.environment.environment.environment.P_RTP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.environment.environment.environment.T">
+<code class="sig-name descname">T</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.environment.environment.environment.T" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.environment.environment.environment.T_RTP">
+<code class="sig-name descname">T_RTP</code><em class="property"> = 298.15</em><a class="headerlink" href="#NutMEG.environment.environment.environment.T_RTP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.environment.environment.environment.V">
+<code class="sig-name descname">V</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.environment.environment.environment.V" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.environment.environment.environment.V_RTP">
+<code class="sig-name descname">V_RTP</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.environment.environment.environment.V_RTP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.environment">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-NutMEG.environment" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, P. M. Higgins.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+    </div>
+  </body>
+</html>

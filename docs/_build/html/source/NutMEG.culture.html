@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>NutMEG.culture package &#8212; NutMEG 1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+      <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
+          <span>NutMEG 1.0 documentation</span></a></h1>
+        <h2 class="heading"><span>NutMEG.culture package</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content" role="main">
+        
+        
+  <div class="section" id="nutmeg-culture-package">
+<h1>NutMEG.culture package<a class="headerlink" href="#nutmeg-culture-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-NutMEG.culture.culture">
+<span id="nutmeg-culture-culture-module"></span><h2>NutMEG.culture.culture module<a class="headerlink" href="#module-NutMEG.culture.culture" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="NutMEG.culture.culture.culture">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.culture.culture.</code><code class="sig-name descname">culture</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hordes</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">colonies</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">lite</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture.culture" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to contain all organisms in the ecosystem, separated into
+hordes and colonies.</p>
+<dl class="py method">
+<dt id="NutMEG.culture.culture.culture.all">
+<code class="sig-name descname">all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture.culture.all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.culture.culture.full_output">
+<code class="sig-name descname">full_output</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture.culture.full_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>generate a full dictionary of everything being monitored in the
+culture, for every colony and horde.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.culture.culture.full_output_datatypes">
+<code class="sig-name descname">full_output_datatypes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture.culture.full_output_datatypes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.culture.culture.get_growth_rates">
+<code class="sig-name descname">get_growth_rates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture.culture.get_growth_rates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.culture.culture.get_maintenance_fractions">
+<code class="sig-name descname">get_maintenance_fractions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture.culture.get_maintenance_fractions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.culture.culture.get_metabolic_rates">
+<code class="sig-name descname">get_metabolic_rates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture.culture.get_metabolic_rates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.culture.culture.get_population">
+<code class="sig-name descname">get_population</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inactive</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture.culture.get_population" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the total number of hosted organisms</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.culture.culture.get_total_mass">
+<code class="sig-name descname">get_total_mass</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inactive</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture.culture.get_total_mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the total mass of the hosted organisms</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.culture.culture.get_total_volume">
+<code class="sig-name descname">get_total_volume</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inactive</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture.culture.get_total_volume" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the total volume of the hosted organisms</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.culture.culture.getmin_timestep">
+<code class="sig-name descname">getmin_timestep</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">factorup</span><span class="o">=</span><span class="default_value">1.01</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture.culture.getmin_timestep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the smallest time step for all of the organisms.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.culture.culture.lite">
+<code class="sig-name descname">lite</code><em class="property"> = False</em><a class="headerlink" href="#NutMEG.culture.culture.culture.lite" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.culture.culture.refresh_output">
+<code class="sig-name descname">refresh_output</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture.culture.refresh_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refresh all of the data output dictionaries in the culture</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.culture.culture.take_step">
+<code class="sig-name descname">take_step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture.culture.take_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Advance all organisms by the passed time step</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.culture.culture_output">
+<span id="nutmeg-culture-culture-output-module"></span><h2>NutMEG.culture.culture_output module<a class="headerlink" href="#module-NutMEG.culture.culture_output" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="NutMEG.culture.culture_output.culture_output">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.culture.culture_output.</code><code class="sig-name descname">culture_output</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hostculture</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture_output.culture_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="NutMEG.culture.culture_output.culture_output.appendvals">
+<code class="sig-name descname">appendvals</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture_output.culture_output.appendvals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.culture_output.culture_output.buildbaseparams">
+<code class="sig-name descname">buildbaseparams</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture_output.culture_output.buildbaseparams" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.culture_output.culture_output.params">
+<code class="sig-name descname">params</code><em class="property"> = {}</em><a class="headerlink" href="#NutMEG.culture.culture_output.culture_output.params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.culture_output.culture_output.paramtypelst">
+<code class="sig-name descname">paramtypelst</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture_output.culture_output.paramtypelst" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.culture_output.culture_output.refreshparams">
+<code class="sig-name descname">refreshparams</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture_output.culture_output.refreshparams" title="Permalink to this definition">¶</a></dt>
+<dd><p>reset the parameter dictionary to have empty numpy arrays.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.culture">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-NutMEG.culture" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, P. M. Higgins.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+    </div>
+  </body>
+</html>

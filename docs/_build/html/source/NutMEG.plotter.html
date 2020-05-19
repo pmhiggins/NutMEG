@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>NutMEG.plotter package &#8212; NutMEG 1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+      <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
+          <span>NutMEG 1.0 documentation</span></a></h1>
+        <h2 class="heading"><span>NutMEG.plotter package</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content" role="main">
+        
+        
+  <div class="section" id="nutmeg-plotter-package">
+<h1>NutMEG.plotter package<a class="headerlink" href="#nutmeg-plotter-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-NutMEG.plotter.growthparams">
+<span id="nutmeg-plotter-growthparams-module"></span><h2>NutMEG.plotter.growthparams module<a class="headerlink" href="#module-NutMEG.plotter.growthparams" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="NutMEG.plotter.growthparams.growthparams">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.plotter.growthparams.</code><code class="sig-name descname">growthparams</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fig</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.growthparams.growthparams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#NutMEG.plotter.plotter_setup.nutfig" title="NutMEG.plotter.plotter_setup.nutfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">NutMEG.plotter.plotter_setup.nutfig</span></code></a></p>
+<dl class="py method">
+<dt id="NutMEG.plotter.growthparams.growthparams.addlinearplot">
+<code class="sig-name descname">addlinearplot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ax</span></em>, <em class="sig-param"><span class="n">xrange</span></em>, <em class="sig-param"><span class="n">yrange</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ls</span><span class="o">=</span><span class="default_value">'-'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.growthparams.growthparams.addlinearplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add one linear plot to the axis ax.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.plotter.growthparams.growthparams.colorpicker">
+<code class="sig-name descname">colorpicker</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cs</span><span class="o">=</span><span class="default_value">'default'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.growthparams.growthparams.colorpicker" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.plotter.growthparams.growthparams.linearplot">
+<code class="sig-name descname">linearplot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">xvals</span><span class="o">=</span><span class="default_value">[[]]</span></em>, <em class="sig-param"><span class="n">yvals</span><span class="o">=</span><span class="default_value">[[]]</span></em>, <em class="sig-param"><span class="n">labels</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">colors</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">cs</span><span class="o">=</span><span class="default_value">'default'</span></em>, <em class="sig-param"><span class="n">show</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.growthparams.growthparams.linearplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>plot the list of list values on a linear plot on the axis given.
+If no axis is passed, uses the whole figure.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.plotter.habitabilitymap">
+<span id="nutmeg-plotter-habitabilitymap-module"></span><h2>NutMEG.plotter.habitabilitymap module<a class="headerlink" href="#module-NutMEG.plotter.habitabilitymap" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="NutMEG.plotter.habitabilitymap.habitabilitymap">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.plotter.habitabilitymap.</code><code class="sig-name descname">habitabilitymap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fig</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.habitabilitymap.habitabilitymap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#NutMEG.plotter.plotter_setup.nutfig" title="NutMEG.plotter.plotter_setup.nutfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">NutMEG.plotter.plotter_setup.nutfig</span></code></a></p>
+<dl class="py method">
+<dt id="NutMEG.plotter.habitabilitymap.habitabilitymap.add_map_plot">
+<code class="sig-name descname">add_map_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">xvals</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">yvals</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">zvals</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">labels</span><span class="o">=</span><span class="default_value">['', '', '']</span></em>, <em class="sig-param"><span class="n">show</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">colorbar</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.habitabilitymap.habitabilitymap.add_map_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>pass 1D lists of the x y and z coordinates of the proposed
+map. This map will then be placed onto ax, or if you have no
+ax preference will take up the whole figure.</p>
+<p>If you pass colorbar as true, one will be generated in a
+seperate matplotlib figure.</p>
+<p>if you pass save, the Figure and/or colorbar will be saved to the
+filename given, colorbar will have the prefix <a href="#id1"><span class="problematic" id="id2">cb_</span></a>. Please do
+include the file extension.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.plotter.habitabilitymap.habitabilitymap.mapcolorbarh">
+<code class="sig-name descname">mapcolorbarh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">zvals</span></em>, <em class="sig-param"><span class="n">zlabel</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.habitabilitymap.habitabilitymap.mapcolorbarh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Produce a horzontal colorbar on a new canvas with the zvals and
+label passed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.plotter.habitabilitymap.habitabilitymap.mapdata_orgloc">
+<code class="sig-name descname">mapdata_orgloc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xIDs</span></em>, <em class="sig-param"><span class="n">yIDs</span></em>, <em class="sig-param"><span class="n">zname</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.habitabilitymap.habitabilitymap.mapdata_orgloc" title="Permalink to this definition">¶</a></dt>
+<dd><p>for the OrgIDs and LocIDs passed, this finds the value of the zname parameter in the database corresponding to each.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.plotter.plotter_setup">
+<span id="nutmeg-plotter-plotter-setup-module"></span><h2>NutMEG.plotter.plotter_setup module<a class="headerlink" href="#module-NutMEG.plotter.plotter_setup" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="NutMEG.plotter.plotter_setup.nutfig">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.plotter.plotter_setup.</code><code class="sig-name descname">nutfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fig</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">5, 7</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.plotter_setup.nutfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for setting up plotting in NutMEG. Will end up doing
+data retrieval as well using the ecosystem_dbhelper</p>
+<dl class="py method">
+<dt id="NutMEG.plotter.plotter_setup.nutfig.denormalise">
+<em class="property">static </em><code class="sig-name descname">denormalise</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">val</span></em>, <em class="sig-param"><span class="n">maxval</span></em>, <em class="sig-param"><span class="n">minval</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.plotter_setup.nutfig.denormalise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take a value val which sho be ‘denormalised’ from between
+0 and 1 to between maxval and minval.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.plotter.plotter_setup.nutfig.extract_param_db_OrgLoc">
+<em class="property">static </em><code class="sig-name descname">extract_param_db_OrgLoc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">OrgIDs</span></em>, <em class="sig-param"><span class="n">LocID</span></em>, <em class="sig-param"><span class="n">param</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.plotter_setup.nutfig.extract_param_db_OrgLoc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a specific parameter from a simulation, using the relevant
+OrgID and LocIDs as passed. If the param is ‘FinBM’ or ‘PeakGR’ this returns the final value from that simulation OR if the simulation
+failed, a volume of 1e-18 and growth rate of 0 is returned. If its
+one of the others, this returns the full list of results.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.plotter.plotter_setup.nutfig.extract_param_db_Sim">
+<em class="property">static </em><code class="sig-name descname">extract_param_db_Sim</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">SimID</span></em>, <em class="sig-param"><span class="n">param</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.plotter_setup.nutfig.extract_param_db_Sim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a specific parameter from a simulation, using its ID as
+passed. If the param is ‘FinBM’ or ‘PeakGR’ this returns the final
+value from that simulation, if its one of the others, this returns
+the full list of results</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.plotter.plotter_setup.nutfig.fig">
+<code class="sig-name descname">fig</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.plotter.plotter_setup.nutfig.fig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.plotter.plotter_setup.nutfig.normalise">
+<em class="property">static </em><code class="sig-name descname">normalise</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vals</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.plotter_setup.nutfig.normalise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take the list vals, and return it normalised between 0 and 1.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.plotter.plotter_setup.nutfig.printcheck">
+<em class="property">static </em><code class="sig-name descname">printcheck</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.plotter_setup.nutfig.printcheck" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checker method to see summary table. Probably isn’t needed because
+you could just use ecosystem_dbhelper</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.plotter">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-NutMEG.plotter" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, P. M. Higgins.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+    </div>
+  </body>
+</html>

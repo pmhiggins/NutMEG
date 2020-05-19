@@ -1,0 +1,493 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>NutMEG.culture.base_organism package &#8212; NutMEG 1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+      <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
+          <span>NutMEG 1.0 documentation</span></a></h1>
+        <h2 class="heading"><span>NutMEG.culture.base_organism package</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content" role="main">
+        
+        
+  <div class="section" id="nutmeg-culture-base-organism-package">
+<h1>NutMEG.culture.base_organism package<a class="headerlink" href="#nutmeg-culture-base-organism-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="NutMEG.culture.base_organism.adaptations.html">NutMEG.culture.base_organism.adaptations package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.base_organism.adaptations.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.base_organism.adaptations.html#module-NutMEG.culture.base_organism.adaptations.Tadaptations">NutMEG.culture.base_organism.adaptations.Tadaptations module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.base_organism.adaptations.html#module-NutMEG.culture.base_organism.adaptations.pHadaptations">NutMEG.culture.base_organism.adaptations.pHadaptations module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.base_organism.adaptations.html#module-NutMEG.culture.base_organism.adaptations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-NutMEG.culture.base_organism.CHNOPSexchanger">
+<span id="nutmeg-culture-base-organism-chnopsexchanger-module"></span><h2>NutMEG.culture.base_organism.CHNOPSexchanger module<a class="headerlink" href="#module-NutMEG.culture.base_organism.CHNOPSexchanger" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="NutMEG.culture.base_organism.CHNOPSexchanger.CHNOPSexchanger">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.culture.base_organism.CHNOPSexchanger.</code><code class="sig-name descname">CHNOPSexchanger</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">host</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.CHNOPSexchanger.CHNOPSexchanger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>When this gets an overhaul, don’t for get to change take_step
+in organism getCHNOPSut in colony</p>
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.CHNOPSexchanger.CHNOPSexchanger.check_nutrients">
+<code class="sig-name descname">check_nutrients</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E_growth</span></em>, <em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">updatenutrients</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">numcells</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.CHNOPSexchanger.CHNOPSexchanger.check_nutrients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a timestep and potential growth input, compute how much of
+that energy can be used.</p>
+<p>Returns the fraction of E_growth which would remain.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.CHNOPSexchanger.CHNOPSexchanger.find_nutrients">
+<code class="sig-name descname">find_nutrients</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">init</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.CHNOPSexchanger.CHNOPSexchanger.find_nutrients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.CHNOPSexchanger.CHNOPSexchanger.get_default_nutrients">
+<code class="sig-name descname">get_default_nutrients</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.CHNOPSexchanger.CHNOPSexchanger.get_default_nutrients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.CHNOPSexchanger.CHNOPSexchanger.get_uptake">
+<code class="sig-name descname">get_uptake</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">numcells</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.CHNOPSexchanger.CHNOPSexchanger.get_uptake" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dictionary showing the uptake rate of each nutient</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.CHNOPSexchanger.CHNOPSexchanger.grow_with_nutrients">
+<code class="sig-name descname">grow_with_nutrients</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">E_growth</span></em>, <em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">updatenutrients</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">checknutrients</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">ret</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">numcells</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.CHNOPSexchanger.CHNOPSexchanger.grow_with_nutrients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exchange nutrients with the locale in order to convert as much
+of E_growth into biomass as possible in time t</p>
+<p>Returns what is left of E_growth.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.CHNOPSexchanger.CHNOPSexchanger.limiter">
+<code class="sig-name descname">limiter</code><em class="property"> = ''</em><a class="headerlink" href="#NutMEG.culture.base_organism.CHNOPSexchanger.CHNOPSexchanger.limiter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.CHNOPSexchanger.CHNOPSexchanger.print_nutrients">
+<code class="sig-name descname">print_nutrients</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.CHNOPSexchanger.CHNOPSexchanger.print_nutrients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the nutrient information in a more readable way</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.CHNOPSexchanger.CHNOPSexchanger.update_nutrient_yield">
+<code class="sig-name descname">update_nutrient_yield</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">numcells</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.CHNOPSexchanger.CHNOPSexchanger.update_nutrient_yield" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.CHNOPSexchanger.CHNOPSexchanger.uptake_consts">
+<code class="sig-name descname">uptake_consts</code><em class="property"> = {'C': 1e-10, 'H': 1e-10, 'N': 1e-10, 'O': 1e-10, 'P': 1e-10, 'S': 1e-10}</em><a class="headerlink" href="#NutMEG.culture.base_organism.CHNOPSexchanger.CHNOPSexchanger.uptake_consts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.culture.base_organism.base_organism">
+<span id="nutmeg-culture-base-organism-base-organism-module"></span><h2>NutMEG.culture.base_organism.base_organism module<a class="headerlink" href="#module-NutMEG.culture.base_organism.base_organism" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="NutMEG.culture.base_organism.base_organism.SAget">
+<code class="sig-prename descclassname">NutMEG.culture.base_organism.base_organism.</code><code class="sig-name descname">SAget</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism.SAget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt id="NutMEG.culture.base_organism.base_organism.base_organism">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.culture.base_organism.base_organism.</code><code class="sig-name descname">base_organism</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">locale</span></em>, <em class="sig-param"><span class="n">metabolism</span></em>, <em class="sig-param"><span class="n">maintenance</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">CHNOPS</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">workoutID</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">mass</span><span class="o">=</span><span class="default_value">1e-15</span></em>, <em class="sig-param"><span class="n">dry_mass</span><span class="o">=</span><span class="default_value">3e-16</span></em>, <em class="sig-param"><span class="n">volume</span><span class="o">=</span><span class="default_value">1e-18</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism.base_organism" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This is a parent class for all organism-like objects which NutMEG
+can use. It’s designed to contain everything that both hordes and
+individual organisms have in common.</p>
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.base_organism.base_organism.E_growth">
+<code class="sig-name descname">E_growth</code><em class="property"> = 0</em><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism.base_organism.E_growth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.base_organism.base_organism.age">
+<code class="sig-name descname">age</code><em class="property"> = 0</em><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism.base_organism.age" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.base_organism.base_organism.base_life_span">
+<code class="sig-name descname">base_life_span</code><em class="property"> = inf</em><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism.base_organism.base_life_span" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.base_organism.base_organism.bo_from_db">
+<em class="property">classmethod </em><code class="sig-name descname">bo_from_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">locale</span></em>, <em class="sig-param"><span class="n">OrgID</span></em>, <em class="sig-param"><span class="n">num</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism.base_organism.bo_from_db" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.base_organism.base_organism.get_ESynth">
+<code class="sig-name descname">get_ESynth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">AA</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">comp</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism.base_organism.get_ESynth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use the synthesis module to get the synthesis energy for this organism.</p>
+<p>By default use E Coli parameters as built into synthesis. A future update might extend this, meaning we’ll have to add comp</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.base_organism.base_organism.get_supplied_power">
+<code class="sig-name descname">get_supplied_power</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">update_energetics</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism.base_organism.get_supplied_power" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.base_organism.base_organism.isactive">
+<code class="sig-name descname">isactive</code><em class="property"> = True</em><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism.base_organism.isactive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.base_organism.base_organism.issplitting">
+<code class="sig-name descname">issplitting</code><em class="property"> = False</em><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism.base_organism.issplitting" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.base_organism.base_organism.name">
+<code class="sig-name descname">name</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism.base_organism.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.base_organism.base_organism.proteinfraction">
+<code class="sig-name descname">proteinfraction</code><em class="property"> = 0.55</em><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism.base_organism.proteinfraction" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.base_organism.base_organism.reproduce">
+<code class="sig-name descname">reproduce</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism.base_organism.reproduce" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new organism identical to this one but of age zero.</p>
+<p>Also reset the energy stores of the new organism, and ensure its
+metabolic reaction is maintained in real time (not a complete
+deep copy).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.base_organism.base_organism.reset_from_db_dict">
+<code class="sig-name descname">reset_from_db_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dbdict</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism.base_organism.reset_from_db_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset this organism’s parameters with ones extracted from
+a database</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.base_organism.base_organism.take_step">
+<code class="sig-name descname">take_step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em>, <em class="sig-param"><span class="n">update_energetics</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism.base_organism.take_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increment the organism’s life by time t.</p>
+<p>Updates the organism’s parameters based on its mortality,
+environment, metabolism, etc.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.base_organism.base_organism.update_metabolic_rate">
+<code class="sig-name descname">update_metabolic_rate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism.base_organism.update_metabolic_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the actual rate of material uptake/dismissal, based on the
+slowest processes occuring.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.culture.base_organism.base_organism_dbhelper">
+<span id="nutmeg-culture-base-organism-base-organism-dbhelper-module"></span><h2>NutMEG.culture.base_organism.base_organism_dbhelper module<a class="headerlink" href="#module-NutMEG.culture.base_organism.base_organism_dbhelper" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="NutMEG.culture.base_organism.base_organism_dbhelper.bodb_helper">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.culture.base_organism.base_organism_dbhelper.</code><code class="sig-name descname">bodb_helper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">host</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism_dbhelper.bodb_helper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.base_organism_dbhelper.bodb_helper.createtable">
+<code class="sig-name descname">createtable</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">replace</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism_dbhelper.bodb_helper.createtable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a table in the database for this species.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.base_organism_dbhelper.bodb_helper.extract_param_db">
+<em class="property">static </em><code class="sig-name descname">extract_param_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">orgname</span></em>, <em class="sig-param"><span class="n">OrgID</span></em>, <em class="sig-param"><span class="n">params</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism_dbhelper.bodb_helper.extract_param_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a specific parameter from a simulation, using its ID as
+passed. If the param is a Summary variable this returns the final
+value from that simulation, if its one of the others, this returns
+the full list of results</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.base_organism_dbhelper.bodb_helper.from_db">
+<em class="property">static </em><code class="sig-name descname">from_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">OrgID</span></em>, <em class="sig-param"><span class="n">dbdict</span><span class="o">=</span><span class="default_value">{'DryMass': ['REAL', 0], 'Esynth': ['REAL', 0], 'MaintenancePower': ['TEXT', ''], 'Mass': ['REAL', 0], 'MembranePot': ['REAL', 0], 'PermH': ['REAL', 0], 'PermOH': ['REAL', 0], 'Respiration': ['TEXT', ''], 'Tdef': ['TEXT', ''], 'Volume': ['REAL', 0], 'base_life_span': ['REAL', inf], 'k_RTP': ['REAL', 0], 'n_ATP': ['REAL', 0], 'pHdef': ['TEXT', ''], 'pHint': ['REAL', 0]}</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism_dbhelper.bodb_helper.from_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the data from the database and return a dictionary
+of parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.base_organism_dbhelper.bodb_helper.get_db_sqlparams">
+<code class="sig-name descname">get_db_sqlparams</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dbdict</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism_dbhelper.bodb_helper.get_db_sqlparams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the parameters to import into the database as a dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.base_organism_dbhelper.bodb_helper.print_table">
+<code class="sig-name descname">print_table</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism_dbhelper.bodb_helper.print_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print out the table containing data for the current host species</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.base_organism_dbhelper.bodb_helper.to_db">
+<code class="sig-name descname">to_db</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism_dbhelper.bodb_helper.to_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send the organism’s parameters to be stored in the database’s table
+for this species.</p>
+<p>If this organism is already in the database, reset its OrgID to match.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.base_organism_dbhelper.bodb_helper.update_org_db">
+<code class="sig-name descname">update_org_db</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism_dbhelper.bodb_helper.update_org_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the organism table, which points to the species tables.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.base_organism_dbhelper.bodb_helper.workoutID">
+<code class="sig-name descname">workoutID</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dbdict</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism_dbhelper.bodb_helper.workoutID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find this organisms’ ID from the database, and if there’s no
+entry create one.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.culture.base_organism.maintainer">
+<span id="nutmeg-culture-base-organism-maintainer-module"></span><h2>NutMEG.culture.base_organism.maintainer module<a class="headerlink" href="#module-NutMEG.culture.base_organism.maintainer" title="Permalink to this headline">¶</a></h2>
+<p>This is the maintainer class, which computes and calculates the maintenance
+requirements in the form of powers for a given organism.</p>
+<p>IMPORTANT: All values are PER CELL, so for a Horde, when you use these
+attributes you will likely need to scale them up.</p>
+<dl class="py class">
+<dt id="NutMEG.culture.base_organism.maintainer.maintainer">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.culture.base_organism.maintainer.</code><code class="sig-name descname">maintainer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">host</span></em>, <em class="sig-param"><span class="n">net_dict</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">Basal</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">supply</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">Tdef</span><span class="o">=</span><span class="default_value">'None'</span></em>, <em class="sig-param"><span class="n">pHdef</span><span class="o">=</span><span class="default_value">'None'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.maintainer.maintainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.maintainer.maintainer.P_loss">
+<code class="sig-name descname">P_loss</code><em class="property"> = 0.0</em><a class="headerlink" href="#NutMEG.culture.base_organism.maintainer.maintainer.P_loss" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.maintainer.maintainer.P_store">
+<code class="sig-name descname">P_store</code><em class="property"> = 0.0</em><a class="headerlink" href="#NutMEG.culture.base_organism.maintainer.maintainer.P_store" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.maintainer.maintainer.add_mechanism">
+<code class="sig-name descname">add_mechanism</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">val</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.maintainer.maintainer.add_mechanism" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a mechanism to the dictionary of coping mechanisms.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.maintainer.maintainer.compute_P_growth">
+<code class="sig-name descname">compute_P_growth</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">P_supply</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.maintainer.maintainer.compute_P_growth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute and return the power that can go into growing new biomass</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.maintainer.maintainer.frac_dict">
+<code class="sig-name descname">frac_dict</code><em class="property"> = {}</em><a class="headerlink" href="#NutMEG.culture.base_organism.maintainer.maintainer.frac_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.maintainer.maintainer.get_P_T">
+<code class="sig-name descname">get_P_T</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.maintainer.maintainer.get_P_T" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the power cost related to temperature and update
+the net_dict. Make sure you have set Tdef to the defence that
+you want to compute!</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.maintainer.maintainer.get_P_pH">
+<code class="sig-name descname">get_P_pH</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.maintainer.maintainer.get_P_pH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the power cost related to pH and update
+the net_dict. Make sure you have set pHdef to the defence that
+you want to compute!</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.maintainer.maintainer.get_P_store">
+<code class="sig-name descname">get_P_store</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.maintainer.maintainer.get_P_store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the net power stored if there is any</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.maintainer.maintainer.get_netdictstr">
+<code class="sig-name descname">get_netdictstr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.maintainer.maintainer.get_netdictstr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the net maintenance dictionary as a sring</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.maintainer.maintainer.net_dict">
+<code class="sig-name descname">net_dict</code><em class="property"> = {}</em><a class="headerlink" href="#NutMEG.culture.base_organism.maintainer.maintainer.net_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.maintainer.maintainer.set_from_netdictstr">
+<code class="sig-name descname">set_from_netdictstr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">netdictstr</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.maintainer.maintainer.set_from_netdictstr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the net maintenance dicitonary from a string</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.maintainer.maintainer.update_P_loss">
+<code class="sig-name descname">update_P_loss</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">P_supply</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.maintainer.maintainer.update_P_loss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use the power loss dictionary to get the current total
+power lost to maintenance.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.maintainer.maintainer.update_frac_dict">
+<code class="sig-name descname">update_frac_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">P_supply</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.maintainer.maintainer.update_frac_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the power loss dictionary by expressing it as a fraction
+of power supply.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.culture.base_organism.respirator">
+<span id="nutmeg-culture-base-organism-respirator-module"></span><h2>NutMEG.culture.base_organism.respirator module<a class="headerlink" href="#module-NutMEG.culture.base_organism.respirator" title="Permalink to this headline">¶</a></h2>
+<p>This is the respiration submodule, designed to support organism by perfoming
+calculations related to its respiration.</p>
+<p>&#64;author P M Higgins
+&#64;version 0.0.1</p>
+<dl class="py class">
+<dt id="NutMEG.culture.base_organism.respirator.respirator">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.culture.base_organism.respirator.</code><code class="sig-name descname">respirator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">host</span></em>, <em class="sig-param"><span class="n">net_pathway</span></em>, <em class="sig-param"><span class="n">n_ATP</span></em>, <em class="sig-param"><span class="n">celldata</span><span class="o">=</span><span class="default_value">[0.0001, 0.004, 0.005, 7.0]</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'pathway'</span></em>, <em class="sig-param"><span class="n">xi</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">G_net_pathway</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">pathwaytype</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.respirator.respirator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Method class for implementing Jin and Bethke (2007)’s procedure for
+estimating the rate of nutrient and energy uptake. Can be extended for
+specific circumstances e.g. methanogenesis.</p>
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.respirator.respirator.ATP_production">
+<code class="sig-name descname">ATP_production</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.culture.base_organism.respirator.respirator.ATP_production" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.respirator.respirator.F_T">
+<code class="sig-name descname">F_T</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.culture.base_organism.respirator.respirator.F_T" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.respirator.respirator.G_A">
+<code class="sig-name descname">G_A</code><em class="property"> = 0.0</em><a class="headerlink" href="#NutMEG.culture.base_organism.respirator.respirator.G_A" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.respirator.respirator.G_C">
+<code class="sig-name descname">G_C</code><em class="property"> = 0.0</em><a class="headerlink" href="#NutMEG.culture.base_organism.respirator.respirator.G_C" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.respirator.respirator.G_P">
+<code class="sig-name descname">G_P</code><em class="property"> = 0.0</em><a class="headerlink" href="#NutMEG.culture.base_organism.respirator.respirator.G_P" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.respirator.respirator.build_ATP_reaction">
+<code class="sig-name descname">build_ATP_reaction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">celldata</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.respirator.respirator.build_ATP_reaction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a reaction object describing the formation of ATP using
+cell parameters.</p>
+<p>celldata is in the form [activity ADP, activity P, activity ATP, pH]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.respirator.respirator.get_rate">
+<code class="sig-name descname">get_rate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.respirator.respirator.get_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the rate of reaction in the last state this object
+was left in.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.respirator.respirator.max_rate">
+<code class="sig-name descname">max_rate</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.culture.base_organism.respirator.respirator.max_rate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.respirator.respirator.n_ATP">
+<code class="sig-name descname">n_ATP</code><em class="property"> = 0.0</em><a class="headerlink" href="#NutMEG.culture.base_organism.respirator.respirator.n_ATP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.respirator.respirator.n_HP">
+<code class="sig-name descname">n_HP</code><em class="property"> = 3.0</em><a class="headerlink" href="#NutMEG.culture.base_organism.respirator.respirator.n_HP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.respirator.respirator.n_HR">
+<code class="sig-name descname">n_HR</code><em class="property"> = 0.0</em><a class="headerlink" href="#NutMEG.culture.base_organism.respirator.respirator.n_HR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.respirator.respirator.n_P">
+<code class="sig-name descname">n_P</code><em class="property"> = 0.0</em><a class="headerlink" href="#NutMEG.culture.base_organism.respirator.respirator.n_P" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.respirator.respirator.name">
+<code class="sig-name descname">name</code><em class="property"> = 'pathway'</em><a class="headerlink" href="#NutMEG.culture.base_organism.respirator.respirator.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.respirator.respirator.net_pathway">
+<code class="sig-name descname">net_pathway</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.culture.base_organism.respirator.respirator.net_pathway" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.respirator.respirator.rate">
+<code class="sig-name descname">rate</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.culture.base_organism.respirator.respirator.rate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.respirator.respirator.xi">
+<code class="sig-name descname">xi</code><em class="property"> = 1.0</em><a class="headerlink" href="#NutMEG.culture.base_organism.respirator.respirator.xi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.culture.base_organism">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-NutMEG.culture.base_organism" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, P. M. Higgins.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+    </div>
+  </body>
+</html>

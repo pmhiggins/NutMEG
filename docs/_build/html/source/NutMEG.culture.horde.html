@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>NutMEG.culture.horde package &#8212; NutMEG 1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+      <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
+          <span>NutMEG 1.0 documentation</span></a></h1>
+        <h2 class="heading"><span>NutMEG.culture.horde package</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content" role="main">
+        
+        
+  <div class="section" id="nutmeg-culture-horde-package">
+<h1>NutMEG.culture.horde package<a class="headerlink" href="#nutmeg-culture-horde-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-NutMEG.culture.horde.horde">
+<span id="nutmeg-culture-horde-horde-module"></span><h2>NutMEG.culture.horde.horde module<a class="headerlink" href="#module-NutMEG.culture.horde.horde" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="NutMEG.culture.horde.horde.horde">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.culture.horde.horde.</code><code class="sig-name descname">horde</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">locale</span></em>, <em class="sig-param"><span class="n">metabolism</span></em>, <em class="sig-param"><span class="n">num</span></em>, <em class="sig-param"><span class="n">maintenance</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">CHNOPS</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">mass</span><span class="o">=</span><span class="default_value">1e-15</span></em>, <em class="sig-param"><span class="n">dry_mass</span><span class="o">=</span><span class="default_value">3e-16</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.horde.horde.horde" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="NutMEG.culture.base_organism.html#NutMEG.culture.base_organism.base_organism.base_organism" title="NutMEG.culture.base_organism.base_organism.base_organism"><code class="xref py py-class docutils literal notranslate"><span class="pre">NutMEG.culture.base_organism.base_organism.base_organism</span></code></a></p>
+<p>Class for a horde or organisms acting as one for better efficiency.,
+albeit losing some fidelity.</p>
+<dl class="py attribute">
+<dt id="NutMEG.culture.horde.horde.horde.OrgID">
+<code class="sig-name descname">OrgID</code><em class="property"> = ''</em><a class="headerlink" href="#NutMEG.culture.horde.horde.horde.OrgID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.horde.horde.horde.P_growth">
+<code class="sig-name descname">P_growth</code><em class="property"> = 0</em><a class="headerlink" href="#NutMEG.culture.horde.horde.horde.P_growth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.horde.horde.horde.P_s">
+<code class="sig-name descname">P_s</code><em class="property"> = 0</em><a class="headerlink" href="#NutMEG.culture.horde.horde.horde.P_s" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.horde.horde.horde.base_volume">
+<code class="sig-name descname">base_volume</code><em class="property"> = 1e-18</em><a class="headerlink" href="#NutMEG.culture.horde.horde.horde.base_volume" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.horde.horde.horde.biomass_cell_ratio">
+<code class="sig-name descname">biomass_cell_ratio</code><em class="property"> = 1.5</em><a class="headerlink" href="#NutMEG.culture.horde.horde.horde.biomass_cell_ratio" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.horde.horde.horde.deathnum">
+<code class="sig-name descname">deathnum</code><em class="property"> = 0</em><a class="headerlink" href="#NutMEG.culture.horde.horde.horde.deathnum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.horde.horde.horde.get_mass">
+<code class="sig-name descname">get_mass</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inactive</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.horde.horde.horde.get_mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the total (approximate) biomass of the horde in kg</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.horde.horde.horde.get_population">
+<code class="sig-name descname">get_population</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inactive</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.horde.horde.horde.get_population" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return total number of cells in the horde</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.horde.horde.horde.get_volume">
+<code class="sig-name descname">get_volume</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inactive</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.horde.horde.horde.get_volume" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the total volume of the horde in m^3</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.horde.horde.horde.historicnum">
+<code class="sig-name descname">historicnum</code><em class="property"> = []</em><a class="headerlink" href="#NutMEG.culture.horde.horde.horde.historicnum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.horde.horde.horde.molecons">
+<code class="sig-name descname">molecons</code><em class="property"> = 0</em><a class="headerlink" href="#NutMEG.culture.horde.horde.horde.molecons" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.horde.horde.horde.num">
+<code class="sig-name descname">num</code><em class="property"> = 0</em><a class="headerlink" href="#NutMEG.culture.horde.horde.horde.num" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.horde.horde.horde.reproduce">
+<code class="sig-name descname">reproduce</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.horde.horde.horde.reproduce" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hordes don’t reproduce, throw an error if something tries to
+make it do so.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.horde.horde.horde.select_timestep">
+<code class="sig-name descname">select_timestep</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">factorup</span><span class="o">=</span><span class="default_value">1.01</span></em>, <em class="sig-param"><span class="n">returncop</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.horde.horde.horde.select_timestep" title="Permalink to this definition">¶</a></dt>
+<dd><p>work out a suitable time step for the horde to grow by 1%</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.horde.horde.horde.take_step">
+<code class="sig-name descname">take_step</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.horde.horde.horde.take_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increment the organism’s life by time t.</p>
+<p>Updates the organism’s parameters based on its mortality,
+environment, metabolism, etc.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.horde.horde.horde.update_num">
+<code class="sig-name descname">update_num</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">t</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.horde.horde.horde.update_num" title="Permalink to this definition">¶</a></dt>
+<dd><p>After updating the volume, correct the number of organisms.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.horde.horde.horde.workoutID">
+<code class="sig-name descname">workoutID</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.horde.horde.horde.workoutID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.culture.horde.horde_output">
+<span id="nutmeg-culture-horde-horde-output-module"></span><h2>NutMEG.culture.horde.horde_output module<a class="headerlink" href="#module-NutMEG.culture.horde.horde_output" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="NutMEG.culture.horde.horde_output.horde_output">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.culture.horde.horde_output.</code><code class="sig-name descname">horde_output</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hosthorde</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.horde.horde_output.horde_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="NutMEG.culture.horde.horde_output.horde_output.appendvals">
+<code class="sig-name descname">appendvals</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">startnum</span></em>, <em class="sig-param"><span class="n">dt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.horde.horde_output.horde_output.appendvals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.horde.horde_output.horde_output.buildbaseparams">
+<code class="sig-name descname">buildbaseparams</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.horde.horde_output.horde_output.buildbaseparams" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.horde.horde_output.horde_output.params">
+<code class="sig-name descname">params</code><em class="property"> = {}</em><a class="headerlink" href="#NutMEG.culture.horde.horde_output.horde_output.params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.horde.horde_output.horde_output.paramtypelst">
+<code class="sig-name descname">paramtypelst</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.horde.horde_output.horde_output.paramtypelst" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.horde.horde_output.horde_output.refreshparams">
+<code class="sig-name descname">refreshparams</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.horde.horde_output.horde_output.refreshparams" title="Permalink to this definition">¶</a></dt>
+<dd><p>reset the parameter dictionary to have empty numpy arrays.</p>
+<p>Inherit and adjust this method for saved organisms which have
+specific parameters you want to monitor.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.culture.horde">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-NutMEG.culture.horde" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, P. M. Higgins.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+    </div>
+  </body>
+</html>

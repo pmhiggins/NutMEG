@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>NutMEG.culture.base_organism.synthesis package &#8212; NutMEG 1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+      <div class="header" role="banner"><h1 class="heading"><a href="../index.html">
+          <span>NutMEG 1.0 documentation</span></a></h1>
+        <h2 class="heading"><span>NutMEG.culture.base_organism.synthesis package</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content" role="main">
+        
+        
+  <div class="section" id="nutmeg-culture-base-organism-synthesis-package">
+<h1>NutMEG.culture.base_organism.synthesis package<a class="headerlink" href="#nutmeg-culture-base-organism-synthesis-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-NutMEG.culture.base_organism.synthesis.BioMolecule">
+<span id="nutmeg-culture-base-organism-synthesis-biomolecule-module"></span><h2>NutMEG.culture.base_organism.synthesis.BioMolecule module<a class="headerlink" href="#module-NutMEG.culture.base_organism.synthesis.BioMolecule" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.culture.base_organism.synthesis.BioMolecule.</code><code class="sig-name descname">BioMolecule</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">Mr</span></em>, <em class="sig-param"><span class="n">conc_mol_per_cell</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">conc_mol_per_l</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">thermo</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">gamma</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">T</span><span class="o">=</span><span class="default_value">298.15</span></em>, <em class="sig-param"><span class="n">P</span><span class="o">=</span><span class="default_value">101325.0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>class for storing amino acid properties, or any other useful biological molecule really</p>
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.GetThermoParams">
+<code class="sig-name descname">GetThermoParams</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">P</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.GetThermoParams" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.Mr">
+<code class="sig-name descname">Mr</code><em class="property"> = 0.0</em><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.Mr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.conc_mol_per_cell">
+<code class="sig-name descname">conc_mol_per_cell</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.conc_mol_per_cell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.conc_mol_per_l">
+<code class="sig-name descname">conc_mol_per_l</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.conc_mol_per_l" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.copies_per_cell">
+<code class="sig-name descname">copies_per_cell</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.copies_per_cell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.counter">
+<code class="sig-name descname">counter</code><em class="property"> = 0</em><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.counter" title="Permalink to this definition">¶</a></dt>
+<dd><p>INITIALISATION METHODS</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.frequency">
+<code class="sig-name descname">frequency</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.frequency" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.gamma">
+<code class="sig-name descname">gamma</code><em class="property"> = 1.0</em><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.gamma" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.name">
+<code class="sig-name descname">name</code><em class="property"> = ''</em><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.probrange">
+<code class="sig-name descname">probrange</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.probrange" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.std_formation_R">
+<code class="sig-name descname">std_formation_R</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.std_formation_R" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.std_formation_gibbs">
+<code class="sig-name descname">std_formation_gibbs</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.std_formation_gibbs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.thermo">
+<code class="sig-name descname">thermo</code><em class="property"> = True</em><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.BioMolecule.BioMolecule.thermo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.culture.base_organism.synthesis.cell_synthesis">
+<span id="nutmeg-culture-base-organism-synthesis-cell-synthesis-module"></span><h2>NutMEG.culture.base_organism.synthesis.cell_synthesis module<a class="headerlink" href="#module-NutMEG.culture.base_organism.synthesis.cell_synthesis" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="NutMEG.culture.base_organism.synthesis.cell_synthesis.cell_synthesis">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.culture.base_organism.synthesis.cell_synthesis.</code><code class="sig-name descname">cell_synthesis</code><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.cell_synthesis.cell_synthesis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.synthesis.cell_synthesis.cell_synthesis.AAsynthCost">
+<em class="property">static </em><code class="sig-name descname">AAsynthCost</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">TK</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.cell_synthesis.cell_synthesis.AAsynthCost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the cost of synthesising all of the amino acids in one dry g of
+cells using the method from McCollom and Amend (2005).
+This is currently fixed to E Coli.</p>
+<p>#TODO: Export the list of lists to be in a csv file in /data/, then
+import it here. This will allow for other model organisms to be
+simulated.
+#TODO: Work in methods for oxic environments</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.synthesis.cell_synthesis.cell_synthesis.ProteinSynthCost">
+<em class="property">static </em><code class="sig-name descname">ProteinSynthCost</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">TK</span></em>, <em class="sig-param"><span class="n">host_drymass</span></em>, <em class="sig-param"><span class="n">host_volume</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.cell_synthesis.cell_synthesis.ProteinSynthCost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate and return the cost of protein synthesis per gram.
+Assumes amino acids already synthesised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TK</strong> (<em>float</em><em>, </em><em>int</em>) – Temperature in Kelvin</p></li>
+<li><p><strong>host_drymass</strong> (<em>float</em>) – dry mass of organism in kg/cell</p></li>
+<li><p><strong>host_volume</strong> (<em>float</em>) – total (wet) volume of one organism.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.synthesis.cell_synthesis.cell_synthesis.a_e">
+<em class="property">static </em><code class="sig-name descname">a_e</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">Eh</span><span class="o">=</span><span class="default_value">- 0.27</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.cell_synthesis.cell_synthesis.a_e" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the activity of an electron
+Assumes neutral conditons for Eh</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.synthesis.cell_synthesis.cell_synthesis.add_AAP_to_db">
+<em class="property">static </em><code class="sig-name descname">add_AAP_to_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">AAsynth</span></em>, <em class="sig-param"><span class="n">Psynth</span></em>, <em class="sig-param"><span class="n">filename</span><span class="o">=</span><span class="default_value">'EColiSynth'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.cell_synthesis.cell_synthesis.add_AAP_to_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add results to an SQL database to save having to recompute them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> (<em>Temperature in K</em>) – </p></li>
+<li><p><strong>AAsynth</strong> (<em>cost of amino acid synthesis in J per dry g cells</em>) – </p></li>
+<li><p><strong>Psynth</strong> (<em>cost of 1 dry g protein synthesis from amino acids</em>) – </p></li>
+<li><p><strong>#TODO</strong> (<em>Perhaps would be more intuitive as a csv rather than db.</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.synthesis.cell_synthesis.cell_synthesis.extract_AAP_from_db">
+<em class="property">static </em><code class="sig-name descname">extract_AAP_from_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">filename</span><span class="o">=</span><span class="default_value">'EColiSynth'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.cell_synthesis.cell_synthesis.extract_AAP_from_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract amino acid and protein synthesis from database</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.synthesis.cell_synthesis.cell_synthesis.get_ESynth_density">
+<em class="property">static </em><code class="sig-name descname">get_ESynth_density</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">compute</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">AA</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.cell_synthesis.cell_synthesis.get_ESynth_density" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the energy cost to synthesise one dry g of cells.</p>
+<p>If you want to compute ESynth density for a new organism,
+pass compute as a dictionary in the following format:
+{‘dbfilename’:None (or path/to_database),
+‘host’:base_organism}</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.synthesis.cell_synthesis.cell_synthesis.getreplistAA">
+<em class="property">static </em><code class="sig-name descname">getreplistAA</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">AAList</span></em>, <em class="sig-param"><span class="n">listlen</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.cell_synthesis.cell_synthesis.getreplistAA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a representative list of Amino acids to build proteins
+which matches average cell composition.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.base_organism.synthesis.cell_synthesis.cell_synthesis.lnProteinReactionQuotient">
+<em class="property">static </em><code class="sig-name descname">lnProteinReactionQuotient</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">PC</span></em>, <em class="sig-param"><span class="n">AAList</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.cell_synthesis.cell_synthesis.lnProteinReactionQuotient" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.culture.base_organism.synthesis.importers">
+<span id="nutmeg-culture-base-organism-synthesis-importers-module"></span><h2>NutMEG.culture.base_organism.synthesis.importers module<a class="headerlink" href="#module-NutMEG.culture.base_organism.synthesis.importers" title="Permalink to this headline">¶</a></h2>
+<p>functions for importing data</p>
+<dl class="py function">
+<dt id="NutMEG.culture.base_organism.synthesis.importers.AAreader">
+<code class="sig-prename descclassname">NutMEG.culture.base_organism.synthesis.importers.</code><code class="sig-name descname">AAreader</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">host_drymass</span></em>, <em class="sig-param"><span class="n">host_volume</span></em>, <em class="sig-param"><span class="n">filename</span><span class="o">=</span><span class="default_value">'EColiSynth_AminoAcids.csv'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.importers.AAreader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="NutMEG.culture.base_organism.synthesis.importers.copies_moles">
+<code class="sig-prename descclassname">NutMEG.culture.base_organism.synthesis.importers.</code><code class="sig-name descname">copies_moles</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="o">=</span><span class="default_value">'EColiSynth_Ishihama2008_dataset3.csv'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.synthesis.importers.copies_moles" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.culture.base_organism.synthesis">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-NutMEG.culture.base_organism.synthesis" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, P. M. Higgins.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 3.0.3.
+    </div>
+  </body>
+</html>
