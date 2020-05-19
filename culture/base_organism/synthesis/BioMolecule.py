@@ -1,7 +1,6 @@
 import sys
 import os
 from reaktoro import *
-import numpy as np
 import math
 
 this_dir = os.path.dirname(__file__)
