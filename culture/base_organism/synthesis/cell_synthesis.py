@@ -179,8 +179,8 @@ class cell_synthesis:
         This is currently fixed to E Coli.
 
         #TODO: Export the list of lists to be in a csv file in /data/, then
-            import it here. This will allow for other model organisms to be
-            simulated.
+        import it here. This will allow for other model organisms to be
+        simulated.
         #TODO: Work in methods for oxic environments
         """
         TK = round(TK)
@@ -230,8 +230,8 @@ class cell_synthesis:
 
         If you want to compute ESynth density for a new organism,
         pass compute as a dictionary in the following format:
-            {'dbfilename':None (or path/to_database),
-              'host':base_organism}
+        {'dbfilename':None (or path/to_database),
+        'host':base_organism}
         """
         AAsynth, Psynth = None, None
 
