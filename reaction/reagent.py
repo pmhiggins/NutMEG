@@ -26,11 +26,29 @@ logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.pri
 
 
 class reagent:
-    """Class for storing and calculating individual reagent properties such
+    """
+    Class for storing and calculating individual reagent properties such
     as concentrations, activities, etc.
 
+    Attributes
+    ------------
+    name : str
+        name of the reagent
+    conc : float
+        molarity in mol/L. If gaseous, conc describes pressure in bar.
+        Can be None if molal or activity are known
+    gamma : float
+        activity coefficient
+    activity : float
+        Activity. If None, estimate using gamma and conc.
+    molal : float
+        molality in mol/kg.
+        Can be None is conc or activity are known
+    charge : float
+        Charge of reagent. Default 0.
+
     """
-    name = ''
+    #name = '' #: name of the reagent
     conc = None # mol/l
       # for a gaseous reagent in gaseous reactions, conc describes
       # pressure (in bar).
@@ -64,11 +82,9 @@ class reagent:
     # booleans of state
     thermo = True # whether we have the thermodynamic data available
 
-    """
 
-        INITIALISATION METHODS
+    ####   INITIALISATION METHODS
 
-    """
 
     def __init__(self, name, env, thermo=True, conc=None, activity=None,
       molal=None, charge=0, gamma=1., radius=None, phase='aq', phase_ss=False,
@@ -246,6 +262,11 @@ class reagent:
 
     def set_molality(self, newmolal):
         """Update molality in mol/kg solvent.
+
+        Parameters
+        ---------
+        newmolal : float
+            New molality to set.
         """
         self.molal = newmolal
 

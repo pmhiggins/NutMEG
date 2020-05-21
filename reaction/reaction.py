@@ -288,9 +288,12 @@ class reaction:
       Q_qconc=False, Q_qmolal=False):
         """Calculate the standard molar gibbs free energy of reaction.
 
-        Uses the expression \Delta G_T ^0 = -RTln K.
+        Notes
+        ------
+        Uses the expression:
+        :math:`\Delta G_{T}^{0} = -RT\ln{K}`
 
-        Note this can only be done at equilibrium.
+        This can only be done at equilibrium.
         """
         if self.equilibrium == False:
             raise ValueError("This reaction is not at equilibrium, "
