@@ -25,9 +25,11 @@ environment could be habitable.
     :maxdepth: 2
     :caption: API
 
+    modindex
     source/NutMEG.reaction
     source/NutMEG.culture
     source/NutMEG.applications
+
 
 
 Indices and tables
