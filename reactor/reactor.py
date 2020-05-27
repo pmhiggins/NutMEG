@@ -1,3 +1,14 @@
+"""Module to store a reactive environment which we can name, such as
+methanogenesis at Enceladus.
+
+Holds an environment, composition and series of reactions in which
+we have an interest.
+Environmental parameters are in SI units unless otherwise specified.
+
+Most recent changes: database fixes May 2020.
+
+@author P M Higgins
+"""
 from NutMEG.environment import environment
 from NutMEG import reaction as rxn
 from itertools import chain
@@ -13,13 +24,24 @@ from NutMEG.util.loggersetup import loggersetup as logset
 logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.printlevel)
 
 class reactor:
-    """Module to store a reactive environment which we can name, such as
-    methanogenesis at Enceladus.
+    """Class for storing reagents and reactions, and able to perform them.
 
-    Holds an environment, and series of reactions in which we have an interest.
-    Environmental parameters are in SI units unless otherwise specified.
+    Attributes
+    ----------
+    name : str
+        name of reactor. Used for database management (table name and LocID)
+    reactionlist : dict
+        reactions which may be performed in the format {'reaction eq' :
+        {type(reaction) : NutMEG.reaction.reaction like}}. This allows for the
+        same reaction to be included twice if we'd like to interpret it in
+        different ways e.g. as a thermodynamic interaction or as a redox
+        reaction.
+    composition : dict
+        reagents which can be found in the reactor in the format {
+        'reagent name' : NutMEG.reaction.reagent like}
+    pH : float, optional
+        pH of the reactor, important for some interactions. Default is 7.0
     """
-
     env = environment()
     reactionlist = {} # dictionary of reactions of interest
     composition = {} #dictionary of reagents and their concentrations etc.
@@ -47,6 +69,20 @@ class reactor:
 
     @classmethod
     def r_from_db(cls, name, LocID, dbpath=nmp.std_dbpath):
+        """Extract a reactor from the SQL database at dbpath.
+
+        Returns the saved reactor object
+
+        Parameters
+        ----------
+        name : str
+            name of the reactor. Required for table name.
+        LocID : str
+            LocID of the reaactor to extract.
+        dbpath : str, optional
+            location of the database file. Default is NutMEG_db outside the
+            module directory.
+        """
 
         dbdict = rdb_helper.from_db(name, LocID, dbpath=dbpath)
         R = cls(name, env=environment(T = dbdict['Temperature'][1],
@@ -61,20 +97,22 @@ class reactor:
 
 
     def rlist_from_ReactIDs(self, ReactIDs):
+        """Set reactionlist from a list of ReactIDs"""
         for rID in ReactIDs:
             self.add_reaction(self.dbh.extract_from_Reactions(rID))
 
 
     def print_reactions(self):
-        """ print the list of equations, each one on a new line.
+        """ print the list of reaction equations.
         """
         print(self.reactionlist.keys())
 
     def print_composition(self):
+        """print a list of the composition"""
         print(self.composition.keys())
 
     def add_reaction(self, rxxn, overwrite=False):
-        """Add a new reaction to reactionlist, unifying it with the
+        """Add a new reaction rxxn to reactionlist, unifying it with the
         environment.
 
         Pass overwrite as True if you want to overwrite the data we
@@ -86,7 +124,7 @@ class reactor:
 
     def update_composition(self, t):
         """ If there are inflows into the composition, make the changes there
-        would be in time t"""
+        would be in time t [s]"""
         for c, r in self.composition_inputs.items():
             self.composition[c].activity += r*t
             self.composition[c].conc += r*t
@@ -94,15 +132,28 @@ class reactor:
 
 
     def unify_reaction(self, rxxn, overwrite=False):
-        """
-        Search the reactor for the reagents you've passed.
-        If they exist here, unify them.
-        If they don't, add them.
+        """Add the reaction and its reagents to the reactor, ensuring there is
+        only one of each reagent type in the reactor.
+
+        Returns the reaction after unification
+
+        Parameters
+        ----------
+        rxxn : NutMEG.reaction.reaction like
+            reaction to unify
+        overwrite : bool
+            if True, overwrite the current composition with the activities of
+            the reagents in rxxn. Default is False.
+
+        Notes
+        -----
         The reaction passed will end up pointing to the composition of the
         reactor. Pass overwrite as True to update the values in the composition,
-        False to use the values we already have.
+        False to use the values we already have. If overwrite is False, and the
+        reaction has a reagent which is not in this reactor's composition, it
+        will be added.
         """
-        #rrxnno = 0 # counting through the chain
+
         if not overwrite:
             # we want the reaction passed to be reset to be the reaction
             # in reactionlist, if it exists in there.
@@ -114,15 +165,15 @@ class reactor:
                 # if it is, return that reaction
                 return rxxn
             except:
-                logger.info('Reaction to be unified not found in '+self.name)
+                logger.warning('Reaction to be unified not found in '+self.name)
+                return rxxn
 
         if overwrite:
             # overwrite the entry in reactionlist with the passed reacrion,
             # compositions and all.
             self.reactionlist[rxxn.equation][type(rxxn)] = rxxn
 
-        # the reaction is not in the reactoinlist for this reactor, we
-        # need to add it. First though, we must redefine the reagents
+        # redefine the reagents
         # according to the composition.
         for rrxn in rxxn.reactants.keys():
             inlist = False
@@ -144,8 +195,6 @@ class reactor:
                   "'s composition.'")
                 self.composition[rrxn.name] = rrxn
 
-
-
         for rrxn in rxxn.products.keys():
             inlist = False
             for c_name, c_rxt in self.composition.items():
@@ -166,26 +215,40 @@ class reactor:
                 logger.info('Adding '+rrxn.name+' to '+self.name+\
                   "'s composition.'")
                 self.composition[rrxn.name] = rrxn
+        return rxxn
 
 
 
     def perform_reaction(self, re_eq, n, re_type=rxn.reaction):
-        """Perform the reaction with equation re_eq in reactionlist.
+        """Perform the reaction n molar times.
 
-        n is the total number of unit molar reactions we want to take place.
+        Parameters
+        ----------
+        re_eq : str
+            reaction equation as it appears in reactionlist. If this equation is
+            not in reactionlist an error is raised.
+        n : float
+            number of moles of reaction to perform.
+        re_type : reaction like, optional
+            The type of reaction to perform, if it is a subtype of
+            NutMEG.reaction.reaction. Default is NutMEG.reaction.reaction.
+
         """
         self.reactionlist[re_eq][re_type].react(n)
         # update the composition at the end of the timestep in colony(lite)
 
 
     def change_vol(self, V):
+        """Update reactor volume V in m^3"""
         self.volume = float(V)
         self.env.V = float(V)
 
     def change_T(self, T):
+        """Update reactor temperature in K"""
         self.env.T = float(T)
 
     def change_P(self, P):
+        """Update reactor pressure in Pa"""
         self.env.P = float(P)
 
 
@@ -234,6 +297,7 @@ class reactor:
     #         db.close()
 
     def getconcs(self):
+        """Returns the composition dicionary as a string."""
         compdictstr='{'
         for key in sorted(self.composition):
             compdictstr += "'" +key + "': " + str(self.composition[key].activity) +', '
