@@ -1,12 +1,3 @@
-"""
-
-This is the maintainer class, which computes and calculates the maintenance
-requirements in the form of powers for a given organism.
-
-IMPORTANT: All values are PER CELL, so for a Horde, when you use these
-attributes you will likely need to scale them up.
-
-"""
 from .adaptations.pHadaptations import pHadaptations
 from .adaptations.Tadaptations import Tadaptations
 import ast
@@ -16,31 +7,63 @@ from NutMEG.util.loggersetup import loggersetup as logset
 logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.printlevel)
 
 class maintainer:
+    """
+    This class is for computing and calculating the maintenance
+    requirements in the form of powers for a given organism.
 
-    P_loss = 0. # Instantaneous fractional power loss due to all maintenance.
-    net_dict = {} # loss mechanisms, each in W
-    frac_dict = {}  # loss mechanisms as fractions of supply
+    All values are PER CELL, so for a Horde, when you use these
+    attributes you will likely need to scale them up.
 
-    P_store = 0. # Fractional power stored away for future use.
-    #P_growth = 0. # Total power left over --- put into growth.
+    Attributes
+    ----------
+    host : ``base_organism`` like
+        host organism. Ensure that the host organism's locale object is the
+        reactor you want.
+    net_dict : dict, optional
+        dictionary of the net contributions to maintenance in W per cell. By
+        default will include contributions of temperature and pH, according to
+        Tdef or pHdef. You could also include a 'Basal' maintenance power.
+    frac_dict : dict
+        dictionary of the contributions to maintenance as a fraction of power
+        supply. Shares keys with ``net_dict``.
+    Tdef : str, optional
+        Which temperature defences to use. Current options are are those from
+        Tijhuis (1993), and Lever (2015). See function ``get_P_T`` for options
+        which work. For more info, check out the documentation, and if it isn't
+        there yet contact me!
+    pHdef : str, optional
+        Which pH defences to use. See function ``get_P_pH`` for options
+        which work. For more info, check out the documentation, and if it isn't
+        there yet contact me!
+    P_loss : float
+        Instantaneous fractional power loss due to all maintenance in W/organism
+
+
+    """
+
+    #P_store = 0. # Fractional power stored away for future use. Depreciated,
+    # but I'll reintroduce it if bugs appear.
 
 
     def __init__(self, host,
       net_dict={},
-      Basal=0.0,
       supply=1.0,
       Tdef='None',
       pHdef='None'):
 
         self.host = host # this is a reference to the host organism for
           # e.g. if the environment changes.
-        self.net_dict.update(net_dict)
-        self.net_dict['Basal']=Basal
+        # print('setting '+host.name+' Basal to '+str(Basal))
+        self.net_dict = net_dict
+        self.P_loss = 0.0
+        # self.net_dict['Basal']=Basal
         self.Tdef = Tdef
         self.get_P_T()
         self.pHdef = pHdef
         self.get_P_pH()
+        self.frac_dict={}
         self.update_frac_dict(supply)
+
 
 
     def add_mechanism(self, name, val):
@@ -50,7 +73,7 @@ class maintainer:
 
     def update_frac_dict(self, P_supply):#, hosthorde=True):
         """Update the power loss dictionary by expressing it as a fraction
-        of power supply.
+        of the passed power supply.
         """
         if P_supply != 0:
             for key, value in self.net_dict.items():
@@ -84,7 +107,10 @@ class maintainer:
     def get_P_T(self):
         """ Calculate the power cost related to temperature and update
         the net_dict. Make sure you have set Tdef to the defence that
-        you want to compute!
+        you want to compute! Current options are 'Tijhuis' (Tijhuis et al 1993),
+        'Lever10pc', 'Lever2pc' (both Lever et al 2015) for 10% and 2%
+        racemization replacement respectively. Alternatively, 'None' ignores
+        temperature defenses.
         """
         T_ad_calc = Tadaptations(self.host)
         if self.Tdef=='Lever10pc':
@@ -107,7 +133,8 @@ class maintainer:
     def get_P_pH(self):
         """ Calculate the power cost related to pH and update
         the net_dict. Make sure you have set pHdef to the defence that
-        you want to compute!
+        you want to compute! Currently, only 'FluxPerm' is included.
+        Alternatively 'None' ignores pH defences.
         """
         pH_ad_calc =pHadaptations(self.host)
         if self.pHdef=='FluxPerm':
@@ -131,6 +158,7 @@ class maintainer:
 
     def compute_P_growth(self, P_supply):
         """Compute and return the power that can go into growing new biomass
+        from the incoming power supply ``P_supply`` in W/cell.
         """
 
         self.update_P_loss(P_supply)
@@ -139,8 +167,6 @@ class maintainer:
 
     def get_netdictstr(self):
         """Get the net maintenance dictionary as a sring"""
-        ###################################
-
         netdictstr='{'
         for key in sorted(self.net_dict):
             netdictstr += "'" +key + "' : " + str(self.net_dict[key]) +' , '

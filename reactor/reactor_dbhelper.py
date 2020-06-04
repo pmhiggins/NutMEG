@@ -18,25 +18,55 @@ empty_default_dbdict = {'Pressure' : ['REAL', 0],
   'composition_inputs' : ['TEXT', '{}']}
 
 class rdb_helper:
+    """Class from managing how reactors and their attributes are stored in
+    NutMEG's database. There are three main tables of interest here:
+    *Reactor*, *Reactions* and *Composition*. Each reactor with a unique ``name``
+    will also have its own table, in case child classes of ``reactor`` have their
+    own attributes they want saving.
 
-    ReactIDs = []
+    Attributes
+    ----------
+    host : reactor like
+        host reactor to be saving.
+    dbpath : str
+        path to the SQL database. If not passed it will be set to the default
+        (NutMEG_db in your working directory). The default can be changed in
+        NutMEG/utils/NuMEGparams.
+    dbdict : dict
+        Parameters which will be imported into the database.
+    """
 
     def __init__(self, host, dbpath=nmp.std_dbpath):
-
         self.host = host
         self.dbpath = dbpath
 
-    def workoutID(self, dbdict=None):
-        """Find this organisms' ID from the database, and if there's no
-        entry create one. """
+    def get_db_sqlparams(self, dbdict=None):
+        """Get the parameters to import into the database as a dictionary.
+        Pass a dbdict as a dictionary if you want to write your own."""
+        if dbdict == None:
+            self.dbdict = {'Pressure' : ['REAL', self.host.env.P],
+              'Temperature' : ['REAL', self.host.env.T],
+              'Volume' : ['REAL', self.host.env.V],
+              'pH' : ['REAL', self.host.pH],
+              'reactions' : ['TEXT', tuple(self.host.ReactIDs)],
+              'CompID' : ['TEXT', self.host.CompID],
+              'composition_inputs' : ['TEXT', str(self.host.composition_inputs)]}
 
-        db = sqlite3.connect(self.dbpath)
-        cursor = db.cursor()
+        else:
+            self.dbdict=dbdict
+
+
+    def workoutID(self, dbdict=None):
+        """Find this reactor's ID from the database, and if there's no
+        entry create one. """
 
         self.update_ReactIDs()
         self.update_CompID()
 
         self.get_db_sqlparams(dbdict=dbdict)
+
+        db = sqlite3.connect(self.dbpath)
+        cursor = db.cursor()
 
         # search in the database for the organism's identifiers
         try:
@@ -74,47 +104,37 @@ class rdb_helper:
     ##### THIS REACTOR TYPE #########
 
     def createtable(self, replace=False):
-        """Create a table in the database for this species."""
+        """Create a table in the database for this reactor type. If replace is
+        True, delete the old entry."""
         db = sqlite3.connect(self.dbpath)
         cursor = db.cursor()
-
-        if replace:
-            cursor.execute('DROP TABLE: '+self.host.name)
-            # also remove entries in the reactor table
-            cursor.execute('DELETE FROM Reactor WHERE Type = '+self.host.name)
-
-
-        ID_and_params = {'LocID' : ['TEXT', None]}
-        ID_and_params.update(self.dbdict)
-
-        cursor.execute('CREATE TABLE IF NOT EXISTS ' + self.host.name + ' (' +\
-          sqlsc.commas_string_keys_types(ID_and_params) + ', PRIMARY KEY(LocID)' + \
-          ', UNIQUE(' + sqlsc.commas_string_keys(self.dbdict) + '))')
-
-        db.commit()
-        db.close()
+        try:
+            if replace:
+                cursor.execute('DROP TABLE: '+self.host.name)
+                # also remove entries in the reactor table
+                cursor.execute('DELETE FROM Reactor WHERE Type = '+self.host.name)
 
 
-    def get_db_sqlparams(self, dbdict=None):
-        """Get the parameters to import into the database as a dictionary"""
-        if dbdict == None:
-            self.dbdict = {'Pressure' : ['REAL', self.host.env.P],
-              'Temperature' : ['REAL', self.host.env.T],
-              'Volume' : ['REAL', self.host.env.V],
-              'pH' : ['REAL', self.host.pH],
-              'reactions' : ['TEXT', tuple(self.host.ReactIDs)],
-              'CompID' : ['TEXT', self.host.CompID],
-              'composition_inputs' : ['TEXT', str(self.host.composition_inputs)]}
+            ID_and_params = {'LocID' : ['TEXT', None]}
+            ID_and_params.update(self.dbdict)
 
-        else:
-            self.dbdict=dbdict
+            cursor.execute('CREATE TABLE IF NOT EXISTS ' + self.host.name + ' (' +\
+              sqlsc.commas_string_keys_types(ID_and_params) + ', PRIMARY KEY(LocID)' + \
+              ', UNIQUE(' + sqlsc.commas_string_keys(self.dbdict) + '))')
+
+            db.commit()
+        except:
+            raise
+        finally:
+            db.close()
+
 
 
     def to_db(self):
         """Send the reactor's parameters to be stored in the database's table
         for this reactor type.
 
-        If this eactor is already in the database, reset its LocID to match.
+        If this reactor is already in the database, reset its LocID to match.
         """
         db = sqlite3.connect(self.dbpath)
         cursor = db.cursor()
@@ -159,7 +179,7 @@ class rdb_helper:
         finally:
             db.close()
 
-        # Now the organism database needs to be updated so we can find these
+        # Now the reactor table needs to be updated so we can find these
         # details in ecosystem
         self.update_reactor_db()
 
@@ -183,7 +203,6 @@ class rdb_helper:
 
         return dbdict
 
-    ####### reactor db ###########
 
     def update_reactor_db(self):
         """Update the Reactor table, which helps point to the reactor
@@ -227,7 +246,7 @@ class rdb_helper:
           'products' : ['TEXT', str(prod)]}
 
     def add_to_Reactions(self, rxxn):
-        """Add the reaction passed to the Reactions table if it is not
+        """Add the reaction passed rxxn to the Reactions table if it is not
         already saved. Return the ReactID of the reaction in the table."""
 
         db = sqlite3.connect(self.dbpath)
@@ -283,14 +302,18 @@ class rdb_helper:
 
         db = sqlite3.connect(self.dbpath)
         cursor = db.cursor()
-        # extract all the data in alphabetical order by column names.
-        # sloght fudge here because we only need the keys from
-        # reaction_db_sqlparams
-        tempdict = {'Type':['TEXT',0], 'equation':['TEXT',0],
-          'reactants':['TEXT',0], 'products':['TEXT',0]}
-        cursor.execute(sqlsc.SELECTcolumns('Reactions', tempdict, 'ReactID'), (ReactID,))
-        Params = cursor.fetchone()
-        db.close()
+        try:
+            # extract all the data in alphabetical order by column names.
+            # sloght fudge here because we only need the keys from
+            # reaction_db_sqlparams
+            tempdict = {'Type':['TEXT',0], 'equation':['TEXT',0],
+              'reactants':['TEXT',0], 'products':['TEXT',0]}
+            cursor.execute(sqlsc.SELECTcolumns('Reactions', tempdict, 'ReactID'), (ReactID,))
+            Params = cursor.fetchone()
+        except:
+            raise
+        finally:
+            db.close()
 
         for k, nv in zip(sorted(tempdict.keys()), Params):
             tempdict[k] = [tempdict[k][0], nv]
@@ -318,9 +341,9 @@ class rdb_helper:
 
     ######### Composition ########
 
-    # before we had comp_to_db and comp_from_db. Do something like reaction?
 
     def get_comp_activities(self):
+        """Return a composition activity dictionary as a string"""
         compdictstr='{'
         for key in sorted(self.host.composition):
             compdictstr += "'" + str(key) + "' : " + \
@@ -340,11 +363,11 @@ class rdb_helper:
         """Add the composition of the reactor to the Composition table if
         it is not already saved. Return the CompID."""
 
-        db = sqlite3.connect(self.dbpath)
-        cursor = db.cursor()
 
         compdictstr = self.get_comp_activities()
 
+        db = sqlite3.connect(self.dbpath)
+        cursor = db.cursor()
         try:
             # attempt to add in an entry, with CompID 'Tester'
             Testerdict = {'CompID' : ['TEXT', 'Tester']}
@@ -389,15 +412,20 @@ class rdb_helper:
 
 
     def extract_from_Composition(self, CompID):
+        """Extract the composition with ID CompID, and update the host reactor.
+        """
         db = sqlite3.connect(self.dbpath)
         cursor = db.cursor()
-        cursor.execute("SELECT * FROM Composition WHERE CompID = ?", (CompID,))
+        try:
+            cursor.execute("SELECT * FROM Composition WHERE CompID = ?", (CompID,))
 
-        params = cursor.fetchone()
-        Comp = ast.literal_eval(params[1])
-        pH = params[2]
-
-        db.close()
+            params = cursor.fetchone()
+            Comp = ast.literal_eval(params[1])
+            pH = params[2]
+        except:
+            db.close()
+        finally:
+            db.close()
 
         fullcomp = {}
         for k, v in Comp.items():
@@ -416,10 +444,10 @@ class rdb_helper:
     def update_CompID(self):
         self.host.CompID = self.add_to_Composition()
 
+
+
+
     ########## Other handy functions
-
-
-
 
     def print_table(self):
         """Print out the table containing data for the current host species"""

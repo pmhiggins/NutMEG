@@ -1,6 +1,8 @@
 import numpy as np
 
 class colony_output:
+    """helper class for managing the output of a colony, either to terminal
+    or to a database."""
 
     params={}
 

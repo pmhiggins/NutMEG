@@ -1,8 +1,8 @@
 """
 
-This is the reagent submodule. reagent essentially stores parameters of
-individual molecules in a given environment, to be used throughout the
-reaction module. Thermodynamic properties are calculated using reaktoro
+This is the reagent submodule. reagent stores parameters of
+individual molecules in a given environment, to be used in the rector and
+reaction modules. Thermodynamic properties are calculated using reaktoro
 if available.
 
 Most recent changes: Thermodynamics management December 2019
@@ -26,11 +26,29 @@ logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.pri
 
 
 class reagent:
-    """Class for storing and calculating individual reagent properties such
+    """
+    Class for storing and calculating individual reagent properties such
     as concentrations, activities, etc.
 
+    Attributes
+    ------------
+    name : str
+        name of the reagent
+    conc : float
+        molarity in mol/L. If gaseous, conc describes pressure in bar.
+        Can be None if molal or activity are known
+    gamma : float
+        activity coefficient
+    activity : float
+        Activity. If None, estimate using gamma and conc.
+    molal : float
+        molality in mol/kg.
+        Can be None is conc or activity are known
+    charge : float
+        Charge of reagent. Default 0.
+
     """
-    name = ''
+    #name = '' #: name of the reagent
     conc = None # mol/l
       # for a gaseous reagent in gaseous reactions, conc describes
       # pressure (in bar).
@@ -64,11 +82,9 @@ class reagent:
     # booleans of state
     thermo = True # whether we have the thermodynamic data available
 
-    """
 
-        INITIALISATION METHODS
+    ####   INITIALISATION METHODS
 
-    """
 
     def __init__(self, name, env, thermo=True, conc=None, activity=None,
       molal=None, charge=0, gamma=1., radius=None, phase='aq', phase_ss=False,
@@ -106,7 +122,7 @@ class reagent:
 
     @staticmethod
     def get_phase_str(namestr):
-        """Get the phase of a reagent from its name: eg 'aq' from Al(aq)"""
+        """Return the phase of a reagent from its name: eg 'aq' from Al(aq)"""
         if namestr[-2]=='q':
             return 'aq'
         elif namestr[-2] == 's' or namestr[-2] == 'l' or namestr[-2] == 'g':
@@ -117,7 +133,7 @@ class reagent:
 
 
     def redefine(self, re):
-        """re-initialise as a new or updated reagent"""
+        """re-initialisethis reagent as a new or updated reagent"""
         logger.debug('Redefining '+ self.name)
         self.name = re.name
         self.env = re.env
@@ -159,8 +175,10 @@ class reagent:
 
 
     def import_RTP_params(self):
-        """Import thermodynamic RTP data from the SQLite database TPdb.
+        """Import thermodynamic RTP data from the SQLite database data/TPdb.
         If the data doesn't exist, calculate it using reaktoro.
+
+        Updates std formation gibbs, enthalpy, entropy at RTP.
         """
         rt = reagent_thermo(self)
         try:
@@ -179,18 +197,20 @@ class reagent:
             # now try again if it went in
             if datasent:
                 ThermoData = rt.db_select(T=298.15, P=101325.0)
-                self.std_formation_gibbs_env = float(ThermoData[0])
-                self.std_formation_enthalpy_env = float(ThermoData[1])
-                self.std_formation_entropy_env = float(ThermoData[2])
-                self.Cp_env = float(ThermoData[3])
+                self.std_formation_gibbs_RTP = float(ThermoData[0])
+                self.std_formation_enthalpy_RTP = float(ThermoData[1])
+                self.std_formation_entropy_RTP = float(ThermoData[2])
+                self.Cp_RTP = float(ThermoData[3])
             else:
                 # this thing shouldn't be using thermo params
                 self.thermo = False
 
 
     def import_params_db(self):
-        """Import thermodynamic data from the SQLite database TPdb.
+        """Import thermodynamic data from the SQLite database data/TPdb.
         If the data doesn't exist, calculate it using reaktoro.
+
+        Updates std formation gibbs, enthalpy, entropy in current environment.
         """
         rt = reagent_thermo(self)
         try:
@@ -240,23 +260,46 @@ class reagent:
 
 
     def set_concentration(self, newconc):
-        """Update reagent concentration in mol/L.
+        """Update reagent concentration to be newconc in mol/L.
+
+        Parameters
+        ----------
+        newconc : float
+            New molarity to set in mol/L
         """
         self.conc = newconc
 
     def set_molality(self, newmolal):
         """Update molality in mol/kg solvent.
+
+        Parameters
+        ----------
+        newmolal : float
+            New molality to set.
         """
         self.molal = newmolal
 
     def set_activitycoefficient(self, newg):
         """Update the activity coefficients.
+
+
+        Parameters
+        ----------
+        newg : float
+            New activity coefficient to set.
         """
         self.gamma = newg
+
 
     def set_phase(self, newphase):
         """Change the reagent's phase, and update thermodynamic parameters
         accordingly.
+
+
+        Parameters
+        ---------
+        newphase : str
+            New phase to set. Must be one of 'aq'. 's', 'g', 'l'
         """
         if phase != 'aq' and phase != 's' and phase != 'g' and phase != 'l':
             raise ValueError("Incorrectly defined phase for reagent "

@@ -1,8 +1,7 @@
 """
 
-This is the reaction module, which contains the reaction class.
-First initialise reagents and then initialise a basic reaction ---
-if further specialties are required such as redox,
+This is the reaction module. First initialise reagents and then initialise
+a basic reaction. If further specialties are required such as redox,
 import one of those submodules (if included).
 
 Most recent changes: Thermodynamics management December 2019
@@ -37,7 +36,7 @@ class reaction:
     General thermodynamic calculations, and can be used as a basis for child
     modules. Primarily this is for standard conditions only, but for ideal
     fluids discretion for temperature is included, using the reaktoro package.
-    If our reagents are in the SUPCRT07 database, then free energies can be
+    If reagents are in the SUPCRT07 database, then free energies can be
     calculated if the reaction proceeds purely thermochemically.
 
     """
@@ -105,7 +104,7 @@ class reaction:
 
 
     def get_equation(self):
-        """Get the equation as a string."""
+        """Return the equation as a string."""
         reactionstring = ""
 
         for r, mr in self.reactants.items():
@@ -125,8 +124,12 @@ class reaction:
     def equationbuilder(self, r, mr):
         """Return reagent as it would appear in an equation.
 
-        @param r reagent to include
-        @param mr its molar ratio"""
+        Parameters
+        ----------
+        r : NutMEG.reaction.reagent
+            reactant to show
+        mr : float
+            molar ratio in the reaction"""
         result = ""
         if mr != 1:
             result += str(mr) + "*" + str(r.name) + " "
@@ -156,11 +159,8 @@ class reaction:
         return True # We have everything!
 
 
-    """
 
-    SETS FOR UPDATING PARAMETERS
-
-    """
+    ####### SETS FOR UPDATING PARAMETERS  ######
 
 
     def update_reagents(self):
@@ -182,11 +182,8 @@ class reaction:
 
 
 
-    """
+    ########  GENERIC CALCULATIONS: RATES
 
-    GENERIC CALCULATIONS: RATES
-
-    """
 
     def bool_rate_constants(self):
         """Returns bool showing if we have any rate constants."""
@@ -208,11 +205,9 @@ class reaction:
               math.exp(-self.molar_activation_E/(R*self.env.T)))
 
 
-    """
 
-    GENERIC CALCULATIONS: THERMODYNAMICS
 
-    """
+    ####### GENERIC CALCULATIONS: THERMODYNAMICS
 
 
     def quotient_calculator(self, attr):
@@ -256,7 +251,7 @@ class reaction:
         qconc : bool, optional
             If True, calculate using molarity (default is False).
         qmolal : bool, optional
-            If True, calculated using molality (default is False).
+            If True, calculate using molality (default is False).
 
         Notes
         ----------
@@ -288,9 +283,20 @@ class reaction:
       Q_qconc=False, Q_qmolal=False):
         """Calculate the standard molar gibbs free energy of reaction.
 
-        Uses the expression \Delta G_T ^0 = -RTln K.
 
-        Note this can only be done at equilibrium.
+        Parameters
+        ----------
+        Q_qconc : bool, optional
+            If True, calculate the quotient using molarity (default is False).
+        Q_qmolal : bool, optional
+            If True, calculate the quotient using molality (default is False).
+
+        Notes
+        ------
+        Uses the expression:
+        :math:`\Delta G_{T}^{0} = -RT\ln{K}`
+
+        This can only be done at equilibrium.
         """
         if self.equilibrium == False:
             raise ValueError("This reaction is not at equilibrium, "
@@ -376,10 +382,11 @@ class reaction:
     def update_molar_gibbs_from_quotient(self, Q_qconc=False,
       Q_qmolal=False, updatestdGibbs=True):
         """Update Gibbs free energy of reaction at temperature T,
-        from \DeltaG_T = \DeltaG_T^0 + RTlnQ
+        using the expression:
+        :math:`\Delta G_{T} = \Delta G_{T}^{0} + RT\ln{Q}`
 
-        Should demonstrate DeltaG=0 at equilibrium. Again, be cautious
-        of \DeltaG0's dependence on T.
+        Should demonstrate dG=0 at equilibrium. Again, be cautious
+        of dG0's dependence on T.
         """
 
         # update Q and proceed
@@ -400,8 +407,10 @@ class reaction:
             self.molar_gibbs = 0
 
     def react(self, n):
-        """Perform a reaction, consuming unit n moles of reactant.
+        """Perform a reaction, consuming unit n moles of reactants.
 
+        Notes
+        -----
         n is the number of moles of the reaction occuring, so if both
         reactants had a molar ratio of 4, and n=1 was passed, 4 moles
         of each reactant would be consumed.
@@ -425,13 +434,10 @@ class reaction:
 
 
 
-    """
+    ####### UPDATING USING REAKTORO
 
-    UPDATING USING REAKTORO
+    ###### Use the reaktoro package to perform thermodynamic calculations
 
-    Use the reaktoro package to perform thermodynamic calculations
-
-    """
 
     def rto_reagents(self):
         """Update the energetic parameters of the reagents using reaktoro.

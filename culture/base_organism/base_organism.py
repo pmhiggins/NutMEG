@@ -21,18 +21,70 @@ def SAget(v):
 class base_organism:
     """ This is a parent class for all organism-like objects which NutMEG
     can use. It's designed to contain everything that both hordes and
-    individual organisms have in common.
+    individual organisms have in common. It has a large number of attributes,
+    but many are optional. The default is usually to behave like E. Coli.
 
+    Attributes
+    ----------
+    name : str
+        name of organism, used for database management and output.
+    locale : reactor like
+        Reactor object in which the organism lives
+    metabolism : respirator
+        manage all respiration behaviour
+    maintenance : maintainer, optional
+        manage all maintnenace behaviour (Default is None, if None is passed on
+        initiation the organism will have a maintainer with not survial costs
+        unless Tdef, pHdef or Basal are passed as kwargs)
+    CHNOPS : CHNOPSexchanger, optional
+        manage nutrient access with locale (Default is None, if None is passed
+        the organism will have a CHNOPS created with its own default values)
+    mass : float, optional
+        Mass of each individual cell in kg. Default 1e-15
+    dry_mass : float
+        Dry mass of each individual cell in kg (e.g. its mass after being
+        dehydrated) this is typically around 30% the mass. Default 2e-16
+    volume : float
+        volume of each individual cell in m^3. Default 1e-18
+    base_volume : float
+        For use with horde, volume of each individual cell as the volume
+        attribute represents the horde as one. Default equal to Volume.
+    age : float, kwarg
+        Age of the organism in seconds. Default 0.
+    E_synth : float, kwarg
+        The amount of energy required to synthesise one cell in the locale.
+        Default is to estimate using the synthesis module, including the cost
+        of synthesising amino acids.
+    pH_interior : float, kwarg
+        pH inside the cell. Default 7.
+    memb_pot : float, kwarg
+        Membrane potential of the cell wall. Default 1e-5 V
+    PermH : float, kwarg
+        Permeability of the cell wall to Hydrogen in m^-1. Default 1e-10
+    PermOH : float, kwarg
+        Permeability of the cell wall to Hydroxide in m^-1. Default 1e-10
+    surfacearea : float, kwarg
+        surface area of the cell im m^2 Default is to caluclate from volume
+        assuming a spherical organism.
+    base_life_span : float, kwarg
+        Maximum age for the organism before it becomes inactive in s. Default
+        is infinite.
+    proteinfraction : float, kwarg
+        Fraction of the organisms dry mass which is made up of proteins.
+        Useful for synthesis calculations. Default is 0.55 (E. Coli)
+    isactive : bool
+        Whether the organism is active, e.g. interacting with the locale,
+        metabolising, growing, etc. Starts as True, Changed to False when
+        neccessary.
+    P_growth : float
+        Instantaneous power going into growth in W/cell
+    P_s : float
+        Instantaneous power supply in W/cell
+    E_store : float
+        Energy currently in storage. Starts at 0.
+    dbh : bo_dbhelper
+        Helper atttribute for database management.
     """
-
-    name = None
-    age = 0
-    base_life_span = float('inf')
-    issplitting=False
-    E_growth = 0
-    isactive=True
-    proteinfraction=0.55
-
 
 
     def __init__(self, name, locale, metabolism,
@@ -47,7 +99,7 @@ class base_organism:
         self.locale = locale
         self.respiration = respirator(self, metabolism,
           kwargs.pop('n_ATP', 1.0), k_RTP=kwargs.pop('k_RTP', None), overwrite=kwargs.pop('overwrite', False))
-
+        self.age = kwargs.pop('age', 0.)
         self.mass=mass
         self.dry_mass=dry_mass
         self.volume = volume
@@ -63,13 +115,16 @@ class base_organism:
         self.PermOH = kwargs.pop('PermOH', 1e-10)
         self.surfacearea = kwargs.pop('surfacearea', SAget(volume))
 
-
+        self.E_growth=0.0
+        self.proteinfraction=kwargs.pop('proteinfraction', 0.55)
+        self.isactive=True
+        self.issplitting=False
         self.base_life_span = kwargs.pop('base_life_span', float('inf'))
 
         if maintenance == None:
             self.maintenance = maintainer(self,
               Tdef=kwargs.pop('Tdef', 'None'), pHdef=kwargs.pop('pHdef', 'None'),
-              Basal=kwargs.pop('Basal',0.0))
+              net_dict={'Basal':kwargs.pop('Basal',0.0)})
         else:
             self.maintenance = maintenance
         if CHNOPS == None:
@@ -81,12 +136,30 @@ class base_organism:
         if workoutID:
             self.dbh.workoutID()
 
+
+
     @classmethod
     def bo_from_db(cls, name, locale, OrgID, num=1, dbpath=nmp.std_dbpath):
+        """Create an instance of a known organism from an entry in a NutMEG
+        database.
+
+        Parameters
+        ----------
+        name : str
+            Name of organism to extract, determines table to use
+        locale : reactor like
+            Reactor object for the organism to exist in
+        OrgID : str
+            OrgID of the database entry to base this organism from
+        num : int, optional
+            number of organisms, for if this is a horde instance
+        dbpath : str, optional
+            path of the dictionary to extract from.
+        """
 
         dbdict = bodb_helper.from_db(name, OrgID, dbpath=dbpath)
 
-        # CHNOPS!
+        #TODO  add in CHNOPS!
         O = cls(name, locale, dbdict['Respiration'][1], num=num,
           maintenance = None,
           workoutID = False,
@@ -112,8 +185,8 @@ class base_organism:
 
 
     def reset_from_db_dict(self, dbdict):
-        """Reset this organism's parameters with ones extracted from
-        a database"""
+        """Reset this organism's parameters with the ones in dbdict, which must
+         be a bo_dbhelper output."""
         # self.init(self.name, self.locale, self.respirator.net_pathway)
         self.E_synth = dbdict['Esynth'][1]
         self.dry_mass = dbdict['DryMass'][1]
@@ -138,14 +211,18 @@ class base_organism:
 
 
     def get_ESynth(self, AA=False, comp=None):
-        """Use the synthesis module to get the synthesis energy for this organism.
+        """Use the synthesis module to get the synthesis energy for this
+        organism. Pass AA as True to include the cost of Amino Acid
+        synthesis.
 
-        By default use E Coli parameters as built into synthesis. A future update might extend this, meaning we'll have to add comp """
+        By default use E Coli parameters as built into synthesis. A future
+        update might extend this, meaning we'll have to add comp """
 
         #using comp in this way calls a  database which is already populated
         # passing host will only change results byt this organisms' proteinfraction
 
-        synth_dict = synth.get_ESynth_density(self.locale.env.T, AA=AA, compute=comp) #cost of sythesis per dry gram of cells
+        synth_dict = synth.get_ESynth_density(
+          self.locale.env.T, AA=AA, compute=comp) #cost of sythesis per dry gram of cells
         #update E_synth for this organsim from the calculated density.
         if AA:
             self.E_synth = synth_dict*self.dry_mass*1000
@@ -168,6 +245,12 @@ class base_organism:
 
 
     def get_supplied_power(self, update_energetics=False):
+        """Using respiration, find the instantaneous power supply by multiplying
+        the molar gibbs yield and the metabolic rate and return it.
+
+        If update_energetics is passed, update the thermodynamic parameters of
+        the respiration first.
+        """
         if (update_energetics and
           (type(self.respiration.net_pathway) is rxn.redox)):
             # Use a different pathway, update the reagents first
@@ -194,7 +277,8 @@ class base_organism:
         """Increment the organism's life by time t.
 
         Updates the organism's parameters based on its mortality,
-        environment, metabolism, etc.
+        environment, metabolism, etc. If update_energetics is False, any
+        thermodynamic parameters in locale will not be updated.
         """
         if self.isactive:
             self.age += t

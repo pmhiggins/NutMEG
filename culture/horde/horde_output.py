@@ -6,7 +6,16 @@ logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.pri
 
 
 class horde_output:
+    """helper class for managing the output of a horde, either to terminal
+    or to a database.
 
+    Attributes
+    ----------
+    hosthorde : horde
+        The `host` for this output generator, Where we get our numbers from.
+    params : dict
+        Dictionary of parameters to output.
+    """
     params={}
 
     def __init__(self, hosthorde):
@@ -35,6 +44,16 @@ class horde_output:
         self.buildbaseparams()
 
     def appendvals(self, startnum, dt):
+        """Add parameters at the present time to params.
+
+        Parameters
+        ----------
+        startnum : int
+            `Previous` number of organisms, assuming this is output after a
+            time step. Used to calculate thr gorwth rate
+        dt : float
+            Amount of time that has passed since the previous step.
+        """
         n = self.hosthorde.OrgID
         hc = self.hosthorde
 

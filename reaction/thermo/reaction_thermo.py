@@ -1,6 +1,10 @@
 """
 
-Class for thermodynamic calculations regarding reactions
+Class for thermodynamic calculations regarding reactions.
+This class isn't used much any more, but I'll leave it in
+for legacy reasons.
+
+@author P. M. Higgins
 
 """
 

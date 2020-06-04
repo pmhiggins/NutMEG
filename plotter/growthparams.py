@@ -7,9 +7,10 @@ class growthparams(nf.nutfig):
         super().__init__(fig=fig, figsize=(7,7))
 
     def linearplot(self, ax=None, xvals=[[]], yvals=[[]], labels=[], colors=[],
-    cs='default', show=False):
+    cs='default', show=False, ls=['-']):
         """plot the list of list values on a linear plot on the axis given.
         If no axis is passed, uses the whole figure."""
+
         if not len(xvals) == len(yvals):
             raise ValueError('labels, xvals and yvals do not match')
 
@@ -21,11 +22,14 @@ class growthparams(nf.nutfig):
             for x in xvals:
                 labels.append('')
 
+        while len(ls)<len(xvals):
+            ls.append(ls[-1])
         if ax== None:
             # no axes have been passed, so put it in the first one
             ax = self.fig.add_subplot(111)
-        for x, y, l, c, ls in zip(xvals, yvals, labels, colors, lines):
-            self.addlinearplot(ax, x, y, label=l, color=c, ls=ls)
+
+        for x, y, l, c, lstyle in zip(xvals, yvals, labels, colors, ls):
+            self.addlinearplot(ax, x, y, label=l, color=c, ls=lstyle)
         # plt.legend()
         if show:
             plt.show()

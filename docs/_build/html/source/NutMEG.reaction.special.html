@@ -1,0 +1,615 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>NutMEG.reaction.special package &mdash; NutMEG 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="NutMEG.reaction.thermo package" href="NutMEG.reaction.thermo.html" />
+    <link rel="prev" title="NutMEG.reaction package" href="NutMEG.reaction.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> NutMEG
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../guides/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/packages.html">How NutMEG’s Modules Work</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/implementations.html">Using NutMEG-Implementations</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">NutMEG</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="NutMEG.html">NutMEG package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="NutMEG.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.applications.html">NutMEG.applications package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.culture.html">NutMEG.culture package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.environment.html">NutMEG.environment package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.plotter.html">NutMEG.plotter package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="NutMEG.reaction.html">NutMEG.reaction package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.reactor.html">NutMEG.reactor package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG.ecosystem">NutMEG.ecosystem module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG.ecosystem_dbhelper">NutMEG.ecosystem_dbhelper module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="NutMEG.reaction.html">NutMEG.reaction package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="NutMEG.reaction.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">NutMEG.reaction.special package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-NutMEG.reaction.special.Tdep">NutMEG.reaction.special.Tdep module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-NutMEG.reaction.special.plotter">NutMEG.reaction.special.plotter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-NutMEG.reaction.special.solutions">NutMEG.reaction.special.solutions module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-NutMEG.reaction.special">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.reaction.thermo.html">NutMEG.reaction.thermo package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.reaction.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.reaction.html#module-NutMEG.reaction.reaction">NutMEG.reaction.reaction module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.reaction.html#module-NutMEG.reaction.reagent">NutMEG.reaction.reagent module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.reaction.html#module-NutMEG.reaction">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="NutMEG.culture.html">NutMEG.culture package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NutMEG.applications.html">NutMEG.applications package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NutMEG</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">NutMEG</a> &raquo;</li>
+        
+          <li><a href="NutMEG.html">NutMEG package</a> &raquo;</li>
+        
+          <li><a href="NutMEG.reaction.html">NutMEG.reaction package</a> &raquo;</li>
+        
+      <li>NutMEG.reaction.special package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/NutMEG.reaction.special.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="nutmeg-reaction-special-package">
+<h1>NutMEG.reaction.special package<a class="headerlink" href="#nutmeg-reaction-special-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-NutMEG.reaction.special.Tdep">
+<span id="nutmeg-reaction-special-tdep-module"></span><h2>NutMEG.reaction.special.Tdep module<a class="headerlink" href="#module-NutMEG.reaction.special.Tdep" title="Permalink to this headline">¶</a></h2>
+<p>This is the Tdep submodule of the reaction module. It emphasises the
+temperature dependence of reactions. For now we have only the Tdep class,
+which will correct reaction for discrepancies in H(T) and S(T), if known.
+We may add further classes later for higher temperature fidelity.</p>
+<p>Usually, a standard reaction with reaktoro will do. However, if we don’t
+have much data this could come in handy.</p>
+<p>&#64;author P M Higgins
+&#64;version 0.1</p>
+<dl class="py class">
+<dt id="NutMEG.reaction.special.Tdep.Tdep">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.reaction.special.Tdep.</code><code class="sig-name descname">Tdep</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reactants</span></em>, <em class="sig-param"><span class="n">products</span></em>, <em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">equilibrium</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.Tdep.Tdep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="NutMEG.reaction.html#NutMEG.reaction.reaction.reaction" title="NutMEG.reaction.reaction.reaction"><code class="xref py py-class docutils literal notranslate"><span class="pre">NutMEG.reaction.reaction.reaction</span></code></a></p>
+<p>Class for temperature dependent free energy calculations.</p>
+<p>For use in a scenario where we do not have anything available in a
+thermochemical database but do have the RTP values and specific heat
+capacities of the reagents. Then, there are a few routes to DeltaG(T).</p>
+<dl class="py method">
+<dt id="NutMEG.reaction.special.Tdep.Tdep.update_std_molar_enthalpy_of_reaction_T">
+<code class="sig-name descname">update_std_molar_enthalpy_of_reaction_T</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.Tdep.Tdep.update_std_molar_enthalpy_of_reaction_T" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the standard molar enthalpy at this temperature.</p>
+<p>Use reactant paramters to get the non-RTP Delta H(T)^o,
+providing Cp takes integer polynomial form.
+This calculation is valid for ideal gases and infinitely
+diluted solutions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reaction.special.Tdep.Tdep.update_std_molar_entropy_of_reaction_T">
+<code class="sig-name descname">update_std_molar_entropy_of_reaction_T</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.Tdep.Tdep.update_std_molar_entropy_of_reaction_T" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the standard entropy of at this temperature.</p>
+<p>Use reactant paramters to get the non-RTP Delta S(T)^o,
+providing Cp takes integer polynomial form.
+This calculation is valid for ideal gases and infinitely
+diluted solutions.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.reaction.special.plotter">
+<span id="nutmeg-reaction-special-plotter-module"></span><h2>NutMEG.reaction.special.plotter module<a class="headerlink" href="#module-NutMEG.reaction.special.plotter" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="NutMEG.reaction.special.plotter.epsilon">
+<code class="sig-prename descclassname">NutMEG.reaction.special.plotter.</code><code class="sig-name descname">epsilon</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">T</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.plotter.epsilon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.reaction.special.solutions">
+<span id="nutmeg-reaction-special-solutions-module"></span><h2>NutMEG.reaction.special.solutions module<a class="headerlink" href="#module-NutMEG.reaction.special.solutions" title="Permalink to this headline">¶</a></h2>
+<p>This is the solutions submodule of the reaction module. It emphasises
+the energy availability of reactions which take place in solutions,
+with a few corrections for temperature differences and a degree of
+non-ideality. There is a neutralsol class, an electrolyte class and a
+redox class. If it gets too messy then I’ll switch them up a bit.</p>
+<p>All thermodynamic calculations in solution are to be done in molal
+form. For now, we are only considering water as the solvent.</p>
+<p>&#64;author P M Higgins
+&#64;version 0.2</p>
+<dl class="py class">
+<dt id="NutMEG.reaction.special.solutions.electrolyte">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.reaction.special.solutions.</code><code class="sig-name descname">electrolyte</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reactants</span></em>, <em class="sig-param"><span class="n">products</span></em>, <em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">H2O</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.solutions.electrolyte" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">reaction.reaction.reaction</span></code></p>
+<p>Class for charged solutes in pH neutral solutions.</p>
+<p>Used to calculate the mean activity/coefficients of
+fully dissociated salts in solution.</p>
+<dl class="py attribute">
+<dt id="NutMEG.reaction.special.solutions.electrolyte.H2O">
+<code class="sig-name descname">H2O</code><em class="property"> = True</em><a class="headerlink" href="#NutMEG.reaction.special.solutions.electrolyte.H2O" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reaction.special.solutions.electrolyte.get_a_salt">
+<code class="sig-name descname">get_a_salt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">getgamma</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.solutions.electrolyte.get_a_salt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the value of a_{salt}=a_{pm}^{
+u} for this fully</p>
+<blockquote>
+<div><p>dissolved salt.</p>
+<p>a_{pm} = mean_gamma * mean_molal
+Set getgamma to False if you want to provide your owm mean
+activity coefficient.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reaction.special.solutions.electrolyte.get_ionic_strength_c">
+<code class="sig-name descname">get_ionic_strength_c</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.solutions.electrolyte.get_ionic_strength_c" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the ionic strength of the solution in mol/L.</p>
+<p>Uses the concentration of the reagents.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reaction.special.solutions.electrolyte.get_ionic_strength_m">
+<code class="sig-name descname">get_ionic_strength_m</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.solutions.electrolyte.get_ionic_strength_m" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the ionic strength of the solution in mol/kg.</p>
+<p>Uses the molality of the reagents.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reaction.special.solutions.electrolyte.get_permittivity">
+<code class="sig-name descname">get_permittivity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.solutions.electrolyte.get_permittivity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the relative pertmittivity of water at temperature
+T, using the expression fitted by Catenacio et al 2003.
+Definitely valid between 250-370 K — not sure about outside
+that, or at diferent pressures.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reaction.special.solutions.electrolyte.kappa">
+<code class="sig-name descname">kappa</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.reaction.special.solutions.electrolyte.kappa" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reaction.special.solutions.electrolyte.kappa_cons">
+<code class="sig-name descname">kappa_cons</code><em class="property"> = 2.529122732e+20</em><a class="headerlink" href="#NutMEG.reaction.special.solutions.electrolyte.kappa_cons" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reaction.special.solutions.electrolyte.mean_gamma">
+<code class="sig-name descname">mean_gamma</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.reaction.special.solutions.electrolyte.mean_gamma" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reaction.special.solutions.electrolyte.update_gammas">
+<code class="sig-name descname">update_gammas</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.solutions.electrolyte.update_gammas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the activity coefficent of the aqueous species in
+the reaction using Debeye-Huckel theory.</p>
+<p>Requires reactants to have: conc, phase, charge</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reaction.special.solutions.electrolyte.update_kappa">
+<code class="sig-name descname">update_kappa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.solutions.electrolyte.update_kappa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the kappa of the electrolyte for use in
+Debeye-Huckel theory and MSA theory.</p>
+<p>If we have the volumes, calculations are done using molality
+and density. Otherwise, it uses concentrations.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reaction.special.solutions.electrolyte.update_mean_gamma">
+<code class="sig-name descname">update_mean_gamma</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.solutions.electrolyte.update_mean_gamma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the mean activity coefficient for the aqueous ions,
+using the mean-spherical approximation.</p>
+<p>Requires reactants to have: conc, radius, charge
+Ideally also pass the volume(s) of the solution to get molal
+activity coefficient.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="NutMEG.reaction.special.solutions.neutralsol">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.reaction.special.solutions.</code><code class="sig-name descname">neutralsol</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reactants</span></em>, <em class="sig-param"><span class="n">products</span></em>, <em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">solvent_activity</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.solutions.neutralsol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">reaction.reaction.reaction</span></code></p>
+<p>Class for neutral solutes in neutral solutions, and so is rather
+general. The total activity of dissolved solutes can be
+calculated from the osmotic coefficient, which requires the
+activity of the solvent to be known.</p>
+<dl class="py attribute">
+<dt id="NutMEG.reaction.special.solutions.neutralsol.phi">
+<code class="sig-name descname">phi</code><em class="property"> = 0.0</em><a class="headerlink" href="#NutMEG.reaction.special.solutions.neutralsol.phi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reaction.special.solutions.neutralsol.solute_activity">
+<code class="sig-name descname">solute_activity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.solutions.neutralsol.solute_activity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reaction.special.solutions.neutralsol.solvent_activity">
+<code class="sig-name descname">solvent_activity</code><em class="property"> = 1.0</em><a class="headerlink" href="#NutMEG.reaction.special.solutions.neutralsol.solvent_activity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reaction.special.solutions.neutralsol.total_molality">
+<code class="sig-name descname">total_molality</code><em class="property"> = 0.0</em><a class="headerlink" href="#NutMEG.reaction.special.solutions.neutralsol.total_molality" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="NutMEG.reaction.special.solutions.redox">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.reaction.special.solutions.</code><code class="sig-name descname">redox</code><span class="sig-paren">(</span><em class="sig-param">forward</em>, <em class="sig-param">reverse</em>, <em class="sig-param">cell</em>, <em class="sig-param">n</em>, <em class="sig-param">env=&lt;NutMEG.environment.environment.environment object&gt;</em>, <em class="sig-param">H2O=True</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">reaction.reaction.reaction</span></code></p>
+<p>Class for redox reactions in solution</p>
+<p>Will make extensive use of electrolye class, so in an ideal world
+our reactants have conc, molal, radius, and the V and V_RTP
+parameters arise from somewhere.</p>
+<p>For now, we are considering a changing temperature and constant
+pressure at 1 bar, for reading off tables, though with reaktoro our
+entropies and heat capacities are updated with pressure. Whether
+this is the whole story is unlikely.</p>
+<p>In the future if we decide to consider buffers or dissociating
+acids etc, these methods can be extended. For now they are limited
+to dissociated salts.</p>
+<p>NOTE: This class only deals in dissociations/half reactions, if you
+want to work out the full redox potentials,use two redox objects
+and find the difference like you would on pen and paper.</p>
+<dl class="py attribute">
+<dt id="NutMEG.reaction.special.solutions.redox.E">
+<code class="sig-name descname">E</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox.E" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reaction.special.solutions.redox.Fcons">
+<code class="sig-name descname">Fcons</code><em class="property"> = 96485.3329</em><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox.Fcons" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reaction.special.solutions.redox.H2O">
+<code class="sig-name descname">H2O</code><em class="property"> = True</em><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox.H2O" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reaction.special.solutions.redox.env">
+<code class="sig-name descname">env</code><em class="property"> = &lt;NutMEG.environment.environment.environment object&gt;</em><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox.env" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reaction.special.solutions.redox.forward">
+<code class="sig-name descname">forward</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox.forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reaction.special.solutions.redox.get_equation">
+<code class="sig-name descname">get_equation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox.get_equation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the overall cell reaction</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reaction.special.solutions.redox.n">
+<code class="sig-name descname">n</code><em class="property"> = 0.0</em><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox.n" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reaction.special.solutions.redox.react">
+<code class="sig-name descname">react</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox.react" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a reaction, consuming unit n moles of reactant.</p>
+<p>Perform the update to the cell reaction. As all of the reactants
+are shared, this should automatically update the fwd and reverse
+reactions too.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reaction.special.solutions.redox.reverse">
+<code class="sig-name descname">reverse</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox.reverse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reaction.special.solutions.redox.stdE">
+<code class="sig-name descname">stdE</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox.stdE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reaction.special.solutions.redox.stdE_RTP">
+<code class="sig-name descname">stdE_RTP</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox.stdE_RTP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reaction.special.solutions.redox.update_E">
+<code class="sig-name descname">update_E</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">getgamma</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">estimateDifferentials</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox.update_E" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the electrode potential at the environmental
+temperature and pressure, though the latter is a little
+ambiguous.</p>
+<p>If we have neither, then we can use the reaction quotient,
+which requires our reactants have assigned activities.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reaction.special.solutions.redox.update_molar_gibbs">
+<code class="sig-name descname">update_molar_gibbs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox.update_molar_gibbs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the standard molar gibbs free energy of this reaction.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reaction.special.solutions.redox.update_quotient">
+<code class="sig-name descname">update_quotient</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">getgamma</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">qconc</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">qmolal</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox.update_quotient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the reaction quotient of the redox reaction.</p>
+<p>Note that the forward reaction is the one which appears to be
+dissociating backwards — its kind of tricky to get your
+head around. We use the method in MT pp 544–546, which I have
+written up in a more mathematically general manner in my notes.</p>
+<p>NOTE: this assumes only the ions taking part have an activity
+other than 1! In most cases this will be valid but not all.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="NutMEG.reaction.special.solutions.redox_half">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.reaction.special.solutions.</code><code class="sig-name descname">redox_half</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reactants</span></em>, <em class="sig-param"><span class="n">products</span></em>, <em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">n</span></em>, <em class="sig-param"><span class="n">stdE_RTP</span></em>, <em class="sig-param"><span class="n">dE_by_dT</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">d2E_by_dT2</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">DeltaC_P</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox_half" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#NutMEG.reaction.special.solutions.electrolyte" title="NutMEG.reaction.special.solutions.electrolyte"><code class="xref py py-class docutils literal notranslate"><span class="pre">NutMEG.reaction.special.solutions.electrolyte</span></code></a></p>
+<p>Class for redox half equations, an extension of electrolyte so it
+can include non-dissociation reactions.</p>
+<p>e.g. of the form Fe3+ + e- =&gt; Fe2+</p>
+<dl class="py attribute">
+<dt id="NutMEG.reaction.special.solutions.redox_half.Fcons">
+<code class="sig-name descname">Fcons</code><em class="property"> = 96485.3329</em><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox_half.Fcons" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reaction.special.solutions.redox_half.H2">
+<code class="sig-name descname">H2</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox_half.H2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reaction.special.solutions.redox_half.d2E_by_dT2">
+<code class="sig-name descname">d2E_by_dT2</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox_half.d2E_by_dT2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reaction.special.solutions.redox_half.dE_by_dT">
+<code class="sig-name descname">dE_by_dT</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox_half.dE_by_dT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reaction.special.solutions.redox_half.n">
+<code class="sig-name descname">n</code><em class="property"> = 0.0</em><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox_half.n" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reaction.special.solutions.redox_half.stdE">
+<code class="sig-name descname">stdE</code><em class="property"> = 0.0</em><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox_half.stdE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reaction.special.solutions.redox_half.stdE_RTP">
+<code class="sig-name descname">stdE_RTP</code><em class="property"> = 0.0</em><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox_half.stdE_RTP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reaction.special.solutions.redox_half.update_E">
+<code class="sig-name descname">update_E</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">estimate</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">newenv</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox_half.update_E" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the electrode potential.</p>
+<p>If we have dE/dT, great.
+If we have d2E/dT2 even better!
+If not, we can estimate them from entropy and isbaric heat
+capacities. Only do so when prompted though…</p>
+<p>ref. salvi and deBethune 1961, Bratsch 1989
+May be worth a recode as using nonstandard temperatures might
+improve accuracy.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reaction.special.solutions.redox_half.update_std_molar_gibbs">
+<code class="sig-name descname">update_std_molar_gibbs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox_half.update_std_molar_gibbs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the standard molar gibbs free energy of this half reaction.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.reaction.special">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-NutMEG.reaction.special" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="NutMEG.reaction.thermo.html" class="btn btn-neutral float-right" title="NutMEG.reaction.thermo package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="NutMEG.reaction.html" class="btn btn-neutral float-left" title="NutMEG.reaction package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, P. M. Higgins
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

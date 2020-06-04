@@ -23,7 +23,7 @@ class habitabilitymap(nf.nutfig):
         seperate matplotlib figure.
 
         if you pass save, the Figure and/or colorbar will be saved to the
-        filename given, colorbar will have the prefix cb_. Please do
+        filename given, colorbar will have the prefix ``cb_``. Please do
         include the file extension.
         """
         if not len(xvals) == len(yvals) == len(zvals):

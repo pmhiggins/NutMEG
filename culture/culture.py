@@ -1,3 +1,11 @@
+"""
+Module to manage all organism behaviour in NutMEG. A culture can contain
+one or more hordes and colonies, each of those based on (or including) a
+base_organism. Each horde/organism requires a maintainer, respirator and
+CHNOPSexchanger object (or, they can just use the default).
+"""
+
+
 import NutMEG
 import numpy as np
 from itertools import chain
@@ -9,7 +17,20 @@ logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.pri
 
 class culture:
     """Class to contain all organisms in the ecosystem, separated into
-    hordes and colonies."""
+    hordes and colonies.
+
+    Attributes
+    ----------
+    hordes : lst
+        List of different hordes in the system
+    colonies : lst
+        List of different colonies in the system
+    lite : bool, optional
+        Whether the colonies are `lite` or not. lite colonies are not yet
+        supported so please leave this as the default (False)
+    output : culture_output
+        Helper instance for generating the output and database filling info.
+    """
 
     lite = False # set True for colony_lites, should we include one.
 
@@ -67,6 +88,8 @@ class culture:
 
 
     def get_metabolic_rates(self):
+        """ Return a list of the metabolic rates of the hosted organisms in the
+        order hordes, colonies."""
         mr = []
         for h in self.hordes:
             mr.append(h.respiration.rate)
@@ -76,6 +99,8 @@ class culture:
         return mr
 
     def get_growth_rates(self):
+        """ Return a list of the growth rates of the hosted organisms in the
+        order hordes, colonies."""
         gr = []
         for h in self.hordes:
             gr.append(h.output.params['GrowthRate_'+h.OrgID][-1])
@@ -85,6 +110,8 @@ class culture:
         return gr
 
     def get_maintenance_fractions(self):
+        """ Return a list of the maintenance fractions of the hosted organisms
+        in the order hordes, colonies."""
         mf = []
         for h in self.hordes:
             mf.append(h.output.params['MaintenanceFrac_'+h.OrgID][-1])
@@ -95,6 +122,7 @@ class culture:
 
 
     def all(self):
+        """Return a list of hosted organisms in the order, hordes, colonies."""
         return chain(self.hordes, self.colonies)
 
     def full_output(self):
@@ -122,6 +150,8 @@ class culture:
 
 
     def full_output_datatypes(self):
+        """Return the name and type of all parameters output monitors. Useful
+        for database building."""
         out = self.output.paramtypelst()
         for h in self.hordes:
             for op in h.output.paramtypelst():
