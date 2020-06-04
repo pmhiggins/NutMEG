@@ -8,6 +8,7 @@ Subpackages
    :maxdepth: 4
 
    NutMEG.reaction.special
+   NutMEG.reaction.thermo
 
 Submodules
 ----------

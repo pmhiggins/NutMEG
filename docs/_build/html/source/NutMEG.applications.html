@@ -36,7 +36,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="NutMEG.culture package" href="NutMEG.culture.html" /> 
+    <link rel="next" title="NutMEG.culture package" href="NutMEG.culture.html" />
+    <link rel="prev" title="NutMEG package" href="NutMEG.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -83,9 +84,30 @@
               <p class="caption"><span class="caption-text">Guides</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../guides/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/packages.html">How NutMEG’s Modules Work</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/implementations.html">Using NutMEG-Implementations</a></li>
 </ul>
 <p class="caption"><span class="caption-text">API</span></p>
 <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">NutMEG</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="NutMEG.html">NutMEG package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="NutMEG.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">NutMEG.applications package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.culture.html">NutMEG.culture package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.environment.html">NutMEG.environment package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.plotter.html">NutMEG.plotter package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.reaction.html">NutMEG.reaction package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.reactor.html">NutMEG.reactor package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG.ecosystem">NutMEG.ecosystem module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG.ecosystem_dbhelper">NutMEG.ecosystem_dbhelper module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="NutMEG.reaction.html">NutMEG.reaction package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="NutMEG.culture.html">NutMEG.culture package</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">NutMEG.applications package</a><ul>
@@ -139,6 +161,10 @@
   <ul class="wy-breadcrumbs">
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">NutMEG</a> &raquo;</li>
+        
+          <li><a href="NutMEG.html">NutMEG package</a> &raquo;</li>
         
       <li>NutMEG.applications package</li>
     
@@ -249,20 +275,53 @@ phase of the simulation SimID.</p>
 <dt id="NutMEG.applications.theory_estimates.theory_estimates">
 <em class="property">class </em><code class="sig-prename descclassname">NutMEG.applications.theory_estimates.</code><code class="sig-name descname">theory_estimates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">org</span></em>, <em class="sig-param"><span class="n">loc</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.applications.theory_estimates.theory_estimates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to easily work out some theory estimates for maintenance powers in
+specific environments</p>
+<dl class="py attribute">
+<dt id="NutMEG.applications.theory_estimates.theory_estimates.org">
+<code class="sig-name descname">org</code><a class="headerlink" href="#NutMEG.applications.theory_estimates.theory_estimates.org" title="Permalink to this definition">¶</a></dt>
+<dd><p>The type of organism to use</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>base_organism like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.applications.theory_estimates.theory_estimates.loc">
+<code class="sig-name descname">loc</code><a class="headerlink" href="#NutMEG.applications.theory_estimates.theory_estimates.loc" title="Permalink to this definition">¶</a></dt>
+<dd><p>The type of reactor (environment) to use</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>reactor like</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt id="NutMEG.applications.theory_estimates.theory_estimates.fromOrgLoc">
 <em class="property">classmethod </em><code class="sig-name descname">fromOrgLoc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">OrgID</span></em>, <em class="sig-param"><span class="n">LocID</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.applications.theory_estimates.theory_estimates.fromOrgLoc" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Initialise from organisms or reactors already saved with IDs OrgID
+and LocID respectively.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="NutMEG.applications.theory_estimates.theory_estimates.fromSim">
 <em class="property">classmethod </em><code class="sig-name descname">fromSim</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">SimID</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.applications.theory_estimates.theory_estimates.fromSim" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Initialise from a Simulation already performed with ID SimID.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="NutMEG.applications.theory_estimates.theory_estimates.temperature_defenses">
 <code class="sig-name descname">temperature_defenses</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">per_cell</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.applications.theory_estimates.theory_estimates.temperature_defenses" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return some expected temperature defense costs at temperature T which
+are built in to NutMEG, in units W/cell.</p>
+<p>Returns them in a dictionary, so far we have Lever10pc: Lever et al. (2015)
+ith protein replacement at 10% racemization, Lever2pc: the same with
+replacement at 2% racemization. and Tijhuis et al (1993)’s trend with
+empirical data.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -280,8 +339,10 @@ phase of the simulation SimID.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="NutMEG.culture.html" class="btn btn-neutral float-right" title="NutMEG.culture package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="NutMEG.culture.html" class="btn btn-neutral float-left" title="NutMEG.culture package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="NutMEG.html" class="btn btn-neutral float-left" title="NutMEG package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

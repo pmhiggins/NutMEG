@@ -35,7 +35,9 @@
   <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="NutMEG.reaction package" href="NutMEG.reaction.html" />
+    <link rel="prev" title="NutMEG.environment package" href="NutMEG.environment.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -82,9 +84,30 @@
               <p class="caption"><span class="caption-text">Guides</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../guides/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/packages.html">How NutMEG’s Modules Work</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/implementations.html">Using NutMEG-Implementations</a></li>
 </ul>
 <p class="caption"><span class="caption-text">API</span></p>
-<ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">NutMEG</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="NutMEG.html">NutMEG package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="NutMEG.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.applications.html">NutMEG.applications package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.culture.html">NutMEG.culture package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.environment.html">NutMEG.environment package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">NutMEG.plotter package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.reaction.html">NutMEG.reaction package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.reactor.html">NutMEG.reactor package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG.ecosystem">NutMEG.ecosystem module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG.ecosystem_dbhelper">NutMEG.ecosystem_dbhelper module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="NutMEG.reaction.html">NutMEG.reaction package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="NutMEG.culture.html">NutMEG.culture package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="NutMEG.applications.html">NutMEG.applications package</a></li>
@@ -133,6 +156,10 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
+          <li><a href="modules.html">NutMEG</a> &raquo;</li>
+        
+          <li><a href="NutMEG.html">NutMEG package</a> &raquo;</li>
+        
       <li>NutMEG.plotter package</li>
     
     
@@ -176,7 +203,7 @@
 
 <dl class="py method">
 <dt id="NutMEG.plotter.growthparams.growthparams.linearplot">
-<code class="sig-name descname">linearplot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">xvals</span><span class="o">=</span><span class="default_value">[[]]</span></em>, <em class="sig-param"><span class="n">yvals</span><span class="o">=</span><span class="default_value">[[]]</span></em>, <em class="sig-param"><span class="n">labels</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">colors</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">cs</span><span class="o">=</span><span class="default_value">'default'</span></em>, <em class="sig-param"><span class="n">show</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.growthparams.growthparams.linearplot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">linearplot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">xvals</span><span class="o">=</span><span class="default_value">[[]]</span></em>, <em class="sig-param"><span class="n">yvals</span><span class="o">=</span><span class="default_value">[[]]</span></em>, <em class="sig-param"><span class="n">labels</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">colors</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">cs</span><span class="o">=</span><span class="default_value">'default'</span></em>, <em class="sig-param"><span class="n">show</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ls</span><span class="o">=</span><span class="default_value">['-']</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.growthparams.growthparams.linearplot" title="Permalink to this definition">¶</a></dt>
 <dd><p>plot the list of list values on a linear plot on the axis given.
 If no axis is passed, uses the whole figure.</p>
 </dd></dl>
@@ -199,7 +226,7 @@ ax preference will take up the whole figure.</p>
 <p>If you pass colorbar as true, one will be generated in a
 seperate matplotlib figure.</p>
 <p>if you pass save, the Figure and/or colorbar will be saved to the
-filename given, colorbar will have the prefix <a href="#id1"><span class="problematic" id="id2">cb_</span></a>. Please do
+filename given, colorbar will have the prefix <code class="docutils literal notranslate"><span class="pre">cb_</span></code>. Please do
 include the file extension.</p>
 </dd></dl>
 
@@ -283,6 +310,15 @@ you could just use ecosystem_dbhelper</p>
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="NutMEG.reaction.html" class="btn btn-neutral float-right" title="NutMEG.reaction package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="NutMEG.environment.html" class="btn btn-neutral float-left" title="NutMEG.environment package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

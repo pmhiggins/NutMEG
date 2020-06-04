@@ -36,8 +36,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="NutMEG.applications package" href="NutMEG.applications.html" />
-    <link rel="prev" title="NutMEG.reaction.special package" href="NutMEG.reaction.special.html" /> 
+    <link rel="next" title="NutMEG.culture.base_organism package" href="NutMEG.culture.base_organism.html" />
+    <link rel="prev" title="NutMEG.applications package" href="NutMEG.applications.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -84,11 +84,39 @@
               <p class="caption"><span class="caption-text">Guides</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../guides/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/packages.html">How NutMEG’s Modules Work</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/implementations.html">Using NutMEG-Implementations</a></li>
 </ul>
 <p class="caption"><span class="caption-text">API</span></p>
 <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">NutMEG</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="NutMEG.html">NutMEG package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="NutMEG.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.applications.html">NutMEG.applications package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">NutMEG.culture package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.environment.html">NutMEG.environment package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.plotter.html">NutMEG.plotter package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.reaction.html">NutMEG.reaction package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.reactor.html">NutMEG.reactor package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG.ecosystem">NutMEG.ecosystem module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG.ecosystem_dbhelper">NutMEG.ecosystem_dbhelper module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="NutMEG.reaction.html">NutMEG.reaction package</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">NutMEG.culture package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.culture.base_organism.html">NutMEG.culture.base_organism package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.culture.colony.html">NutMEG.culture.colony package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.culture.horde.html">NutMEG.culture.horde package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.culture.organism.html">NutMEG.culture.organism package</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-NutMEG.culture.culture">NutMEG.culture.culture module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-NutMEG.culture.culture_output">NutMEG.culture.culture_output module</a></li>
@@ -141,6 +169,10 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
+          <li><a href="modules.html">NutMEG</a> &raquo;</li>
+        
+          <li><a href="NutMEG.html">NutMEG package</a> &raquo;</li>
+        
       <li>NutMEG.culture package</li>
     
     
@@ -162,21 +194,126 @@
             
   <div class="section" id="nutmeg-culture-package">
 <h1>NutMEG.culture package<a class="headerlink" href="#nutmeg-culture-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="NutMEG.culture.base_organism.html">NutMEG.culture.base_organism package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.base_organism.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.culture.base_organism.adaptations.html">NutMEG.culture.base_organism.adaptations package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.culture.base_organism.adaptations.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.culture.base_organism.adaptations.html#module-NutMEG.culture.base_organism.adaptations.Tadaptations">NutMEG.culture.base_organism.adaptations.Tadaptations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.culture.base_organism.adaptations.html#module-NutMEG.culture.base_organism.adaptations.pHadaptations">NutMEG.culture.base_organism.adaptations.pHadaptations module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.culture.base_organism.adaptations.html#module-NutMEG.culture.base_organism.adaptations">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.culture.base_organism.synthesis.html">NutMEG.culture.base_organism.synthesis package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.culture.base_organism.synthesis.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.culture.base_organism.synthesis.html#module-NutMEG.culture.base_organism.synthesis.BioMolecule">NutMEG.culture.base_organism.synthesis.BioMolecule module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.culture.base_organism.synthesis.html#module-NutMEG.culture.base_organism.synthesis.cell_synthesis">NutMEG.culture.base_organism.synthesis.cell_synthesis module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.culture.base_organism.synthesis.html#module-NutMEG.culture.base_organism.synthesis.importers">NutMEG.culture.base_organism.synthesis.importers module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.culture.base_organism.synthesis.html#module-NutMEG.culture.base_organism.synthesis">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.base_organism.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.base_organism.html#module-NutMEG.culture.base_organism.CHNOPSexchanger">NutMEG.culture.base_organism.CHNOPSexchanger module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.base_organism.html#module-NutMEG.culture.base_organism.base_organism">NutMEG.culture.base_organism.base_organism module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.base_organism.html#module-NutMEG.culture.base_organism.base_organism_dbhelper">NutMEG.culture.base_organism.base_organism_dbhelper module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.base_organism.html#module-NutMEG.culture.base_organism.maintainer">NutMEG.culture.base_organism.maintainer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.base_organism.html#module-NutMEG.culture.base_organism.respirator">NutMEG.culture.base_organism.respirator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.base_organism.html#module-NutMEG.culture.base_organism">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="NutMEG.culture.colony.html">NutMEG.culture.colony package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.colony.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.colony.html#module-NutMEG.culture.colony.colony">NutMEG.culture.colony.colony module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.colony.html#module-NutMEG.culture.colony.colony_output">NutMEG.culture.colony.colony_output module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.colony.html#module-NutMEG.culture.colony">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="NutMEG.culture.horde.html">NutMEG.culture.horde package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.horde.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.horde.html#module-NutMEG.culture.horde.horde">NutMEG.culture.horde.horde module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.horde.html#module-NutMEG.culture.horde.horde_output">NutMEG.culture.horde.horde_output module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.horde.html#module-NutMEG.culture.horde">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="NutMEG.culture.organism.html">NutMEG.culture.organism package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.organism.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.organism.html#module-NutMEG.culture.organism.organism">NutMEG.culture.organism.organism module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.organism.html#module-NutMEG.culture.organism">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-NutMEG.culture.culture">
 <span id="nutmeg-culture-culture-module"></span><h2>NutMEG.culture.culture module<a class="headerlink" href="#module-NutMEG.culture.culture" title="Permalink to this headline">¶</a></h2>
+<p>Module to manage all organism behaviour in NutMEG. A culture can contain
+one or more hordes and colonies, each of those based on (or including) a
+base_organism. Each horde/organism requires a maintainer, respirator and
+CHNOPSexchanger object (or, they can just use the default).</p>
 <dl class="py class">
 <dt id="NutMEG.culture.culture.culture">
 <em class="property">class </em><code class="sig-prename descclassname">NutMEG.culture.culture.</code><code class="sig-name descname">culture</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hordes</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">colonies</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">lite</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture.culture" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class to contain all organisms in the ecosystem, separated into
 hordes and colonies.</p>
+<dl class="py attribute">
+<dt id="NutMEG.culture.culture.culture.hordes">
+<code class="sig-name descname">hordes</code><a class="headerlink" href="#NutMEG.culture.culture.culture.hordes" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of different hordes in the system</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>lst</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.culture.culture.colonies">
+<code class="sig-name descname">colonies</code><a class="headerlink" href="#NutMEG.culture.culture.culture.colonies" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of different colonies in the system</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>lst</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.culture.culture.lite">
+<code class="sig-name descname">lite</code><a class="headerlink" href="#NutMEG.culture.culture.culture.lite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the colonies are <cite>lite</cite> or not. lite colonies are not yet
+supported so please leave this as the default (False)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.culture.culture.output">
+<code class="sig-name descname">output</code><a class="headerlink" href="#NutMEG.culture.culture.culture.output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper instance for generating the output and database filling info.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#NutMEG.culture.culture_output.culture_output" title="NutMEG.culture.culture_output.culture_output">culture_output</a></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt id="NutMEG.culture.culture.culture.all">
 <code class="sig-name descname">all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture.culture.all" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return a list of hosted organisms in the order, hordes, colonies.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="NutMEG.culture.culture.culture.full_output">
@@ -188,22 +325,30 @@ culture, for every colony and horde.</p>
 <dl class="py method">
 <dt id="NutMEG.culture.culture.culture.full_output_datatypes">
 <code class="sig-name descname">full_output_datatypes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture.culture.full_output_datatypes" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return the name and type of all parameters output monitors. Useful
+for database building.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="NutMEG.culture.culture.culture.get_growth_rates">
 <code class="sig-name descname">get_growth_rates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture.culture.get_growth_rates" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return a list of the growth rates of the hosted organisms in the
+order hordes, colonies.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="NutMEG.culture.culture.culture.get_maintenance_fractions">
 <code class="sig-name descname">get_maintenance_fractions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture.culture.get_maintenance_fractions" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return a list of the maintenance fractions of the hosted organisms
+in the order hordes, colonies.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="NutMEG.culture.culture.culture.get_metabolic_rates">
 <code class="sig-name descname">get_metabolic_rates</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.culture.culture.get_metabolic_rates" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return a list of the metabolic rates of the hosted organisms in the
+order hordes, colonies.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="NutMEG.culture.culture.culture.get_population">
@@ -230,8 +375,8 @@ culture, for every colony and horde.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="NutMEG.culture.culture.culture.lite">
-<code class="sig-name descname">lite</code><em class="property"> = False</em><a class="headerlink" href="#NutMEG.culture.culture.culture.lite" title="Permalink to this definition">¶</a></dt>
+<dt id="id0">
+<code class="sig-name descname">lite</code><em class="property"> = False</em><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -297,10 +442,10 @@ culture, for every colony and horde.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="NutMEG.applications.html" class="btn btn-neutral float-right" title="NutMEG.applications package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="NutMEG.culture.base_organism.html" class="btn btn-neutral float-right" title="NutMEG.culture.base_organism package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="NutMEG.reaction.special.html" class="btn btn-neutral float-left" title="NutMEG.reaction.special package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="NutMEG.applications.html" class="btn btn-neutral float-left" title="NutMEG.applications package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

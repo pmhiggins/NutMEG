@@ -8,6 +8,7 @@ Subpackages
    :maxdepth: 4
 
    NutMEG.culture.base_organism.adaptations
+   NutMEG.culture.base_organism.synthesis
 
 Submodules
 ----------

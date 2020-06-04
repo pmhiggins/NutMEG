@@ -24,10 +24,12 @@ environment could be habitable.
 .. toctree::
     :maxdepth: 2
     :caption: API
-
+    
+    source/modules
     source/NutMEG.reaction
     source/NutMEG.culture
     source/NutMEG.applications
+
 
 
 Indices and tables
