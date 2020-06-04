@@ -1,7 +1,7 @@
 import numpy as np
 
 import NutMEG
-# import NutMEG.base_organism as org
+import NutMEG.culture.base_organism as org
 import NutMEG.reaction as rxn
 from .colony_output import colony_output
 
@@ -12,12 +12,24 @@ logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.pri
 org = NutMEG.base_organism
 
 class colony():
-    """Class for a colony of organisms, which monitors its size and structure.
+    """Class for a colony of base_organism like objects, which monitors its
+    size and structure.
+
+    Attributes
+    ----------
+    collection : numpy array
+        List of all active organisms in the colony
+    inactive : numpy array
+        List of all inactive organisms in the colony
+    name : str
+        Name of the colony, used for output management
+    base : base_organism like
+        The `base` organism in the colony, used for general parameters and
+        reproduction.
+    output : colony_output
+        Helper attribute for output to terminal and database management.
     """
 
-    collection = np.array([]) # a list of all the active organisms in this colony
-    inactive = np.array([]) # a list of the inactive organisms
-    base = None # the base organism in the colony, used to make new ones
 
     def __init__(self, name, collection=[]):
         self.name = name
@@ -26,11 +38,11 @@ class colony():
             self.base = collection[0].reproduce()
             self.OrgID=self.base.OrgID
             self.output = colony_output(self)
-
+        self.inactive = np.array([])
 
 
     def add_organism(self, o, n=1):
-        """Add an organism or list of organisms to the colony.
+        """Add an organism or list of organisms o to the colony.
 
         If n is passed, it is the number of random instances of org to
         generate.
@@ -114,6 +126,8 @@ class colony():
 
 
     def select_timestep(self, factorup=1.01):
+        """Return a timestep which will increase the population factorup times
+        given the current model parameters"""
 
         dt = 0.005/1.2
         Egrow=0.
@@ -149,7 +163,8 @@ class colony():
 
 
     def get_population(self, inactive=False):
-        """Return the number of organisms in the colony
+        """Return the number of organisms in the colony. Pass inactive as True
+        to include inactive organisms.
         """
         if inactive:
             return(len(self.collection)+len(self.inactive))
@@ -157,7 +172,8 @@ class colony():
             return(len(self.collection))
 
     def get_mass(self, inactive=False):
-        """Return the total biomass (dead or alive) of the colony.
+        """Return the total mass of the colony. Pass inactive as True
+        to include inactive organisms.
         """
         biomass = 0.
         if inactive:
@@ -170,7 +186,8 @@ class colony():
             return biomass
 
     def get_volume(self, inactive=False):
-        """Return the total volume (dead or alive) of the colony.
+        """Return the total volume of the colony. Pass inactive as True
+        to include inactive organisms.
         """
         vol = 0.
         if inactive:
@@ -196,9 +213,6 @@ class colony():
     def getCHNOPSut(self):
         """ Return the rate of uptake of each CHNOPS element for the
         whole colony.
-
-        When CHNOPSexchanger gets an overhaul, this will need to be
-        adapted.
         """
         utlst = []
         for col in self.collection:

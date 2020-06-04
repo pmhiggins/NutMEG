@@ -41,13 +41,15 @@ class reactor:
         'reagent name' : NutMEG.reaction.reagent like}
     pH : float, optional
         pH of the reactor, important for some interactions. Default is 7.0
+    ReactIDs : tuple
+        IDs of each reaction in the reactor, for saving to the database.
+    env : environment, optional
+        Local temperature, pressure and volume. Default RTP.
+    composition_inputs : dict, kwarg
+        If there is a net flow of reagents in/out of the reactor, set add them
+        to this dictionary with their name as the key, and rate in M/s as the
+        value.
     """
-    env = environment()
-    reactionlist = {} # dictionary of reactions of interest
-    composition = {} #dictionary of reagents and their concentrations etc.
-    volume = None
-    pH = 7
-    ReactIDs = tuple()
 
     def __init__(self, name, env=None, reactionlist={}, composition={},
       pH=7., workoutID=True, *args, **kwargs):
@@ -58,10 +60,12 @@ class reactor:
             self.env = env
         self.reactionlist = reactionlist
         self.composition = composition
-        self.volume = self.env.V
+        self.volume = kwargs.pop('volume', self.env.V)
+        self.env.V = self.volume
         self.CompID = ''
         self.pH=pH
         self.composition_inputs = kwargs.pop('composition_inputs', {})
+        self.ReactIDs = tuple()
 
         self.dbh= rdb_helper(self, dbpath=kwargs.pop('dbpath', nmp.std_dbpath))
         if workoutID:
@@ -165,8 +169,8 @@ class reactor:
                 # if it is, return that reaction
                 return rxxn
             except:
-                logger.warning('Reaction to be unified not found in '+self.name)
-                return rxxn
+                logger.info('Reaction to be unified not found in '+self.name)
+                # return rxxn
 
         if overwrite:
             # overwrite the entry in reactionlist with the passed reacrion,
@@ -215,7 +219,7 @@ class reactor:
                 logger.info('Adding '+rrxn.name+' to '+self.name+\
                   "'s composition.'")
                 self.composition[rrxn.name] = rrxn
-        return rxxn
+        # return rxxn
 
 
 

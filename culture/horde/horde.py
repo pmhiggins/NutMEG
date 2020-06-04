@@ -9,22 +9,24 @@ logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.pri
 
 
 class horde(NutMEG.base_organism):
-    """Class for a horde or organisms acting as one for better efficiency.,
-    albeit losing some fidelity.
+    """Class for a horde of organisms acting as one for better efficiency.,
+    albeit losing some fidelity. For the majority of applications using a horde
+    is much better than using a colony. A horde shares most attributes with
+    base-organism like objects (and using them as per-cell parameters),
+    but has a couple of its own.
+
+    Attributes
+    ----------
+    num : int
+        The number of organisms the horde represents.
+    volume : float
+        The total volume of the horde.
+    deathnum : int
+        The number of dead cells which are inactive, but still represent
+        biomass.
+    biomass_cell_ratio : float, kwarg
+        To be used for conversion between cell numbers and volumes, because some cells will be mid growth and bigger than others. Default 1.5.
     """
-    molecons=0
-    num = 0 #number of individuals in the horde
-    deathnum = 0 # number of inactive/dead cells
-    historicnum = [] # for death rates, monitor number of cells.
-
-    P_growth=0
-    P_s=0
-
-
-    base_volume = 1.e-18 # base volume of each individual cell
-    biomass_cell_ratio = 1.5 # mean volume of a cell / base volume
-      # (e.g. halfway grown)
-    OrgID=''
 
     def __init__(self, name, locale, metabolism, num,
       maintenance=None,
@@ -35,23 +37,30 @@ class horde(NutMEG.base_organism):
 
         self.name = name
         self.num = num
+        self.deathnum=0.
+        wID = kwargs.pop('workoutID', True)
+        kwargs['workoutID'] = False
 
         NutMEG.base_organism.__init__(self, name, locale,
           metabolism,
-          maintenance=None,
           CHNOPS=CHNOPS,
           mass=mass,
           dry_mass=dry_mass,
           *args, **kwargs)
 
-        self.maintenance = maintainer(self,
-          Tdef=kwargs.pop('Tdef', 'None'), pHdef=kwargs.pop('pHdef', 'None'),
-          Basal=kwargs.pop('Basal',0.0))
 
+        # self.maintenance = maintainer(self,
+        #   Tdef=kwargs.pop('Tdef', 'None'), pHdef=kwargs.pop('pHdef', 'None'),
+        #   Basal=kwargs.pop('Basal',0.0))
 
+        self.biomass_cell_ratio=kwargs.pop('biomass_cell_ratio',1.5)
         self.volume=self.num*self.base_volume*self.biomass_cell_ratio
+        self.OrgID = ''
         self.output = horde_output(self)
+        if wID:
+            self.workoutID()
         self.historicnum=[]
+        self.molecons=0 #! counter for how many moles of substrate have been consumed.
 
     def workoutID(self):
         self.output = horde_output(self)
@@ -84,12 +93,19 @@ class horde(NutMEG.base_organism):
                 self.deathnum = self.deathnum + self.historicnum[lsstep]
                 self.volume -= (self.historicnum[lsstep] * \
                   (self.base_volume * self.biomass_cell_ratio))
+            if self.num <0:
+                # make sure we don't go below zero
+                self.num=0.
+                self.voume=0.
 
 
 
 
 
     def take_step(self, t):
+        """Overwrite base_organisms take_step. Send the horde forward by time t.
+        Perform all metabolic reactions and grow the horde if possible.
+        """
         logger.debug(self.OrgID + ' taking step.')
 
         self.age += t
@@ -166,7 +182,10 @@ class horde(NutMEG.base_organism):
 
 
     def select_timestep(self, factorup=1.01, returncop=False):
-        """work out a suitable time step for the horde to grow by 1% """
+        """work out a suitable time step for the horde to grow by factorup
+        times. return the timestep. If returncop is passed as True, also return
+        the copy used to calculate the timestep.
+        """
         dt = 0.005/1.2
         cop = deepcopy(self)
         while cop.volume < factorup*self.volume:
@@ -182,7 +201,6 @@ class horde(NutMEG.base_organism):
 
             cop = deepcopy(self) # as not to meddle with the organism.
 
-            """ TRY / ACCEPT FOR STEPS? """
             try:
                 cop.take_step(dt)
             except:

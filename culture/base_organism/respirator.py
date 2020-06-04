@@ -1,12 +1,3 @@
-"""
-
-This is the respiration submodule, designed to support organism by perfoming
-calculations related to its respiration.
-
-@author P M Higgins
-@version 0.0.1
-
-"""
 
 import sys
 sys.path.append("../..")
@@ -21,46 +12,98 @@ logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.pri
 
 class respirator:
     """
-    Method class for implementing Jin and Bethke (2007)'s procedure for
-    estimating the rate of nutrient and energy uptake. Can be extended for
-    specific circumstances e.g. methanogenesis.
+    Class for implementing respiration in an organism. Uses Jin and Bethke
+    (2007)'s procedure for estimating the rate of nutrient and energy uptake.
+    Can be extended for specific circumstances e.g. methanogenesis.
+
+    Attributes
+    ----------
+    host : ``base_organism`` like
+        host organism. Ensure that the host organism's locale object is the
+        reactor you want.
+    net_pathway : ``reaction`` like or str
+        The overall metabolism to use. In any case it is best to pass a
+        reaction like object (reaction or redox) which will then be unified
+        with ``host.locale``. If a string is passed, look in ``host.locale``
+        for the reaction and set that as the pathway.
+    n_ATP : float
+        Number of moles of ATP yielded per mole of ``net_pathway``.
+    name : str, optional
+        Name of the pathway. Default is 'pathway', used for selecting the
+        reaction from ``host.locale`` if ``net_pathway`` is passed as a str.
+    xi : float, optional
+        Stoichiometric coefficient. The averge no of times the rate-determining-
+        step has taken place. Default 1.
+    ATP_production : ```reaction`` like
+        reaction from the porduction of ATP.
+    G_A : float
+        total free energy of the overall catabolic pathway (per molar overall
+        reaction)
+    G_P : float
+        total free energy of each ATP producion (per mol of ATP produced)
+    G_C : float
+        total free energy to be conserved by catbolism per molar overall
+        reaction
+    F_T : float
+        Scaling factor due to thermodynamic effects.
+    rate : float
+        the actual reaction rate, corrected for other limiters in
+        the organism.
+    n_P : float, kwarg
+        relative total number of ATP formed per pathway Default 0.0
+    n_HR : float, kwarg
+        realative total number of +ve ions transferred across membrane
+        per pathway. Default 0.0
+    n_HP : float, kwarg
+        relative total number of H+ ions translocated per
+        ATP synthesis Default 3.0.
+
     """
-    net_pathway = None # reaction describing the net catabolic reaction
-    name='pathway'
-    ATP_production = None # reaction describing production of ATP
+    # net_pathway = None # reaction describing the net catabolic reaction
+    # name='pathway'
+    # ATP_production = None # reaction describing production of ATP
     # locale = reactor() # local chemical environment in which the reaction
       # is taking place. Can be passed as inside or outside the cell for
       # various mechanisms.
 
-    G_A = 0.0 # total free energy of the overall catabolic pathway
-      # (per molar overall reaction)
-    G_P = 0. # total free energy of each ATP producion
-      # (per mol of ATP produced) (will be +ve)
-    G_C = 0. # total free energy to be conserved by catbolism
-      # (per) molar overall reaction
-    n_P = 0.0 # relative total number of ATP formed per pathway
-    n_HR = 0.0 # realative total number of +ve ions transferred across membrane
-      # per pathway
-    n_HP = 3.0 # relative total number of H+ ions translocated per
-      # ATP synthesis (usually 3)
-    n_ATP = 0.0 # total number of ATP produced per pathways based on
+    # G_A = 0.0 # total free energy of the overall catabolic pathway
+    #   # (per molar overall reaction)
+    # G_P = 0. # total free energy of each ATP producion
+    #   # (per mol of ATP produced) (will be +ve)
+    # G_C = 0. # total free energy to be conserved by catbolism
+    #   # (per) molar overall reaction
+    # n_P = 0.0 # relative total number of ATP formed per pathway
+    # n_HR = 0.0 # realative total number of +ve ions transferred across membrane
+    #   # per pathway
+    # n_HP = 3.0 # relative total number of H+ ions translocated per
+    #   # ATP synthesis (usually 3)
+    # n_ATP = 0.0 # total number of ATP produced per pathways based on
       # the above 3 n's.
     #RTP = 0.035/3600. # rate constant of rds in pathway (usually ATP synthesis)
       # this number is from Moestedt:2015 for methanogenesis, there may be
       # better sources out there
     #k_T = None # rate constant in the environment, no P dependence in yet.
-    xi = 1.0 # Stoichiometric coefficient. Avg no of times the rds has taken
+    # xi = 1.0 # Stoichiometric coefficient. Avg no of times the rds has taken
       # place. Usually 1.
-    F_T = None # scaling factor due to thermodynamic effects.
-    max_rate = None # calclated thermodynamically limited rate of reaction
+    # F_T = None # scaling factor due to thermodynamic effects.
+    # max_rate = None # calclated thermodynamically limited rate of reaction
       # in the forwards direction.
-    rate = None # the actual rate, corrected for other limiters in
+    # rate = None # the actual rate, corrected for other limiters in
       # the organism.
 
     def __init__(self, host, net_pathway, n_ATP,
       celldata=[0.0001, 0.004, 0.005, 7.], name='pathway',
       xi=1.0, G_net_pathway=None, pathwaytype=None,
       *args, **kwargs):
+        """
+        Parameters
+        ----------
+        celldata : list
+            Concentration in the form [activity ADP, activity P, activity ATP, pH]
+        G_net_pathway : NoneType or float
+            If you want to pass the gibbs gree energy of the metabolic reaction
+            use this, if not leave as None. Default ``None``.
+        """
         self.host = host
         self.locale = host.locale
         self.name = name
