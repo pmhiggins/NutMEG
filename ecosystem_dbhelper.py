@@ -555,7 +555,7 @@ class db_helper:
         if replace:
             cursor.execute('DROP TABLE Reactor')
             cursor.execute('DROP TABLE Composition')
-            curosr.execute('DROP TABLE Reactions')
+            cursor.execute('DROP TABLE Reactions')
             # cursor.execute('DROP TABLE Enceladus')
             # cursor.execute('DROP TABLE Venus')
             cursor.execute('DROP TABLE Organism')
