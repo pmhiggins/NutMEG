@@ -67,7 +67,7 @@ class CHNOPSexchanger:
 
 
 
-    def find_nutrients(self, init=False):
+    def find_nutrients(self, init=False, ignore=[]):
         """ Look in the host's locale to find reagents which could work as a
         nutrient source and update nutrients as appropriate.
         Pass init as True to set up the nutrients dict from scratch.
@@ -81,10 +81,11 @@ class CHNOPSexchanger:
         if init:
             self.nutrients = self.get_default_nutrients()
             for key, value in self.host.locale.composition.items():
-                for keyn, valuen in self.nutrients.items():
-                    if keyn in key:
-                        self.nutrients[keyn][0][2] += value.activity
-                        self.nutrients[keyn][1].append(value)
+                if key not in ignore:
+                    for keyn, valuen in self.nutrients.items():
+                        if keyn in key:
+                            self.nutrients[keyn][0][2] += value.activity
+                            self.nutrients[keyn][1].append(value)
         else:
             for key, value in self.nutrients.items():
                 value[0][2] = 0.0
