@@ -508,6 +508,16 @@ class db_helper:
         finally:
             db.close()
 
+    def get_table_as_dataframe(tabname, dbpath=nmp.std_dbpath):
+        """Get a table in the database as a pandas dataframe"""
+        db=sqlite3.connect(dbpath)
+        try:
+            return pd.read_sql_query("SELECT * FROM "+tabname+' ', db)
+        except:
+            raise
+        finally:
+            db.close()
+
 
 
     @staticmethod
