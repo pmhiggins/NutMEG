@@ -23,4 +23,4 @@ Then to run some code:
 .. code::
 
     cd projects/NutMEG-Implementations/Venus
-    python3 EVenus.py
+    python3 EVenus.py 

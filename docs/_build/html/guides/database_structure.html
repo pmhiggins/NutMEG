@@ -1,0 +1,452 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Database Structure &mdash; NutMEG 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Growth Algorithm" href="growthalgorithm.html" />
+    <link rel="prev" title="Structure and Hierarchy" href="class_structure.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> NutMEG
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Guides</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="class_structure.html">Structure and Hierarchy</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Database Structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tables">Tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#extracting-data-for-analysis">Extracting data for analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="growthalgorithm.html">Growth Algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementations.html">Using NutMEG-Implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="competitionexample.html">Simple example: simulating competition</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../source/modules.html">NutMEG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NutMEG</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Database Structure</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/guides/database_structure.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="database-structure">
+<h1>Database Structure<a class="headerlink" href="#database-structure" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>NutMEG simulations can become expensive, particularly if you’re performing calculations
+over a wide range of parameters or working over long timescales. To prevent you having to rerun
+simulations NutMEG saves a copy of the state of the ecosystem every 100 steps up until the final
+step by default to a named SQL database. This is by default named ‘NutMEG_db’ and placed in the
+working directory, but can be changed by specifying <code class="docutils literal notranslate"><span class="pre">dbpath</span></code>, a common keyword argument for objects in
+NutMEG, or changing <code class="docutils literal notranslate"><span class="pre">std_dbpath</span></code> in <code class="docutils literal notranslate"><span class="pre">NutMEG.util.NutMEGparams.py</span></code>.</p>
+<p>Three key identifiers are used throughout NutMEG’s database: SimID, OrgID, and LocID.
+SimID is the primary key of the Summary table, and each one links to a table with the
+name <code class="docutils literal notranslate"><span class="pre">'FullResults_Sim_'+SimID</span></code>.</p>
+<p>LocID identifies <code class="docutils literal notranslate"><span class="pre">reactor</span></code>-like objects and is a primary key of the Reactor table.
+Similarly OrgID identifies <code class="docutils literal notranslate"><span class="pre">base_organism</span></code>-like objects and is a primary key of
+the organism table. Of course, organisms and reactors can take different forms and
+have different attributes depending on the level of complexity you want to achieve
+with your simulations and whether you’re using <code class="docutils literal notranslate"><span class="pre">saved_systems</span></code> or saved_organisms.
+Instance variables of reactors and organisms are store in the NutMEG database so as to
+tell if a simulation has ben performed before or not.
+Each instance of a <code class="docutils literal notranslate"><span class="pre">reactor</span></code>-like or <code class="docutils literal notranslate"><span class="pre">base_organism</span></code>-like object has a <code class="docutils literal notranslate"><span class="pre">name</span></code>
+attribute. This variable tells NutMEG which table the objects parameters should be
+saved to, handy if you’ve included your own <code class="docutils literal notranslate"><span class="pre">output</span></code> helper class. It also assigns
+the prefix of the relevant OrgID or LocID.</p>
+</div>
+<div class="section" id="tables">
+<h2>Tables<a class="headerlink" href="#tables" title="Permalink to this headline">¶</a></h2>
+<p>Below is the structure of some of the tables, populated with some example organisms, reactors, and simulations.</p>
+<p><strong>Summary Table: static results for each simulation</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 29%" />
+<col style="width: 22%" />
+<col style="width: 17%" />
+<col style="width: 15%" />
+<col style="width: 5%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>SimID</p></th>
+<th class="head"><p>OrgIDs</p></th>
+<th class="head"><p>LocID</p></th>
+<th class="head"><p>FinBM</p></th>
+<th class="head"><p>PeakGR</p></th>
+<th class="head"><p>etc</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1_010120</p></td>
+<td><p>(’Methanogen_1_010120’,)</p></td>
+<td><p>Enceladus_1_010120</p></td>
+<td><p><span class="math notranslate nohighlight">\(10^{6}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(10\)</span></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>2_010120</p></td>
+<td><p>(’Methanogen_2_010120’,)</p></td>
+<td><p>Enceladus_1_010120</p></td>
+<td><p><span class="math notranslate nohighlight">\(10^{5}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(7\)</span></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<div><p><strong>FullResults_Sim_1_010120 Table:</strong></p>
+</div></blockquote>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 27%" />
+<col style="width: 28%" />
+<col style="width: 27%" />
+<col style="width: 9%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>time</p></th>
+<th class="head"><p>composition</p></th>
+<th class="head"><p>no_alive_Methanogen_1_010120</p></th>
+<th class="head"><p>EnergyAvailable_Methan…</p></th>
+<th class="head"><p>etc.</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>100</p></td>
+<td><p>CO2:0.01,
+CH4:0.001…</p></td>
+<td><p>550</p></td>
+<td><p>141000</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>200</p></td>
+<td><p>CO2:0.009,
+CH4:0.0011…</p></td>
+<td><p>600</p></td>
+<td><p>140900</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Organism table. Match up organisms to metabolisms so we
+know which table to pull up for them</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 58%" />
+<col style="width: 42%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>OrgID</p></th>
+<th class="head"><p>Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Methanogen_1_010120</p></td>
+<td><p>Methanogen</p></td>
+</tr>
+<tr class="row-odd"><td><p>SulfateR_1_010120</p></td>
+<td><p>Sulfate Reducer</p></td>
+</tr>
+<tr class="row-even"><td><p>Methanogen_2_010120</p></td>
+<td><p>Methanogen</p></td>
+</tr>
+<tr class="row-odd"><td><p>Methanogen_1_020120</p></td>
+<td><p>Methanogen</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Methanogen Table:</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 18%" />
+<col style="width: 18%" />
+<col style="width: 18%" />
+<col style="width: 18%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>OrgID</p></th>
+<th class="head"><p>Respiration</p></th>
+<th class="head"><p>Esynth</p></th>
+<th class="head"><p>dry mass</p></th>
+<th class="head"><p>Tdef</p></th>
+<th class="head"><p>etc.</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Methanogen_1_020120</p></td>
+<td><p>CO2 + 4H2 -&gt; CH4 + 2H2O</p></td>
+<td><p><span class="math notranslate nohighlight">\(\
+7.9\
+\times\
+10^{-11}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\
+1\times\
+10^{-13}\)</span></p></td>
+<td><p>Lever10pc</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<div><p><strong>Reactor table. Match up locales to named systems so we
+know which table to pull up for them</strong></p>
+</div></blockquote>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 69%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>LocID</p></th>
+<th class="head"><p>Env Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Enceladus_1_010120</p></td>
+<td><p>Enceladus</p></td>
+</tr>
+<tr class="row-odd"><td><p>Mars_1_010120</p></td>
+<td><p>Mars</p></td>
+</tr>
+<tr class="row-even"><td><p>Enceladus_2_020120</p></td>
+<td><p>Enceladus</p></td>
+</tr>
+<tr class="row-odd"><td><p>aqueous_24_030220</p></td>
+<td><p>Aqueous</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Enceladus Table:</strong></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 9%" />
+<col style="width: 12%" />
+<col style="width: 16%" />
+<col style="width: 29%" />
+<col style="width: 7%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>LocID</p></th>
+<th class="head"><p>Depth</p></th>
+<th class="head"><p>Pressure</p></th>
+<th class="head"><p>Temperature</p></th>
+<th class="head"><p>Composition</p></th>
+<th class="head"><p>etc.</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Enceladus_1_010120</p></td>
+<td><p>8.5</p></td>
+<td><p>40</p></td>
+<td><p>290</p></td>
+<td><p>CO2:0.01, CH4:0.001…</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="extracting-data-for-analysis">
+<h2>Extracting data for analysis<a class="headerlink" href="#extracting-data-for-analysis" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A full guide on this is forthcoming…</p>
+</div>
+<p>Generally you can extract any simulation parameters using the static methods found in
+<a class="reference external" href="../source/NutMEG.html#module-NutMEG.ecosystem_dbhelper">ecosystem_dbhelper</a>
+. The method <code class="docutils literal notranslate"><span class="pre">extract_param_db_Sim()</span></code> will extract parameters for the given
+SimID pertaining to the given orgID, if specified, and return them. These could be
+entries in Summary (e.g. PeakGR for the maximum growth rate in the simulation), or entries
+in the FullResults_Sim_ table (e.g. no_alive for the active current population throughout
+the simulation).</p>
+<p>You can’t extract specific parameters from the organism and reactor relevant tables,
+but you can initialise an identical object using the <code class="docutils literal notranslate"><span class="pre">r_from_db()</span></code> or <code class="docutils literal notranslate"><span class="pre">bo_from_db()</span></code> class methods — think of this as similar to pickling.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="growthalgorithm.html" class="btn btn-neutral float-right" title="Growth Algorithm" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="class_structure.html" class="btn btn-neutral float-left" title="Structure and Hierarchy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, P. M. Higgins
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -84,30 +84,15 @@
               <p class="caption"><span class="caption-text">Guides</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../guides/getting_started.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../guides/packages.html">How NutMEG’s Modules Work</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/class_structure.html">Structure and Hierarchy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/database_structure.html">Database Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/growthalgorithm.html">Growth Algorithm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guides/implementations.html">Using NutMEG-Implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/competitionexample.html">Simple example: simulating competition</a></li>
 </ul>
 <p class="caption"><span class="caption-text">API</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">NutMEG</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="NutMEG.html">NutMEG package</a><ul class="current">
-<li class="toctree-l3 current"><a class="reference internal" href="NutMEG.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="NutMEG.applications.html">NutMEG.applications package</a></li>
-<li class="toctree-l4 current"><a class="reference internal" href="NutMEG.culture.html">NutMEG.culture package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="NutMEG.environment.html">NutMEG.environment package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="NutMEG.plotter.html">NutMEG.plotter package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="NutMEG.reaction.html">NutMEG.reaction package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="NutMEG.reactor.html">NutMEG.reactor package</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG.ecosystem">NutMEG.ecosystem module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG.ecosystem_dbhelper">NutMEG.ecosystem_dbhelper module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG">Module contents</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">NutMEG</a></li>
 <li class="toctree-l1"><a class="reference internal" href="NutMEG.reaction.html">NutMEG.reaction package</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="NutMEG.culture.html">NutMEG.culture package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="NutMEG.culture.html#subpackages">Subpackages</a><ul class="current">
@@ -320,7 +305,7 @@ being used for example. Default 1.</p></li>
 
 <dl class="py method">
 <dt id="NutMEG.culture.base_organism.CHNOPSexchanger.CHNOPSexchanger.find_nutrients">
-<code class="sig-name descname">find_nutrients</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">init</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.CHNOPSexchanger.CHNOPSexchanger.find_nutrients" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">find_nutrients</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">init</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ignore</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.base_organism.CHNOPSexchanger.CHNOPSexchanger.find_nutrients" title="Permalink to this definition">¶</a></dt>
 <dd><p>Look in the host’s locale to find reagents which could work as a
 nutrient source and update nutrients as appropriate.
 Pass init as True to set up the nutrients dict from scratch.</p>
@@ -668,6 +653,18 @@ neccessary.</p>
 <dt id="NutMEG.culture.base_organism.base_organism.base_organism.E_store">
 <code class="sig-name descname">E_store</code><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism.base_organism.E_store" title="Permalink to this definition">¶</a></dt>
 <dd><p>Energy currently in storage. Starts at 0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.culture.base_organism.base_organism.base_organism.max_metabolic_rate">
+<code class="sig-name descname">max_metabolic_rate</code><a class="headerlink" href="#NutMEG.culture.base_organism.base_organism.base_organism.max_metabolic_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum metabolic rate in unit reaction / s. If NutMEG predicts a rate
+faster than this, it will use this maximum instead.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>float</p>

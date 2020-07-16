@@ -84,8 +84,11 @@
               <p class="caption"><span class="caption-text">Guides</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../guides/getting_started.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../guides/packages.html">How NutMEG’s Modules Work</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/class_structure.html">Structure and Hierarchy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/database_structure.html">Database Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/growthalgorithm.html">Growth Algorithm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guides/implementations.html">Using NutMEG-Implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/competitionexample.html">Simple example: simulating competition</a></li>
 </ul>
 <p class="caption"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -108,9 +111,6 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="NutMEG.reaction.html">NutMEG.reaction package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="NutMEG.culture.html">NutMEG.culture package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="NutMEG.applications.html">NutMEG.applications package</a></li>
 </ul>
 
             
@@ -659,6 +659,12 @@ with these organisms and environments. If it has, return the SimID.</p>
 <dt id="NutMEG.ecosystem_dbhelper.db_helper.getOrgdetails">
 <code class="sig-name descname">getOrgdetails</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.ecosystem_dbhelper.db_helper.getOrgdetails" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update initial details of the culture</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.ecosystem_dbhelper.db_helper.get_table_as_dataframe">
+<code class="sig-name descname">get_table_as_dataframe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.ecosystem_dbhelper.db_helper.get_table_as_dataframe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a table in the database as a pandas dataframe</p>
 </dd></dl>
 
 <dl class="py method">
