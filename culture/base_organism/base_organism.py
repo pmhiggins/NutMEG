@@ -82,6 +82,9 @@ class base_organism:
         Instantaneous power supply in W/cell
     E_store : float
         Energy currently in storage. Starts at 0.
+    max_metabolic_rate : float
+        Maximum metabolic rate in unit reaction / s. If NutMEG predicts a rate
+        faster than this, it will use this maximum instead.
     dbh : bo_dbhelper
         Helper atttribute for database management.
     """
@@ -107,6 +110,7 @@ class base_organism:
         self.E_synth = kwargs.pop('E_synth', None) #was 8e-10
         if self.E_synth == None:
             self.get_ESynth(AA=True)
+        self.max_metabolic_rate = kwargs.pop('max_metabolic_rate', float('inf'))
         self.update_metabolic_rate()
         self.E_store = kwargs.pop('E_store', 0.)
         self.pH_interior = kwargs.pop('pH_interior', 7.0)
@@ -241,7 +245,11 @@ class base_organism:
         # for other limiters enhance this method to include them
         # Perhaps put them in a dictionary/list and find the lowest one.
         self.respiration.get_rate()
-        self.metabolic_rate = self.respiration.rate
+        if self.respiration.rate < self.max_metabolic_rate:
+            self.metabolic_rate = self.respiration.rate
+        else:
+            self.respiration.rate = self.max_metabolic_rate
+            self.metabolic_rate = self.max_metabolic_rate
 
 
     def get_supplied_power(self, update_energetics=False):
