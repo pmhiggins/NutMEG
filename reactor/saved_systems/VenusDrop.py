@@ -42,6 +42,8 @@ class VenusDrop(reactor):
         self.name='VenusDrop'
 
         if setupcomp:
+            self.composition={}
+            self.reactionlist={}
             self.initial_conditions(H2ppm, HSact=HSact,
               setupcomp=setupcomp)
             reactor.__init__(self, self.name, env=self.env,
