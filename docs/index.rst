@@ -3,14 +3,21 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Nutrients, Maintenance, Energy and Growth
-===========================================
-Welcome to NutMEG's documentation! NutMEG is a python module for predicting the
+NutMEG
+======
+
+*Nutrients, Maintenance, Energy and Growth*
+
+Welcome to NutMEG's documentation! `NutMEG <https://github.com/pmhiggins/NutMEG>`_ is a python module for predicting the
 growth behaviour of microbial organisms in astrobiology. It's designed to
 estimate the energetic availability through local chemistry and the cost of
 defending against extreme or adverse conditions to work out whether an
-environment could be habitable.
+environment could be habitable and how biology could behave there.
 
+NutMEG is still a work-in-progress, but as of its most recent release it can be
+used to create tentative growth predictions of known organisms in known environments.
+Check out the `competition example <guides/competitionexample.html>`_ for an idea of
+what it can do at this stage.
 
 
 .. toctree::
@@ -18,17 +25,17 @@ environment could be habitable.
     :caption: Guides
 
     guides/getting_started
-    guides/packages
+    guides/class_structure
+    guides/database_structure
+    guides/growthalgorithm
     guides/implementations
+    guides/competitionexample
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
     :caption: API
-    
+
     source/modules
-    source/NutMEG.reaction
-    source/NutMEG.culture
-    source/NutMEG.applications
 
 
 
