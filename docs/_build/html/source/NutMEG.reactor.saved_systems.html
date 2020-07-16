@@ -1,0 +1,421 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>NutMEG.reactor.saved_systems package &mdash; NutMEG 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="NutMEG.reactor package" href="NutMEG.reactor.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> NutMEG
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../guides/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/class_structure.html">Structure and Hierarchy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/database_structure.html">Database Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/growthalgorithm.html">Growth Algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/implementations.html">Using NutMEG-Implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/competitionexample.html">Simple example: simulating competition</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">NutMEG</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="NutMEG.html">NutMEG package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="NutMEG.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.applications.html">NutMEG.applications package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.culture.html">NutMEG.culture package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.environment.html">NutMEG.environment package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.plotter.html">NutMEG.plotter package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.reaction.html">NutMEG.reaction package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="NutMEG.reactor.html">NutMEG.reactor package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG.ecosystem">NutMEG.ecosystem module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG.ecosystem_dbhelper">NutMEG.ecosystem_dbhelper module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="NutMEG.reaction.html">NutMEG.reaction package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NutMEG.culture.html">NutMEG.culture package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NutMEG.applications.html">NutMEG.applications package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NutMEG</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">NutMEG</a> &raquo;</li>
+        
+          <li><a href="NutMEG.html">NutMEG package</a> &raquo;</li>
+        
+          <li><a href="NutMEG.reactor.html">NutMEG.reactor package</a> &raquo;</li>
+        
+      <li>NutMEG.reactor.saved_systems package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/NutMEG.reactor.saved_systems.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="nutmeg-reactor-saved-systems-package">
+<h1>NutMEG.reactor.saved_systems package<a class="headerlink" href="#nutmeg-reactor-saved-systems-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-NutMEG.reactor.saved_systems.VenusDrop">
+<span id="nutmeg-reactor-saved-systems-venusdrop-module"></span><h2>NutMEG.reactor.saved_systems.VenusDrop module<a class="headerlink" href="#module-NutMEG.reactor.saved_systems.VenusDrop" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="NutMEG.reactor.saved_systems.VenusDrop.VenusDrop">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.reactor.saved_systems.VenusDrop.</code><code class="sig-name descname">VenusDrop</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">H2ppm</span><span class="o">=</span><span class="default_value">25</span></em>, <em class="sig-param"><span class="n">HSact</span><span class="o">=</span><span class="default_value">1e-10</span></em>, <em class="sig-param"><span class="n">T</span><span class="o">=</span><span class="default_value">298</span></em>, <em class="sig-param"><span class="n">P</span><span class="o">=</span><span class="default_value">100000</span></em>, <em class="sig-param"><span class="n">V</span><span class="o">=</span><span class="default_value">1.13e-16</span></em>, <em class="sig-param"><span class="n">setupcomp</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">workoutID</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop.VenusDrop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="NutMEG.reactor.html#NutMEG.reactor.reactor.reactor" title="NutMEG.reactor.reactor.reactor"><code class="xref py py-class docutils literal notranslate"><span class="pre">NutMEG.reactor.reactor.reactor</span></code></a></p>
+<p>The chemically active evironment of a simple Venusian cloud droplet.</p>
+<p>This is an instance of reactor, with added methods to estimate the
+composition from cloud ppm values and setup specific possible venusian
+metabolisms.</p>
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.VenusDrop.VenusDrop.getgasconc">
+<em class="property">static </em><code class="sig-name descname">getgasconc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gas_name</span></em>, <em class="sig-param"><span class="n">P_gas</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">P_bar</span><span class="o">=</span><span class="default_value">101325</span></em>, <em class="sig-param"><span class="n">S</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop.VenusDrop.getgasconc" title="Permalink to this definition">¶</a></dt>
+<dd><p>From a partial pressure, get the dissolved gas
+concentration.</p>
+<dl class="simple">
+<dt>gas_name<span class="classifier">str</span></dt><dd><p>Name of reagent</p>
+</dd>
+<dt>P_gas<span class="classifier">float</span></dt><dd><p>partial pressure of gas in Pa</p>
+</dd>
+<dt>T<span class="classifier">float</span></dt><dd><p>local temperature in K</p>
+</dd>
+<dt>P_bar<span class="classifier">float</span></dt><dd><p>Local barometric pressure in Pa</p>
+</dd>
+<dt>S<span class="classifier">float</span></dt><dd><p>Salinity of the droplet in parts per thousand</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.VenusDrop.VenusDrop.initial_conditions">
+<code class="sig-name descname">initial_conditions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">H2ppm</span></em>, <em class="sig-param"><span class="n">HSact</span><span class="o">=</span><span class="default_value">1e-10</span></em>, <em class="sig-param"><span class="n">setupcomp</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">addreaction</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop.VenusDrop.initial_conditions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up a basic configuration, with pH 0 sulfuric acid
+droplet and dissolved H2.</p>
+<dl class="simple">
+<dt>H2ppm<span class="classifier">float</span></dt><dd><p>H2 parts per million in the atmosphere around the droplet.</p>
+</dd>
+<dt>HSact<span class="classifier">float</span></dt><dd><p>HS activity to use. Default is 1e-10</p>
+</dd>
+<dt>setupcomp<span class="classifier">bool</span></dt><dd><p>Whether to set up the standard composition. Default True</p>
+</dd>
+<dt>addreaction<span class="classifier">bool</span></dt><dd><p>Whether to include sulfate reduction in the reactionlist</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.VenusDrop.VenusDrop.solubilityEQ">
+<em class="property">static </em><code class="sig-name descname">solubilityEQ</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gas_name</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">S</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop.VenusDrop.solubilityEQ" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.VenusDrop.VenusDrop.solubilityEQparams">
+<em class="property">static </em><code class="sig-name descname">solubilityEQparams</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A1</span></em>, <em class="sig-param"><span class="n">A2</span></em>, <em class="sig-param"><span class="n">A3</span></em>, <em class="sig-param"><span class="n">B1</span></em>, <em class="sig-param"><span class="n">B2</span></em>, <em class="sig-param"><span class="n">B3</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">S</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop.VenusDrop.solubilityEQparams" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.VenusDrop.VenusDrop.update_conditions">
+<code class="sig-name descname">update_conditions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">H2ppm</span></em>, <em class="sig-param"><span class="n">HSact</span><span class="o">=</span><span class="default_value">1e-10</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop.VenusDrop.update_conditions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate dissolved concentratoins in the current reactor
+environment for a standard VenusDrop</p>
+<dl class="simple">
+<dt>H2ppm<span class="classifier">float</span></dt><dd><p>Atmospheric ppm for H2</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.VenusDrop.VenusDrop.update_reagent">
+<code class="sig-name descname">update_reagent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">ppm</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop.VenusDrop.update_reagent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the concentration of a specific reagent based
+on its atmospheric ppm</p>
+<dl class="simple">
+<dt>name<span class="classifier">str</span></dt><dd><p>Name of the reagent to update</p>
+</dd>
+<dt>ppm<span class="classifier">float</span></dt><dd><p>atmospheric concentration to use</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.reactor.saved_systems.VenusDrop_Legacy">
+<span id="nutmeg-reactor-saved-systems-venusdrop-legacy-module"></span><h2>NutMEG.reactor.saved_systems.VenusDrop_Legacy module<a class="headerlink" href="#module-NutMEG.reactor.saved_systems.VenusDrop_Legacy" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.reactor.saved_systems.VenusDrop_Legacy.</code><code class="sig-name descname">VenusDrop</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">H2ppm</span><span class="o">=</span><span class="default_value">25</span></em>, <em class="sig-param"><span class="n">HSact</span><span class="o">=</span><span class="default_value">1e-10</span></em>, <em class="sig-param"><span class="n">T</span><span class="o">=</span><span class="default_value">298</span></em>, <em class="sig-param"><span class="n">P</span><span class="o">=</span><span class="default_value">100000</span></em>, <em class="sig-param"><span class="n">V</span><span class="o">=</span><span class="default_value">1.13e-16</span></em>, <em class="sig-param"><span class="n">setupcomp</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">workoutID</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="NutMEG.reactor.html#NutMEG.reactor.reactor.reactor" title="NutMEG.reactor.reactor.reactor"><code class="xref py py-class docutils literal notranslate"><span class="pre">NutMEG.reactor.reactor.reactor</span></code></a></p>
+<p>The chemically active evironment of a simple Venusian cloud droplet.</p>
+<p>This is an instance of reactor, with added methods to estimate the
+composition from cloud ppm values and setup specific possible venusian
+metabolisms. To start with, this only includes sulfate reduction.</p>
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop.getgasconc">
+<em class="property">static </em><code class="sig-name descname">getgasconc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gas_name</span></em>, <em class="sig-param"><span class="n">P_gas</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">P_bar</span><span class="o">=</span><span class="default_value">101325</span></em>, <em class="sig-param"><span class="n">S</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop.getgasconc" title="Permalink to this definition">¶</a></dt>
+<dd><p>P_gas —partial pressure of gas in Pa</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop.initial_conditions">
+<code class="sig-name descname">initial_conditions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">H2ppm</span></em>, <em class="sig-param"><span class="n">HSact</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">setupcomp</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">addreaction</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop.initial_conditions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop.solubilityEQ">
+<em class="property">static </em><code class="sig-name descname">solubilityEQ</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gas_name</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">S</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop.solubilityEQ" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop.solubilityEQparams">
+<em class="property">static </em><code class="sig-name descname">solubilityEQparams</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A1</span></em>, <em class="sig-param"><span class="n">A2</span></em>, <em class="sig-param"><span class="n">A3</span></em>, <em class="sig-param"><span class="n">B1</span></em>, <em class="sig-param"><span class="n">B2</span></em>, <em class="sig-param"><span class="n">B3</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">S</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop.solubilityEQparams" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop.update_conditions">
+<code class="sig-name descname">update_conditions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">H2ppm</span></em>, <em class="sig-param"><span class="n">HSact</span><span class="o">=</span><span class="default_value">0.0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop.update_conditions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.reactor.saved_systems.VenusDrop_comments">
+<span id="nutmeg-reactor-saved-systems-venusdrop-comments-module"></span><h2>NutMEG.reactor.saved_systems.VenusDrop_comments module<a class="headerlink" href="#module-NutMEG.reactor.saved_systems.VenusDrop_comments" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.reactor.saved_systems.VenusDrop_comments.</code><code class="sig-name descname">VenusDrop</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">H2ppm</span><span class="o">=</span><span class="default_value">25</span></em>, <em class="sig-param"><span class="n">HSact</span><span class="o">=</span><span class="default_value">1e-10</span></em>, <em class="sig-param"><span class="n">T</span><span class="o">=</span><span class="default_value">298</span></em>, <em class="sig-param"><span class="n">P</span><span class="o">=</span><span class="default_value">100000</span></em>, <em class="sig-param"><span class="n">V</span><span class="o">=</span><span class="default_value">1.13e-16</span></em>, <em class="sig-param"><span class="n">setupcomp</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">workoutID</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="NutMEG.reactor.html#NutMEG.reactor.reactor.reactor" title="NutMEG.reactor.reactor.reactor"><code class="xref py py-class docutils literal notranslate"><span class="pre">NutMEG.reactor.reactor.reactor</span></code></a></p>
+<p>The chemically active evironment of a simple Venusian cloud droplet.</p>
+<p>This is an instance of reactor, with added methods to estimate the
+composition from cloud ppm values and setup specific possible venusian
+metabolisms.</p>
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.getgasconc">
+<em class="property">static </em><code class="sig-name descname">getgasconc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gas_name</span></em>, <em class="sig-param"><span class="n">P_gas</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">P_bar</span><span class="o">=</span><span class="default_value">101325</span></em>, <em class="sig-param"><span class="n">S</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.getgasconc" title="Permalink to this definition">¶</a></dt>
+<dd><p>P_gas —partial pressure of gas in Pa</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.initial_conditions">
+<code class="sig-name descname">initial_conditions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">H2ppm</span></em>, <em class="sig-param"><span class="n">HSact</span><span class="o">=</span><span class="default_value">1e-10</span></em>, <em class="sig-param"><span class="n">setupcomp</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">addreaction</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.initial_conditions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up a basic configuration, with pH 0 sulfuric acid
+droplet and dissolved H2.</p>
+<dl class="simple">
+<dt>H2ppm<span class="classifier">float</span></dt><dd><p>H2 parts per million in the atmosphere around the droplet.</p>
+</dd>
+<dt>HSact<span class="classifier">float</span></dt><dd><p>HS activity to use. Default is 1e-10</p>
+</dd>
+<dt>setupcomp<span class="classifier">bool</span></dt><dd><p>Whether to set up the standard composition. Default True</p>
+</dd>
+<dt>addreaction<span class="classifier">bool</span></dt><dd><p>Whether to include sulfate reduction in the reactionlist</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.solubilityEQ">
+<em class="property">static </em><code class="sig-name descname">solubilityEQ</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gas_name</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">S</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.solubilityEQ" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.solubilityEQparams">
+<em class="property">static </em><code class="sig-name descname">solubilityEQparams</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A1</span></em>, <em class="sig-param"><span class="n">A2</span></em>, <em class="sig-param"><span class="n">A3</span></em>, <em class="sig-param"><span class="n">B1</span></em>, <em class="sig-param"><span class="n">B2</span></em>, <em class="sig-param"><span class="n">B3</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">S</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.solubilityEQparams" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.update_conditions">
+<code class="sig-name descname">update_conditions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">H2ppm</span></em>, <em class="sig-param"><span class="n">HSact</span><span class="o">=</span><span class="default_value">1e-10</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.update_conditions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.update_reagent">
+<code class="sig-name descname">update_reagent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">ppm</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.update_reagent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.reactor.saved_systems">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-NutMEG.reactor.saved_systems" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="NutMEG.reactor.html" class="btn btn-neutral float-left" title="NutMEG.reactor package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, P. M. Higgins
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

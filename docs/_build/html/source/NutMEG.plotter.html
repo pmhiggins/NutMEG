@@ -1,0 +1,358 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>NutMEG.plotter package &mdash; NutMEG 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="NutMEG.reaction package" href="NutMEG.reaction.html" />
+    <link rel="prev" title="NutMEG.environment package" href="NutMEG.environment.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> NutMEG
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../guides/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/class_structure.html">Structure and Hierarchy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/database_structure.html">Database Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/implementations.html">Using NutMEG-Implementations</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">NutMEG</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="NutMEG.html">NutMEG package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="NutMEG.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.applications.html">NutMEG.applications package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.culture.html">NutMEG.culture package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.environment.html">NutMEG.environment package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">NutMEG.plotter package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.reaction.html">NutMEG.reaction package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.reactor.html">NutMEG.reactor package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG.ecosystem">NutMEG.ecosystem module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG.ecosystem_dbhelper">NutMEG.ecosystem_dbhelper module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="NutMEG.reaction.html">NutMEG.reaction package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NutMEG.culture.html">NutMEG.culture package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="NutMEG.applications.html">NutMEG.applications package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NutMEG</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">NutMEG</a> &raquo;</li>
+        
+          <li><a href="NutMEG.html">NutMEG package</a> &raquo;</li>
+        
+      <li>NutMEG.plotter package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/NutMEG.plotter.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="nutmeg-plotter-package">
+<h1>NutMEG.plotter package<a class="headerlink" href="#nutmeg-plotter-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-NutMEG.plotter.growthparams">
+<span id="nutmeg-plotter-growthparams-module"></span><h2>NutMEG.plotter.growthparams module<a class="headerlink" href="#module-NutMEG.plotter.growthparams" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="NutMEG.plotter.growthparams.growthparams">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.plotter.growthparams.</code><code class="sig-name descname">growthparams</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fig</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.growthparams.growthparams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#NutMEG.plotter.plotter_setup.nutfig" title="NutMEG.plotter.plotter_setup.nutfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">NutMEG.plotter.plotter_setup.nutfig</span></code></a></p>
+<dl class="py method">
+<dt id="NutMEG.plotter.growthparams.growthparams.addlinearplot">
+<code class="sig-name descname">addlinearplot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ax</span></em>, <em class="sig-param"><span class="n">xrange</span></em>, <em class="sig-param"><span class="n">yrange</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">color</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ls</span><span class="o">=</span><span class="default_value">'-'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.growthparams.growthparams.addlinearplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add one linear plot to the axis ax.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.plotter.growthparams.growthparams.colorpicker">
+<code class="sig-name descname">colorpicker</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cs</span><span class="o">=</span><span class="default_value">'default'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.growthparams.growthparams.colorpicker" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.plotter.growthparams.growthparams.linearplot">
+<code class="sig-name descname">linearplot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">xvals</span><span class="o">=</span><span class="default_value">[[]]</span></em>, <em class="sig-param"><span class="n">yvals</span><span class="o">=</span><span class="default_value">[[]]</span></em>, <em class="sig-param"><span class="n">labels</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">colors</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">cs</span><span class="o">=</span><span class="default_value">'default'</span></em>, <em class="sig-param"><span class="n">show</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">ls</span><span class="o">=</span><span class="default_value">['-']</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.growthparams.growthparams.linearplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>plot the list of list values on a linear plot on the axis given.
+If no axis is passed, uses the whole figure.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.plotter.habitabilitymap">
+<span id="nutmeg-plotter-habitabilitymap-module"></span><h2>NutMEG.plotter.habitabilitymap module<a class="headerlink" href="#module-NutMEG.plotter.habitabilitymap" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="NutMEG.plotter.habitabilitymap.habitabilitymap">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.plotter.habitabilitymap.</code><code class="sig-name descname">habitabilitymap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fig</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.habitabilitymap.habitabilitymap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#NutMEG.plotter.plotter_setup.nutfig" title="NutMEG.plotter.plotter_setup.nutfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">NutMEG.plotter.plotter_setup.nutfig</span></code></a></p>
+<dl class="py method">
+<dt id="NutMEG.plotter.habitabilitymap.habitabilitymap.add_map_plot">
+<code class="sig-name descname">add_map_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">xvals</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">yvals</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">zvals</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">labels</span><span class="o">=</span><span class="default_value">['', '', '']</span></em>, <em class="sig-param"><span class="n">show</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">colorbar</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.habitabilitymap.habitabilitymap.add_map_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>pass 1D lists of the x y and z coordinates of the proposed
+map. This map will then be placed onto ax, or if you have no
+ax preference will take up the whole figure.</p>
+<p>If you pass colorbar as true, one will be generated in a
+seperate matplotlib figure.</p>
+<p>if you pass save, the Figure and/or colorbar will be saved to the
+filename given, colorbar will have the prefix <code class="docutils literal notranslate"><span class="pre">cb_</span></code>. Please do
+include the file extension.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.plotter.habitabilitymap.habitabilitymap.mapcolorbarh">
+<code class="sig-name descname">mapcolorbarh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">zvals</span></em>, <em class="sig-param"><span class="n">zlabel</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.habitabilitymap.habitabilitymap.mapcolorbarh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Produce a horzontal colorbar on a new canvas with the zvals and
+label passed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.plotter.habitabilitymap.habitabilitymap.mapdata_orgloc">
+<code class="sig-name descname">mapdata_orgloc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xIDs</span></em>, <em class="sig-param"><span class="n">yIDs</span></em>, <em class="sig-param"><span class="n">zname</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.habitabilitymap.habitabilitymap.mapdata_orgloc" title="Permalink to this definition">¶</a></dt>
+<dd><p>for the OrgIDs and LocIDs passed, this finds the value of the zname parameter in the database corresponding to each.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.plotter.plotter_setup">
+<span id="nutmeg-plotter-plotter-setup-module"></span><h2>NutMEG.plotter.plotter_setup module<a class="headerlink" href="#module-NutMEG.plotter.plotter_setup" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="NutMEG.plotter.plotter_setup.nutfig">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.plotter.plotter_setup.</code><code class="sig-name descname">nutfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fig</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">5, 7</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.plotter_setup.nutfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for setting up plotting in NutMEG. Will end up doing
+data retrieval as well using the ecosystem_dbhelper</p>
+<dl class="py method">
+<dt id="NutMEG.plotter.plotter_setup.nutfig.denormalise">
+<em class="property">static </em><code class="sig-name descname">denormalise</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">val</span></em>, <em class="sig-param"><span class="n">maxval</span></em>, <em class="sig-param"><span class="n">minval</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.plotter_setup.nutfig.denormalise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take a value val which sho be ‘denormalised’ from between
+0 and 1 to between maxval and minval.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.plotter.plotter_setup.nutfig.extract_param_db_OrgLoc">
+<em class="property">static </em><code class="sig-name descname">extract_param_db_OrgLoc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">OrgIDs</span></em>, <em class="sig-param"><span class="n">LocID</span></em>, <em class="sig-param"><span class="n">param</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.plotter_setup.nutfig.extract_param_db_OrgLoc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a specific parameter from a simulation, using the relevant
+OrgID and LocIDs as passed. If the param is ‘FinBM’ or ‘PeakGR’ this returns the final value from that simulation OR if the simulation
+failed, a volume of 1e-18 and growth rate of 0 is returned. If its
+one of the others, this returns the full list of results.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.plotter.plotter_setup.nutfig.extract_param_db_Sim">
+<em class="property">static </em><code class="sig-name descname">extract_param_db_Sim</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">SimID</span></em>, <em class="sig-param"><span class="n">param</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.plotter_setup.nutfig.extract_param_db_Sim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a specific parameter from a simulation, using its ID as
+passed. If the param is ‘FinBM’ or ‘PeakGR’ this returns the final
+value from that simulation, if its one of the others, this returns
+the full list of results</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.plotter.plotter_setup.nutfig.fig">
+<code class="sig-name descname">fig</code><em class="property"> = None</em><a class="headerlink" href="#NutMEG.plotter.plotter_setup.nutfig.fig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.plotter.plotter_setup.nutfig.normalise">
+<em class="property">static </em><code class="sig-name descname">normalise</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vals</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.plotter_setup.nutfig.normalise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take the list vals, and return it normalised between 0 and 1.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.plotter.plotter_setup.nutfig.printcheck">
+<em class="property">static </em><code class="sig-name descname">printcheck</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.plotter.plotter_setup.nutfig.printcheck" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checker method to see summary table. Probably isn’t needed because
+you could just use ecosystem_dbhelper</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.plotter">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-NutMEG.plotter" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="NutMEG.reaction.html" class="btn btn-neutral float-right" title="NutMEG.reaction package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="NutMEG.environment.html" class="btn btn-neutral float-left" title="NutMEG.environment package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, P. M. Higgins
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

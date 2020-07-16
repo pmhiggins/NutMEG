@@ -11,6 +11,7 @@ from .environment import environment
 
 #culture stuff
 from .culture.base_organism.base_organism import base_organism
+from .culture.base_organism.base_organism_dbhelper import bodb_helper
 from .culture.organism.organism import organism
 from .culture.horde.horde import horde
 from .culture.colony.colony import colony

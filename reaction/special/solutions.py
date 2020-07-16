@@ -33,11 +33,6 @@ class neutralsol(reaction.reaction):
     activity of the solvent to be known.
     """
 
-
-    """
-        INITIALISATION
-    """
-
     phi = 0. # osmotic coefficient of the solution
     total_molality = 0.
     solvent_activity =1.

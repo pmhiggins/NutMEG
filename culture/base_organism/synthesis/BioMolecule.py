@@ -1,8 +1,6 @@
 import sys
-#sys.path.append("../lib/rto/lib/python2.7/site-packages") # local import of reaktoro
 import os
 from reaktoro import *
-import numpy as np
 import math
 
 this_dir = os.path.dirname(__file__)

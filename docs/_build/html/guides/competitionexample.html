@@ -1,0 +1,262 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Simple example: simulating competition &mdash; NutMEG 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="NutMEG" href="../source/modules.html" />
+    <link rel="prev" title="Using NutMEG-Implementations" href="implementations.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> NutMEG
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Guides</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="class_structure.html">Structure and Hierarchy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="database_structure.html">Database Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="growthalgorithm.html">Growth Algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implementations.html">Using NutMEG-Implementations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Simple example: simulating competition</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#setup-methanogenesis-and-setup-sulfatereduction"><code class="docutils literal notranslate"><span class="pre">setup_methanogenesis()</span></code> and <code class="docutils literal notranslate"><span class="pre">setup_sulfatereduction()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#initial-conditions"><code class="docutils literal notranslate"><span class="pre">initial_conditions()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#simulate-competition"><code class="docutils literal notranslate"><span class="pre">simulate_competition()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#orgcurves-and-compcurves"><code class="docutils literal notranslate"><span class="pre">orgcurves()</span></code> and <code class="docutils literal notranslate"><span class="pre">compcurves()</span></code></a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../source/modules.html">NutMEG</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NutMEG</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Simple example: simulating competition</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/guides/competitionexample.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="simple-example-simulating-competition">
+<h1>Simple example: simulating competition<a class="headerlink" href="#simple-example-simulating-competition" title="Permalink to this headline">¶</a></h1>
+<p>An example of a simple simulation can be found in the <a class="reference external" href="https://github.com/pmhiggins/NutMEG-Implementations/Competition_Example">Competition_Example</a> directory of <a class="reference external" href="https://github.com/pmhiggins/NutMEG-Implementations">NutMEG-Implementations</a>, in which we explore how different environmental and microbial parameters can affect competition between some (entirely fictional) methanogens and sulfate reducers. In this guide we’ll go in-depth into how this code works for users who may not be used to object-oriented programming in Python.</p>
+<div class="section" id="setup-methanogenesis-and-setup-sulfatereduction">
+<h2><code class="docutils literal notranslate"><span class="pre">setup_methanogenesis()</span></code> and <code class="docutils literal notranslate"><span class="pre">setup_sulfatereduction()</span></code><a class="headerlink" href="#setup-methanogenesis-and-setup-sulfatereduction" title="Permalink to this headline">¶</a></h2>
+<p>These methods generate <code class="docutils literal notranslate"><span class="pre">reaction</span></code> objects to represent the two metabolisms we’re looking at. Each method initialises several <code class="docutils literal notranslate"><span class="pre">reagent</span></code> objects to be included in the overall reaction. Note how the <code class="docutils literal notranslate"><span class="pre">reactor</span></code> is passed here, this is to ensure that all the <code class="docutils literal notranslate"><span class="pre">reagent</span></code> s and <code class="docutils literal notranslate"><span class="pre">reaction</span></code> s point to the same <code class="docutils literal notranslate"><span class="pre">environment</span></code> object. You could also simply pass the <code class="docutils literal notranslate"><span class="pre">environment</span></code> object.</p>
+<p>Note how the rate constant at RTP (room temperature and pressure) is passed as an optional argument. This is one parameter (or alternatively, the rate constant at the current environment, <code class="docutils literal notranslate"><span class="pre">rate_constant_env</span></code>) which is necessary for the kinetic calculations (see <a class="reference external" href="../source/NutMEG.culture.base_organism.html">respirator</a>). You could not pass a value, and the default k_RTP will be that for an optimally growing methanogen at 300 K.</p>
+</div>
+<div class="section" id="initial-conditions">
+<h2><code class="docutils literal notranslate"><span class="pre">initial_conditions()</span></code><a class="headerlink" href="#initial-conditions" title="Permalink to this headline">¶</a></h2>
+<p>This method sets up the <code class="docutils literal notranslate"><span class="pre">reactor</span></code> by populating it with <code class="docutils literal notranslate"><span class="pre">reagent</span></code> s. You may notice some of these are the same reagents defined in the two methods discussed above but as they’re being initialised in separate functions they are completely different objects. You may also notice that these reagents are being initialised with more information than the others too, including their activities and concentrations. That;s becaus these are the key ones we’ll be using in the simulation. We’ll see how everything is unified in the next section.</p>
+<p>Some of the reagents added have nothing to do with the metabolisms in <code class="docutils literal notranslate"><span class="pre">setup_methanogenesis()</span></code> and <code class="docutils literal notranslate"><span class="pre">setup_sulfatereduction()</span></code> like NH_3. This is because NutMEG also monitors nutrient availability when it predicts microbial behaviour. The majority of biomass is made up of so-called CHNOPS elements, and nothing will grow in NutMEG without some of each (unless you built your own organism with a different biomolecular structure to the defaults in NutMEG).</p>
+</div>
+<div class="section" id="simulate-competition">
+<h2><code class="docutils literal notranslate"><span class="pre">simulate_competition()</span></code><a class="headerlink" href="#simulate-competition" title="Permalink to this headline">¶</a></h2>
+<p>This method sets up and runs a growth prediction simulation. First, a reactor is created:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">R</span> <span class="o">=</span> <span class="n">nm</span><span class="o">.</span><span class="n">reactor</span><span class="p">(</span><span class="s1">&#39;reactor1&#39;</span><span class="p">,</span> <span class="n">workoutID</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pH</span><span class="o">=</span><span class="mf">7.0</span><span class="p">,</span> <span class="n">dbpath</span><span class="o">=</span><span class="n">dbpath</span><span class="p">,</span> <span class="o">**</span><span class="n">reactor_changes</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>here <code class="docutils literal notranslate"><span class="pre">'reactor1'</span></code> is its name, which tells the database to have a specific table for this reactor type. Passing <code class="docutils literal notranslate"><span class="pre">workoutID=False</span></code> means it doesn’t save parameters to the database yet. We’ll do so once its fully populated. <code class="docutils literal notranslate"><span class="pre">**reactorchanges</span></code> passes the dictionary <code class="docutils literal notranslate"><span class="pre">reactorchanges</span></code> as keyword arguments to the <code class="docutils literal notranslate"><span class="pre">reactor.__init__</span></code> method. Next, we set up the reactor’s composition using <code class="docutils literal notranslate"><span class="pre">initial_conditions</span></code>. Then we set up the organisms, as <code class="docutils literal notranslate"><span class="pre">horde</span></code> objects:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">H</span> <span class="o">=</span> <span class="n">nm</span><span class="o">.</span><span class="n">horde</span><span class="p">(</span><span class="s1">&#39;Methanogen&#39;</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">setup_methanogenesis</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">k_RTP</span><span class="o">=</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">10</span><span class="p">,</span>
+  <span class="n">Tdef</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="n">dbpath</span><span class="o">=</span><span class="n">dbpath</span><span class="p">,</span> <span class="o">**</span><span class="n">methanogen_changes</span><span class="p">)</span>
+
+<span class="n">H2</span> <span class="o">=</span> <span class="n">nm</span><span class="o">.</span><span class="n">horde</span><span class="p">(</span><span class="s1">&#39;SulfateReducer&#39;</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">setup_sulfatereduction</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">k_RTP</span><span class="o">=</span><span class="n">k</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="mi">10</span><span class="p">,</span>
+  <span class="n">Tdef</span><span class="o">=</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="n">dbpath</span><span class="o">=</span><span class="n">dbpath</span><span class="p">,</span> <span class="o">**</span><span class="n">SR_changes</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>They have separate names, so they’ll also have their own tables in the database. They are both put into the same reactor <code class="docutils literal notranslate"><span class="pre">R</span></code> and have a unique metabolic reaction. When they’re added to <code class="docutils literal notranslate"><span class="pre">R</span></code>, the reagents are unified to those already populating <code class="docutils literal notranslate"><span class="pre">R</span></code> to avoid accidentally ‘doubling-up’ your reagents. <code class="docutils literal notranslate"><span class="pre">Tdef</span></code> shows which adaptations against temperature to use, here we’ll ignore it and put in our own maintenance powers.</p>
+<p>Now that <code class="docutils literal notranslate"><span class="pre">R</span></code> is fully populated, we can give it an entry in the database:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">R</span><span class="o">.</span><span class="n">dbh</span><span class="o">.</span><span class="n">workoutID</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">ecosystem</span></code> requires organisms and hordes to be in <code class="docutils literal notranslate"><span class="pre">culture</span></code> objects for easier analysis of them. Then, the culture and reactor just need to be put in an ecosystem together, and a growth prediction can be performed with <code class="docutils literal notranslate"><span class="pre">predict_growth</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Cu</span> <span class="o">=</span> <span class="n">nm</span><span class="o">.</span><span class="n">culture</span><span class="p">(</span><span class="n">hordes</span><span class="o">=</span><span class="p">[</span><span class="n">H2</span><span class="p">,</span> <span class="n">H</span><span class="p">])</span>
+<span class="n">ES</span> <span class="o">=</span> <span class="n">nm</span><span class="o">.</span><span class="n">ecosystem</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">Cu</span><span class="p">,</span> <span class="n">dbpath</span><span class="o">=</span><span class="n">dbpath</span><span class="p">)</span>
+<span class="n">ES</span><span class="o">.</span><span class="n">predict_growth</span><span class="p">(</span><span class="n">tmax</span><span class="o">=</span><span class="mf">2e8</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="orgcurves-and-compcurves">
+<h2><code class="docutils literal notranslate"><span class="pre">orgcurves()</span></code> and <code class="docutils literal notranslate"><span class="pre">compcurves()</span></code><a class="headerlink" href="#orgcurves-and-compcurves" title="Permalink to this headline">¶</a></h2>
+<p>These methods extract the simulation data from the database and plot them using the <code class="docutils literal notranslate"><span class="pre">NutMEG.plotter</span></code> module which specifically uses matplotlib as a basis, but you could easily use another python plotting package.</p>
+<p>Using a SimID returned by <code class="docutils literal notranslate"><span class="pre">simulate_competition()</span></code>, <code class="docutils literal notranslate"><span class="pre">orgcurve()</span></code> extracts and plots the parameter <code class="docutils literal notranslate"><span class="pre">'param'</span></code> passed from the database with time. For a list of possible values of <code class="docutils literal notranslate"><span class="pre">'param'</span></code> check out the guide on database structure.</p>
+<p>Similarly, <code class="docutils literal notranslate"><span class="pre">compcurve()</span></code> plots the concentration of select reagents with time.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../source/modules.html" class="btn btn-neutral float-right" title="NutMEG" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="implementations.html" class="btn btn-neutral float-left" title="Using NutMEG-Implementations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, P. M. Higgins
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

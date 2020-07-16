@@ -27,11 +27,51 @@ empty_default_dbdict = {'Respiration' : ['TEXT', ''],
   }
 
 class bodb_helper:
+    """Class from managing how organisms and their attributes are stored in
+    NutMEG's database.  Each organism/horde with a unique ``name``
+    will have its own table, in case child classes of either have their
+    own attributes they want saving. There is also an *organism* table, which stores
+    all OrgIDs as pointers to the correct table.
 
+    Attributes
+    ----------
+    host : base_organism like
+        host organism/horde to be saving.
+    dbpath : str
+        path to the SQL database. If not passed it will be set to the default
+        (NutMEG_db in your working directory). The default can be changed in
+        NutMEG/utils/NuMEGparams.
+    dbdict : dict
+        Parameters which will be imported into the database.
+    """
     def __init__(self, host, dbpath=nmp.std_dbpath):
 
         self.host = host
         self.dbpath = dbpath
+
+    def get_db_sqlparams(self, dbdict=None):
+        """Get the parameters to import into the database as a dictionary
+        Pass a dbdict as a dictionary if you want to write your own."""
+        if dbdict == None:
+            self.dbdict = {'Respiration' : ['TEXT', self.host.respiration.net_pathway.equation],
+              'Esynth' : ['REAL', self.host.E_synth],
+              'DryMass' : ['REAL', self.host.dry_mass],
+              'Mass' : ['REAL', self.host.mass],
+              'MaintenancePower' : ['TEXT', self.host.maintenance.get_netdictstr()],
+              'Volume' : ['REAL', self.host.base_volume],
+              'Tdef' : ['TEXT', self.host.maintenance.Tdef],
+              'pHdef' : ['TEXT', self.host.maintenance.pHdef],
+              'MembranePot' : ['REAL', self.host.memb_pot],
+              'PermH' : ['REAL', self.host.PermH],
+              'PermOH' : ['REAL', self.host.PermOH],
+              'pHint' : ['REAL', self.host.pH_interior],
+              'n_ATP' : ['REAL', self.host.respiration.n_ATP],
+              'k_RTP' : ['REAL', self.host.respiration.net_pathway.rate_constant_RTP],
+              'base_life_span' : ['REAL', self.host.base_life_span]
+              }
+        else:
+            self.dbdict=dbdict
+
 
     def workoutID(self, dbdict=None):
         """Find this organisms' ID from the database, and if there's no
@@ -44,13 +84,13 @@ class bodb_helper:
 
         # search in the database for the organism's identifiers
         try:
-            logger.info('Trying to find your organism with name: ' + \
+            logger.debug('Trying to find your organism with name: ' + \
               self.host.name + ' in the database')
             command, vals = sqlsc.ANDlst(self.dbdict)
             cursor.execute(sqlsc.SELECTpreamble(self.host.name, 'OrgID')+command, vals)
             op = cursor.fetchone()
             if op is not None:
-                logger.info("Success! Its OrgID is: "+op[0])
+                logger.debug("Success! Its OrgID is: "+op[0])
                 self.host.OrgID = op[0]
             else:
                 raise Exception('No organism found')
@@ -71,6 +111,7 @@ class bodb_helper:
                 self.to_db()
         finally:
             db.close()
+            self.host.output.refreshparams()
 
 
     def createtable(self, replace=False):
@@ -96,27 +137,6 @@ class bodb_helper:
 
 
 
-    def get_db_sqlparams(self, dbdict=None):
-        """Get the parameters to import into the database as a dictionary"""
-        if dbdict == None:
-            self.dbdict = {'Respiration' : ['TEXT', self.host.respiration.net_pathway.equation],
-              'Esynth' : ['REAL', self.host.E_synth],
-              'DryMass' : ['REAL', self.host.dry_mass],
-              'Mass' : ['REAL', self.host.mass],
-              'MaintenancePower' : ['TEXT', self.host.maintenance.get_netdictstr()],
-              'Volume' : ['REAL', self.host.base_volume],
-              'Tdef' : ['TEXT', self.host.maintenance.Tdef],
-              'pHdef' : ['TEXT', self.host.maintenance.pHdef],
-              'MembranePot' : ['REAL', self.host.memb_pot],
-              'PermH' : ['REAL', self.host.PermH],
-              'PermOH' : ['REAL', self.host.PermOH],
-              'pHint' : ['REAL', self.host.pH_interior],
-              'n_ATP' : ['REAL', self.host.respiration.n_ATP],
-              'k_RTP' : ['REAL', self.host.respiration.net_pathway.rate_constant_RTP],
-              'base_life_span' : ['REAL', self.host.base_life_span]
-              }
-        else:
-            self.dbdict=dbdict
 
     @staticmethod
     def from_db(name, OrgID, dbdict=empty_default_dbdict, dbpath=nmp.std_dbpath):
@@ -219,96 +239,22 @@ class bodb_helper:
         db.close()
 
 
+    @staticmethod
+    def extract_param_db(orgname, OrgID, params, dbpath=nmp.std_dbpath):
+        """Fetch a specific parameter from a simulation, using its ID as
+        passed."""
+        db=sqlite3.connect(dbpath)
+        cursor = db.cursor()
+        try:
+            sel = sqlsc.SELECTcolumns(orgname, params, 'OrgID')
+            cursor.execute(sel, (OrgID,))
+            return cursor.fetchall()
 
-
-    ####### HELPFUL STRING GENERATING FUNCTIONS FOR SQLITE QUERIES ########
-    #
-    # def SELECTpreamble(self, SELECT='OrgID'):
-    #     """Return the preamble to a SELECT Query"""
-    #     return 'SELECT ' + SELECT + ' FROM ' + self.host.name + ' WHERE '
-    #
-    # def SELECTcolumns(self, dbdict, WHERE='OrgID'):
-    #     """Return string for query to get all the values corresponding
-    #     to the keys in dbdict"""
-    #     First = True
-    #     lst = 'SELECT '
-    #     for k in sorted(dbdict.keys()):
-    #         if First:
-    #             First = False
-    #             lst += k
-    #             continue
-    #         else:
-    #             lst += ', '
-    #             lst += k
-    #     lst += ' FROM ' + self.host.name + ' WHERE ' + WHERE + ' = ?'
-    #     return lst
-    #
-    #
-    # def INSERTlst(self, dbdict):
-    #     """Return string for query to insert all keys and values of dbdict"""
-    #     First=True
-    #     vals=[]
-    #     lst = 'INSERT INTO ' + self.host.name + '(' + \
-    #       self.commas_string_keys(dbdict) + ')'
-    #     lst += ' VALUES('
-    #     First=True
-    #     for k in sorted(dbdict.keys()):
-    #         vals.append(dbdict[k][1])
-    #         if First:
-    #             First = False
-    #             lst += '?'
-    #             continue
-    #         else:
-    #             lst += ','
-    #             lst += '?'
-    #     lst += ')'
-    #
-    #     return lst, tuple(vals)
-    #
-    # def commas_string_keys(self, dbdict):
-    #     """Return keys of dbdict as one string separated by commas"""
-    #     First=True
-    #     lst= ''
-    #     for k in sorted(dbdict.keys()):
-    #         if First:
-    #             First = False
-    #             lst += k
-    #             continue
-    #         else:
-    #             lst += ', '
-    #             lst += k
-    #     return lst
-    #
-    #
-    # def commas_string_keys_types(self, dbdict):
-    #     """Return keys of dbdict and their SQL data type as one string
-    #     separated by commas"""
-    #     First=True
-    #     lst= ''
-    #     for k in sorted(dbdict.keys()):
-    #         if First:
-    #             First = False
-    #             lst += k + ' ' + dbdict[k][0]
-    #             continue
-    #         else:
-    #             lst += ', '
-    #             lst += k + ' ' + dbdict[k][0]
-    #     return lst
-    #
-    #
-    # def ANDlst(self, dbdict):
-    #     """Return keys of dbdict in the sql AND x=? format. Also returns the
-    #     corresponding vales as a tuple."""
-    #     First = True
-    #     vals=[]
-    #     lst =''
-    #     for k in sorted(dbdict):
-    #         vals.append(dbdict[k][1])
-    #         if First:
-    #             First = False
-    #             lst += k + ' = ?'
-    #             continue
-    #         else:
-    #             lst += ' AND '
-    #             lst += k + ' = ?'
-    #     return lst, tuple(vals)
+        except sqlite3.Error or TypeError as e:
+            print(e)
+            print('Problem retrieving data, check OrgID and requested variables')
+            return [0]
+        except Exception as e:
+            raise e
+        finally:
+            db.close()
