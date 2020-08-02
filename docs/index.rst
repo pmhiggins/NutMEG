@@ -23,6 +23,7 @@ what it can do at this stage.
 .. toctree::
     :maxdepth: 1
     :caption: Guides
+    
     guides/coreconcept
     guides/getting_started
     guides/class_structure
