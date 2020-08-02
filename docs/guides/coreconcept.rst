@@ -21,14 +21,12 @@ leftover energy can be directed into biomass synthesis (:math:`P_{G}`).
 The maintenance efficiency reflects the total cost of microbial maintenance
 processes - ones which are necessary for survival but do not directly contribute
 to growth. These could include maintaining a specific internal pH
-(:math: `P_{pH}`), repairing biomacromolecules as they break down with
-temperature (:math: `P_{T}`), and defending against adverse salinity
-(:math: `P_{SAL}`) to give a few examples. Mathematically it takes this form:
+(:math:`P_{pH}`), repairing biomacromolecules as they break down with
+temperature (:math:`P_{T}`), and defending against adverse salinity
+(:math:`P_{SAL}`) to give a few examples. Mathematically it takes this form:
 
 .. math::
     \epsilon_{M} = 1-\frac{P_{main}}{P_{s}}
-
-.. math::
     P_{main} = P_{pH} + P_{T} + P_{SAL} + ...
 
 The nutrient uptake efficiency is more complex to compute. It represents the effect
