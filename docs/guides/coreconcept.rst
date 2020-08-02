@@ -26,8 +26,7 @@ temperature (:math:`P_{T}`), and defending against adverse salinity
 (:math:`P_{SAL}`) to give a few examples. Mathematically it takes this form:
 
 .. math::
-    \epsilon_{M} = 1-\frac{P_{main}}{P_{s}}
-    P_{main} = P_{pH} + P_{T} + P_{SAL} + ...
+    \epsilon_{M} = 1-\\frac{P_{main}}{P_{s}}
 
 The nutrient uptake efficiency is more complex to compute. It represents the effect
 of limited availability of carbon, hydrogen, nitrogen, oxygen, phosphorus, or
