@@ -25,19 +25,3 @@ to growth. These could include maintaining a specific internal pH
 (:math:`P_{pH}`), repairing biomacromolecules as they break down with
 temperature (:math:`P_{T}`), and defending against adverse salinity
 (:math:`P_{SAL}`) to give a few examples. Mathematically it takes this form:
-
-.. math::
-    \epsilon_{M} = 1-\frac{P_{main}}{P_{s}}
-
-.. math::
-    P_{main} = P_{pH} + P_{T} + P_{SAL} + ...
-
-The nutrient uptake efficiency is more complex to compute. It represents the effect
-of limited availability of carbon, hydrogen, nitrogen, oxygen, phosphorus, or
-sulfur (CHNOPS) elements on the amount of biomass an organism can actually make
-per unit time.
-
-The core concept behind NutMEG is that if energy still remains after applying :math:`\epsilon_{M}`
-and :math:`\epsilon_{UT}` both the energy and nutrients are
-available in the local environment not just for an organism to survive, but for
-it to grow as well.
