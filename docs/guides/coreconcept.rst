@@ -15,7 +15,8 @@ energetic input from metabolism (:math:`P_{S}`) corresponding to  microbial main
 (:math:`\epsilon_{M}`), and nutrient uptake (:math:`\epsilon_{UT}`). Any
 leftover energy can be directed into biomass synthesis (:math:`P_{G}`).
 
-.. math::  P_{G} = \epsilon_{UT} \epsilon_{M} P_{S}
+.. math::
+   P_{G} = \epsilon_{UT} \epsilon_{M} P_{S}
 
 The maintenance efficiency reflects the total cost of microbial maintenance
 processes - ones which are necessary for survival but do not directly contribute
@@ -24,8 +25,10 @@ to growth. These could include maintaining a specific internal pH
 temperature (:math:`P_{T}`), and defending against adverse salinity
 (:math:`P_{SAL}`) to give a few examples. Mathematically it takes this form:
 
-.. math::  \epsilon_{M} = 1 - \frac{ P_{main} }{ P_{s} }
-.. math::  P_{main} = P_{pH} + P_{T} + P_{SAL} + ...
+.. math::  
+   \epsilon_{M} = 1 - \frac{ P_{main} }{ P_{s} }
+   
+   P_{main} = P_{pH} + P_{T} + P_{SAL} + ...
 
 The nutrient uptake efficiency is more complex to compute. It represents the effect
 of limited availability of carbon, hydrogen, nitrogen, oxygen, phosphorus, or
