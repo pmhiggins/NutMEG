@@ -14,8 +14,9 @@ import numpy as np
 class TypicalOptimalMethanogen(NutMEG.base_organism):
     """Class for the typical optimal methanogen"""
 
-    def __init__(self, R, orgtype='horde', paramchange={}, dbpath=nmp.std_dbpath, workoutID=False):
+    def __init__(self, R, orgtype='horde', paramchange={}, dbpath=nmp.std_dbpath, workoutID=False, **kwargs):
         params = TypicalOptimalMethanogen.avg_org_params(R, paramchange)
+        params.update(kwargs)
 
         if orgtype == 'horde':
             NutMEG.horde.__init__(self,
@@ -85,8 +86,8 @@ class TypicalOptimalMethanogen(NutMEG.base_organism):
                     maxmet = TOMdf['MetabolicRate'][index]
         else:
             T = locale.env.T
-            kpoly = [-5.31266542e-04  4.46988203e-01 -9.67859408e+01]
-            mpoly = [-4.07231645e-17  1.32059394e-01 -8.10101975e+01]
+            kpoly = [-5.31266542e-04,  4.46988203e-01, -9.67859408e+01]
+            mpoly = [-4.07231645e-17,  1.32059394e-01, -8.10101975e+01]
             k_RTP = math.exp(kpoly[0]*(T*T)+kpoly[1]*(T)+kpoly[2])
             maxmet = math.exp(mpoly[0]*(T*T)+mpoly[1]*(T)+mpoly[2])
 
