@@ -102,6 +102,10 @@ class Enceladus(reactor):
         # ^ from the ratios in the plumes, hence are upper limits
         mol_H=uf(10**(-pH),0)
         if self.nominals:
+            mol_CH4 = mol_CH4.n
+            mol_H2 = mol_H2.n
+            mol_NH3 = mol_NH3.n
+            mol_H2S = mol_H2S.n
             mol_H=uf(10**(-pH),0).n
 
         # reagents
