@@ -14,8 +14,8 @@ import numpy as np
 class TypicalOptimalMethanogen(NutMEG.base_organism):
     """Class for the typical optimal methanogen"""
 
-    def __init__(self, R, orgtype='horde', paramchange={}, dbpath=nmp.std_dbpath, workoutID=False, **kwargs):
-        params = TypicalOptimalMethanogen.avg_org_params(R, paramchange)
+    def __init__(self, R, orgtype='horde', paramchange={}, dbpath=nmp.std_dbpath, workoutID=False, fromdata=False, **kwargs):
+        params = TypicalOptimalMethanogen.avg_org_params(R, paramchange, fromdata=fromdata)
         params.update(kwargs)
 
         if orgtype == 'horde':
@@ -51,6 +51,19 @@ class TypicalOptimalMethanogen(NutMEG.base_organism):
         return CH4conc*growthrate*(math.exp(growthrate) - 1)
 
     @staticmethod
+    def kT1P1_to_kT2P2(kT1P1, T1, P1, T2, P2, S=0, headspace=(0.2,0.8)):
+        if T1==T2 and P1==P2:
+            return kT1P1
+
+        CO2conc1 = VenusDrop.getgasconc('CO2(aq)', headspace[0]*P1, T1, P_bar=P1, S=0)
+        H2conc1 = VenusDrop.getgasconc('H2(aq)', headspace[1]*P1, T1, P_bar=P1, S=0)
+        CO2conc2 = VenusDrop.getgasconc('CO2(aq)', headspace[0]*P2, T2, P_bar=P2, S=0)
+        H2conc2 = VenusDrop.getgasconc('H2(aq)', headspace[1]*P2, T2, P_bar=P2, S=0)
+
+        return kT1P1 * (CO2conc1*(H2conc1**4)) / (CO2conc2*(H2conc2**4))
+
+
+    @staticmethod
     def avg_org_params(locale, paramchange={}, fromdata=False):
         """get the 'average' methanogen parameters from the methanogens csv."""
         # df = pd.read_csv(os.path.dirname(__file__)+'/../../data/methanogens.csv', header=0)
@@ -82,7 +95,14 @@ class TypicalOptimalMethanogen(NutMEG.base_organism):
             TOMdf = pd.read_csv(os.path.dirname(__file__)+'/../../data/params2.csv')
             for index, row in TOMdf.iterrows():
                 if TOMdf['Temperature'][index] == round(locale.env.T):
-                    k_RTP = TOMdf['k_RTP'][index]
+                    # print(VenusDrop.getgasconc('CO2(aq)', 0.2*182000, locale.env.T, P_bar=182000, S=0)*(VenusDrop.getgasconc('H2(aq)', 0.8*182000, locale.env.T, P_bar=182000, S=0)**4))
+                    # print(VenusDrop.getgasconc('CO2(aq)', 0.2*locale.env.P, locale.env.T, P_bar=locale.env.P, S=0)*(VenusDrop.getgasconc('H2(aq)', 0.8*locale.env.P, locale.env.T, P_bar=locale.env.P, S=0)**4))
+                    k_RTP = TypicalOptimalMethanogen.kT1P1_to_kT2P2(
+                      TOMdf['k_RTP'][index], locale.env.T, 182000,
+                      locale.env.T, paramchange.get('TOMpressure', 182000))
+
+                    # TOMdf['k_RTP'][index] * (VenusDrop.getgasconc('CO2(aq)', 0.2*182000, locale.env.T, P_bar=182000, S=0)*(VenusDrop.getgasconc('H2(aq)', 0.8*182000, locale.env.T, P_bar=182000, S=0)**4)) / (VenusDrop.getgasconc('CO2(aq)', 0.2*locale.env.P, locale.env.T, P_bar=locale.env.P, S=0)*(VenusDrop.getgasconc('H2(aq)', 0.8*locale.env.P, locale.env.T, P_bar=locale.env.P, S=0)**4))
+
                     maxmet = TOMdf['MetabolicRate'][index]
         else:
             T = locale.env.T
