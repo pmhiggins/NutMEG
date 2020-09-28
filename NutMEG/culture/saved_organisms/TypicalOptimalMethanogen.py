@@ -17,7 +17,8 @@ class TypicalOptimalMethanogen(NutMEG.base_organism):
     def __init__(self, R, orgtype='horde', paramchange={}, dbpath=nmp.std_dbpath, workoutID=False, fromdata=False, **kwargs):
         params = TypicalOptimalMethanogen.avg_org_params(R, paramchange, fromdata=fromdata)
         params.update(kwargs)
-
+        params['k_RTP'] = 10**(
+          math.log10(params['k_RTP'])+kwargs.pop('k_corr', 0.0))
         if orgtype == 'horde':
             NutMEG.horde.__init__(self,
               'TypicalOptimalMethanogen', R,
@@ -109,6 +110,9 @@ class TypicalOptimalMethanogen(NutMEG.base_organism):
             kpoly = [-5.31266542e-04,  4.46988203e-01, -9.67859408e+01]
             mpoly = [-4.07231645e-17,  1.32059394e-01, -8.10101975e+01]
             k_RTP = math.exp(kpoly[0]*(T*T)+kpoly[1]*(T)+kpoly[2])
+            k_RTP = TypicalOptimalMethanogen.kT1P1_to_kT2P2(
+              k_RTP, locale.env.T, 182000,
+              locale.env.T, paramchange.get('TOMpressure', 182000))
             maxmet = math.exp(mpoly[0]*(T*T)+mpoly[1]*(T)+mpoly[2])
 
         vol=3.4412868852915668e-18
