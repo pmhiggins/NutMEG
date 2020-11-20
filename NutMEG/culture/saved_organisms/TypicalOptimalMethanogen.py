@@ -11,12 +11,13 @@ import numpy as np
 #TODO: add in base_organism
 
 
-class TypicalOptimalMethanogen(NutMEG.base_organism):
+class TypicalOptimalMethanogen(NutMEG.horde):
     """Class for the typical optimal methanogen"""
 
     def __init__(self, R, orgtype='horde', paramchange={}, dbpath=nmp.std_dbpath, workoutID=False, fromdata=False, **kwargs):
         params = TypicalOptimalMethanogen.avg_org_params(R, paramchange, fromdata=fromdata)
         params.update(kwargs)
+        params.update({'workoutID':workoutID, 'dbpath':dbpath})
         params['k_RTP'] = 10**(
           math.log10(params['k_RTP'])+kwargs.pop('k_corr', 0.0))
         if orgtype == 'horde':
@@ -24,8 +25,6 @@ class TypicalOptimalMethanogen(NutMEG.base_organism):
               'TypicalOptimalMethanogen', R,
               self.setup_methanogenesis(R, params['k_RTP']),
               500,
-              workoutID=workoutID,
-              dbpath=dbpath,
               **params)
 
 
@@ -92,6 +91,7 @@ class TypicalOptimalMethanogen(NutMEG.base_organism):
 
         k_RTP = 0.
         maxmet = 0.
+        TOMmain = 0.
         if fromdata:
             TOMdf = pd.read_csv(os.path.dirname(__file__)+'/../../data/params2.csv')
             for index, row in TOMdf.iterrows():
@@ -105,6 +105,7 @@ class TypicalOptimalMethanogen(NutMEG.base_organism):
                     # TOMdf['k_RTP'][index] * (VenusDrop.getgasconc('CO2(aq)', 0.2*182000, locale.env.T, P_bar=182000, S=0)*(VenusDrop.getgasconc('H2(aq)', 0.8*182000, locale.env.T, P_bar=182000, S=0)**4)) / (VenusDrop.getgasconc('CO2(aq)', 0.2*locale.env.P, locale.env.T, P_bar=locale.env.P, S=0)*(VenusDrop.getgasconc('H2(aq)', 0.8*locale.env.P, locale.env.T, P_bar=locale.env.P, S=0)**4))
 
                     maxmet = TOMdf['MetabolicRate'][index]
+                    TOMmain = TOMdf['Maintenance'][index]
         else:
             T = locale.env.T
             kpoly = [-5.31266542e-04,  4.46988203e-01, -9.67859408e+01]
@@ -120,8 +121,9 @@ class TypicalOptimalMethanogen(NutMEG.base_organism):
         # drym=vol*300
         # mass=vol*1000
 
-        avg_org_uniqueparams = {'Tdef':paramchange.get('Tdef', 'Tijhuis'),
-          'Basal':paramchange.get('Basal', 0),
+        # changed Tdef from Tijhuis to TOM-derived
+        avg_org_uniqueparams = {'Tdef':paramchange.get('Tdef', 'None'),
+          'Basal':paramchange.get('Basal', TOMmain),
           'volume':paramchange.get('volume', vol),
           'dry_mass':paramchange.get('dry_mass', vol*300),
           'mass':paramchange.get('mass', vol*1000), #'CH4rate':CH4T,
