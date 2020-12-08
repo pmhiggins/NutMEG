@@ -19,6 +19,8 @@ from .culture.culture import culture
 
 from .reactor.reactor import reactor
 
+from .culture.base_organism.synthesis.BioMolecule import BioMolecule
+
 
 # from .util.loggersetup import loggersetup as logset
 # loggers = logset(__name__, level='DEBUG')
