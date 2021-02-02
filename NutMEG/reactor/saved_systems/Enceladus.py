@@ -115,8 +115,7 @@ class Enceladus(reactor):
           activity=mol_H2)
         CH4aq = reaction.reagent('CH4(g)', self.env, phase='g', conc=mol_CH4,
           activity=mol_CH4)
-        H2O = reaction.reagent('H2O(l)', self.env, phase='l', conc=uf(55.5, 0), activity=uf(1,0),
-          phase_ss=True)
+        H2O = reaction.reagent('H2O(l)', self.env, phase='l', conc=uf(55.5, 0), activity=uf(1,0))
         el = reaction.reagent('e-', self.env, charge=-1)
         H = reaction.reagent('H+', self.env, charge=1, conc=mol_H,
           phase='aq', activity=mol_H)
