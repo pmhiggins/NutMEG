@@ -1,5 +1,5 @@
-import sys
-sys.path.append('..')
+import sys, os
+sys.path.append(os.path.dirname(__file__))
 
 import math
 from NutMEG.environment import *
@@ -9,6 +9,10 @@ from itertools import chain
 
 from uncertainties import ufloat as uf
 import uncertainties.umath as umath
+import numpy as np
+from scipy import interpolate
+
+
 
 Waite2017ratios = {'CO2': uf(0.55, 0.25), 'CH4': uf(0.2, 0.1), 'NH3': uf(0.85, 0.45), 'H2': uf(0.9,0.5), 'H2S':uf(0.0021,0.001)}
 
@@ -42,12 +46,21 @@ class Enceladus(reactor):
         self.nominals=nominals
 
         mol_CO2 = 0.
+        aH2O=1.
+        oceanvals=False
+
         if CO2origin=='tigerstripe':
             mol_CO2 = self.get_tigerstripe_CO2()
         elif CO2origin=='pH':
             mol_CO2 = self.get_CO2_from_pH()
+        elif CO2origin=='HTHeating':
+            mol_CO2, aH2O = Enceladus.get_CO2_from_HTHeating(T=self.env.T, pH = self.pH, nominals=self.nominals)
+            oceanvals=True
+        elif CO2origin=='HTHeating20':
+            mol_CO2, aH2O = Enceladus.get_CO2_from_HTHeating(T=self.env.T, pH = self.pH, nominals=self.nominals, CO2unc=0.5)
+            oceanvals=True
 
-        self.initial_conditions(pH, mol_CO2, Pconc)
+        self.initial_conditions(self.pH, mol_CO2, Pconc, H2Oact=aH2O, oceanvals=oceanvals)
 
         reactor.__init__(self, name, env=self.env,
           reactionlist=self.reactionlist,
@@ -67,6 +80,31 @@ class Enceladus(reactor):
             return uf(absCO2, unc).n
         else:
             return uf(absCO2, unc)
+
+    @staticmethod
+    def interpo_CO2_H2O(Temp=273.15, oceanpH=8.0):
+
+        aH2O = np.load(os.path.dirname(__file__)+'/../../data/Enceladus/aH2O.npy')
+        aCO2 = np.load(os.path.dirname(__file__)+'/../../data/Enceladus/aCO2.npy')
+        # pHHT = np.load('HTHeatingdata/nominalCO2/pHHT.npy')
+
+        pHfloats = np.linspace(7.,12., num=11)
+        Tfloats = np.linspace(273.15, 473.15, num=21)
+
+        fCO2 = interpolate.interp2d(Tfloats,pHfloats,aCO2,kind='cubic')
+
+        fH2O = interpolate.interp2d(Tfloats,pHfloats,aH2O,kind='cubic')
+
+        return fCO2(Temp, oceanpH)[0], fH2O(Temp, oceanpH)[0]
+
+    @staticmethod
+    def get_CO2_from_HTHeating(T, pH, nominals=False, CO2unc=0.):
+        aCO2, aH2O = Enceladus.interpo_CO2_H2O(T, pH)
+        if nominals:
+            return aCO2, aH2O
+        else:
+            return uf(aCO2, CO2unc*aCO2), uf(aH2O,0)
+
 
 
     @staticmethod
@@ -93,12 +131,17 @@ class Enceladus(reactor):
 
 
 
-    def initial_conditions(self, pH, mol_CO2, Pconc):
+    def initial_conditions(self, pH, mol_CO2, Pconc, H2Oact=1.0, oceanvals=False):
 
-        mol_CH4 = (self.mixingratios['CH4']/self.mixingratios['CO2'])*mol_CO2#2.75*mol_CO2 #0.34*mol_CO2
-        mol_H2 = (self.mixingratios['H2']/self.mixingratios['CO2'])*mol_CO2#11*mol_CO2 #103*mol_CO2
-        mol_NH3 = (self.mixingratios['NH3']/self.mixingratios['CO2'])*mol_CO2
-        mol_H2S = (self.mixingratios['H2S']/self.mixingratios['CO2'])*mol_CO2
+        mol_CO2_oc = mol_CO2
+        if oceanvals:
+            #get wider ocean CO_2
+            mol_CO2_oc = Enceladus.get_CO2_from_HTHeating(T=273.15, pH=pH)[0]
+
+        mol_CH4 = (self.mixingratios['CH4']/self.mixingratios['CO2'])*mol_CO2_oc#2.75*mol_CO2 #0.34*mol_CO2
+        mol_H2 = (self.mixingratios['H2']/self.mixingratios['CO2'])*mol_CO2_oc#11*mol_CO2 #103*mol_CO2
+        mol_NH3 = (self.mixingratios['NH3']/self.mixingratios['CO2'])*mol_CO2_oc
+        mol_H2S = (self.mixingratios['H2S']/self.mixingratios['CO2'])*mol_CO2_oc
         # ^ from the ratios in the plumes, hence are upper limits
         mol_H=uf(10**(-pH),0)
         if self.nominals:
