@@ -100,6 +100,12 @@ class Enceladus(reactor):
     @staticmethod
     def get_CO2_from_HTHeating(T, pH, nominals=False, CO2unc=0.):
         aCO2, aH2O = Enceladus.interpo_CO2_H2O(T, pH)
+        if aCO2<0:
+            print('WARNING: negative CO2 at pH ', pH, 'Temerature', T, 'setting to 1e10 M')
+            if nominals:
+                return 1e-10, aH2O
+            else:
+                return uf(1e-10, 2e-11), uf(aH2O,0)
         if nominals:
             return aCO2, aH2O
         else:
