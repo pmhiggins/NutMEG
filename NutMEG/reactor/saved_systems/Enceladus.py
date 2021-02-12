@@ -57,7 +57,7 @@ class Enceladus(reactor):
             mol_CO2, aH2O = Enceladus.get_CO2_from_HTHeating(T=self.env.T, pH = self.pH, nominals=self.nominals)
             oceanvals=True
         elif CO2origin=='HTHeating20':
-            mol_CO2, aH2O = Enceladus.get_CO2_from_HTHeating(T=self.env.T, pH = self.pH, nominals=self.nominals, CO2unc=0.2)
+            mol_CO2, aH2O = Enceladus.get_CO2_from_HTHeating(T=self.env.T, pH = self.pH, nominals=self.nominals, CO2unc=0.5)
             oceanvals=True
 
         self.initial_conditions(self.pH, mol_CO2, Pconc, H2Oact=aH2O, oceanvals=oceanvals)
