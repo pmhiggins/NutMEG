@@ -40,7 +40,8 @@ class Enceladus(reactor):
         self.depth=depth
         self.env.T=T
         self.env.P=(10.+(7.*self.depth))*100000 #80 at bottom, 10 at top, linear in between.
-        self.pH = pH
+        self.ocean_pH = pH # the pH of the 'wider ocean' e.g. at 273 K.
+        self.pH = pH # the pH at this section of the ocean, not nec. same as above.
         self.mixingratios=mixingratios
         self.tigerstripeT = tigerstripeT
         self.nominals=nominals
@@ -54,10 +55,14 @@ class Enceladus(reactor):
         elif CO2origin=='pH':
             mol_CO2 = self.get_CO2_from_pH()
         elif CO2origin=='HTHeating':
-            mol_CO2, aH2O = Enceladus.get_CO2_from_HTHeating(T=self.env.T, pH = self.pH, nominals=self.nominals)
+            mol_CO2, aH2O = Enceladus.get_CO2_from_HTHeating(T=self.env.T, pH=self.ocean_pH, nominals=self.nominals)
             oceanvals=True
         elif CO2origin=='HTHeating20':
-            mol_CO2, aH2O = Enceladus.get_CO2_from_HTHeating(T=self.env.T, pH = self.pH, nominals=self.nominals, CO2unc=0.5)
+            mol_CO2, aH2O = Enceladus.get_CO2_from_HTHeating(T=self.env.T, pH=self.ocean_pH, nominals=self.nominals, CO2unc=0.5)
+            oceanvals=True
+        elif CO2origin=='HTHeatingSalts':
+            mol_CO2lst, aH2Olst = Enceladus.get_CO2_from_HTHeating(T=self.env.T, pH=self.ocean_pH, nominals=self.nominals, CO2unc=0., salts=True)
+            mol_CO2, aH2O = mol_CO2lst[0], aH2Olst[0]
             oceanvals=True
 
         self.initial_conditions(self.pH, mol_CO2, Pconc, H2Oact=aH2O, oceanvals=oceanvals)
@@ -82,10 +87,11 @@ class Enceladus(reactor):
             return uf(absCO2, unc)
 
     @staticmethod
-    def interpo_CO2_H2O(Temp=273.15, oceanpH=8.0):
+    def interpo_CO2_H2O(Temp=273.15, oceanpH=8.0, salt='nominalCO2'):
+        fn_preamble = os.path.dirname(__file__)+'/../../data/Enceladus/'
 
-        aH2O = np.load(os.path.dirname(__file__)+'/../../data/Enceladus/aH2O.npy')
-        aCO2 = np.load(os.path.dirname(__file__)+'/../../data/Enceladus/aCO2.npy')
+        aH2O = np.load(fn_preamble+salt+'/aH2O.npy')
+        aCO2 = np.load(fn_preamble+salt+'/aCO2.npy')
         # pHHT = np.load('HTHeatingdata/nominalCO2/pHHT.npy')
 
         pHfloats = np.linspace(7.,12., num=11)
@@ -98,16 +104,24 @@ class Enceladus(reactor):
         return fCO2(Temp, oceanpH)[0], fH2O(Temp, oceanpH)[0]
 
     @staticmethod
-    def get_CO2_from_HTHeating(T, pH, nominals=False, CO2unc=0.):
+    def get_CO2_from_HTHeating(T, pH, nominals=False, salts=False, CO2unc=0.):
         aCO2, aH2O = Enceladus.interpo_CO2_H2O(T, pH)
         if aCO2<0:
-            print('WARNING: negative CO2 at pH ', pH, 'Temerature', T, 'setting to 1e10 M')
+            print('WARNING: negative CO2 at pH ', pH, 'Temperature', T, 'setting to 1e10 M')
             if nominals:
                 return 1e-10, aH2O
+            elif salts:
+                aCO2_hs, aH2O_hs = Enceladus.interpo_CO2_H2O(T, pH, salt='highsalt')
+                aCO2_ls, aH2O_ls = Enceladus.interpo_CO2_H2O(T, pH, salt='lowsalt')
+                return [1e-10, 1e-10, 1e-10], [aH2O, aH2O_hs, aH2O_ls]
             else:
                 return uf(1e-10, 2e-11), uf(aH2O,0)
         if nominals:
             return aCO2, aH2O
+        elif salts:
+            aCO2_hs, aH2O_hs = Enceladus.interpo_CO2_H2O(T, pH, salt='highsalt')
+            aCO2_ls, aH2O_ls = Enceladus.interpo_CO2_H2O(T, pH, salt='lowsalt')
+            return [aCO2, aCO2_hs, aCO2_ls], [aH2O, aH2O_hs, aH2O_ls]
         else:
             return uf(aCO2, CO2unc*aCO2), uf(aH2O,0)
 
@@ -135,11 +149,16 @@ class Enceladus(reactor):
     def get_exp_T(self, T_max, T_min, height):
         return (T_max-T_min)*math.exp(-1.*height)+T_min
 
+    def calc_mol_CH4(self, mol_CO2_oc):
+        return (self.mixingratios['CH4']/self.mixingratios['CO2'])*mol_CO2_oc
+
+    def calc_mol_H2(self, mol_CO2_oc):
+        return (self.mixingratios['H2']/self.mixingratios['CO2'])*mol_CO2_oc
 
 
-    def initial_conditions(self, pH, mol_CO2, Pconc, H2Oact=1.0, oceanvals=False):
-
-        mol_CO2_oc = mol_CO2
+    def initial_conditions(self, pH, mol_CO2, Pconc, H2Oact=1.0, oceanvals=False, mol_CO2_oc=None):
+        if mol_CO2_oc == None:
+            mol_CO2_oc = mol_CO2
         if oceanvals:
             #get wider ocean CO_2
             mol_CO2_oc = Enceladus.get_CO2_from_HTHeating(T=273.15, pH=pH)[0]
@@ -162,9 +181,9 @@ class Enceladus(reactor):
           activity=mol_CO2)
         H2aq = reaction.reagent('H2(aq)', self.env, phase='aq', conc=mol_H2,
           activity=mol_H2)
-        CH4aq = reaction.reagent('CH4(g)', self.env, phase='g', conc=mol_CH4,
+        CH4aq = reaction.reagent('Methane(aq)', self.env, phase='g', conc=mol_CH4,
           activity=mol_CH4)
-        H2O = reaction.reagent('H2O(l)', self.env, phase='l', conc=uf(55.5, 0), activity=uf(1,0))
+        H2O = reaction.reagent('H2O(l)', self.env, phase='l', conc=uf(55.5, 0), activity=uf(H2Oact,0))
         el = reaction.reagent('e-', self.env, charge=-1)
         H = reaction.reagent('H+', self.env, charge=1, conc=mol_H,
           phase='aq', activity=mol_H)
@@ -174,12 +193,12 @@ class Enceladus(reactor):
 
         # overall
         r = {self.composition['CO2(aq)']:1, self.composition['H2(aq)']:4}
-        p = {self.composition['CH4(g)']:1, self.composition['H2O(l)']:2}
+        p = {self.composition['Methane(aq)']:1, self.composition['H2O(l)']:2}
         thermaloa = reaction.reaction(r,p,self.env)
 
         # redox
         fr = {self.composition['CO2(aq)']:1, self.composition['H+']:8, el:8}
-        fp = {self.composition['CH4(g)']:1, self.composition['H2O(l)']:2}
+        fp = {self.composition['Methane(aq)']:1, self.composition['H2O(l)']:2}
         fwd = reaction.redox_half(fr, fp, self.env, 8, -0.244)
 
         rr = {self.composition['H+']:8, el:8}
