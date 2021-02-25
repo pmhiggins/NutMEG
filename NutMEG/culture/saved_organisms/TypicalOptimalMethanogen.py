@@ -33,7 +33,7 @@ class TypicalOptimalMethanogen(NutMEG.horde):
 
         CO2 = NutMEG.reaction.reagent('CO2(aq)', R.env, phase='aq')
         H2aq = NutMEG.reaction.reagent('H2(aq)', R.env, phase='aq')
-        CH4aq = NutMEG.reaction.reagent('CH4(g)', R.env, phase='g')
+        CH4aq = NutMEG.reaction.reagent('Methane(aq)', R.env, phase='aq')
         H2O = NutMEG.reaction.reagent('H2O(l)', R.env, phase='l')
 
         thermalMG = NutMEG.reaction.reaction({CO2:1, H2aq:4}, {CH4aq:1, H2O:2},
