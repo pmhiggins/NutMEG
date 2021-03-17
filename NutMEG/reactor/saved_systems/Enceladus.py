@@ -18,12 +18,42 @@ Waite2017ratios = {'CO2': uf(0.55, 0.25), 'CH4': uf(0.2, 0.1), 'NH3': uf(0.85, 0
 
 class Enceladus(reactor):
 
-    """The chemically active evirionment of the Enceladean Ocean.
+    """
+    The chemically active evirionment of the Enceladean Ocean.
+    It has a few unique attributes, and at the moment does not take
+    kwargs for reactors. This may be added in the future when the
+    model is a bit more flexible.
 
-    This is a saved instance of reative_system, which contains the
-    methanogenesis and envrironmental data for the moon. In the full
-    model this will be fleshed out with other constituents and maybe
+    This is a saved instance of reactor, which contains the
+    methanogenesis and environmental data for the moon. In the future
+    this will be fleshed out with other constituents and maybe
     even other reactions/flows.
+
+    Attributes
+    ----------
+    ocean_pH : float
+        pH of the ocean at 273.15 K
+    mixingratios : dict, optional
+        molar mixing ratio of the plume (wrt H2O) to use as ufloats. Default is
+        the mixing ratios listed in Waite et al. 2017.
+    CO2origin : str
+        By which methods to calculate the activity of CO2. Options include
+        'tigerstripe', 'pH', 'HTHeating', 'HTHeating20', 'HTHeatingSalts'.
+        HTHeatingSalts is recommended for the best results.
+    tigerstripeT : ufloat, optional
+        Temperature of the tiger stripes for estimating CO2 activity. Only
+        required if you plan to use this technique
+        (e.g. when CO2origin = 'tigerstripe')
+    nominals : boolean, optional
+        Whether to return values as their nominal case (True) or as ufloats
+        (False). Using ufloats can cause problems when working out reaction
+        quotients.
+    Pconc : ufloat, optional
+        Dissolved concentration of phosphorus in the ocean.
+    workoutID : boolean, optional
+        Whether to make an entry into the Enceladus table of the NutMEG
+        database.
+
     """
 
     volume = 7.54e15 #m^3, from radius = 250km, depth = 10km
@@ -58,7 +88,7 @@ class Enceladus(reactor):
             mol_CO2, aH2O = Enceladus.get_CO2_from_HTHeating(T=self.env.T, pH=self.ocean_pH, nominals=self.nominals)
             oceanvals=True
         elif CO2origin=='HTHeating20':
-            mol_CO2, aH2O = Enceladus.get_CO2_from_HTHeating(T=self.env.T, pH=self.ocean_pH, nominals=self.nominals, CO2unc=0.5)
+            mol_CO2, aH2O = Enceladus.get_CO2_from_HTHeating(T=self.env.T, pH=self.ocean_pH, nominals=self.nominals, CO2unc=0.2)
             oceanvals=True
         elif CO2origin=='HTHeatingSalts':
             mol_CO2lst, aH2Olst = Enceladus.get_CO2_from_HTHeating(T=self.env.T, pH=self.ocean_pH, nominals=self.nominals, CO2unc=0., salts=True)
@@ -73,12 +103,20 @@ class Enceladus(reactor):
           workoutID=workoutID)
 
     def get_tigerstripe_CO2(self, logform=False):
+        """
+        Return the CO2 activity as estimated by the tiger stripe temperature.
+        (Glein and Waite 2020)
+        """
         if logform:
             return umath.log10(self.mixingratios['CO2']/100)+9.429-(2574/self.tigerstripeT)
         else:
             return umath.pow(10, (umath.log10(self.mixingratios['CO2']/100)+9.429-(2574/TigerstripeT)))
 
     def get_CO2_from_pH(self):
+        """
+        Return the CO2 activity as estimated from the pH in (Waite et al. 2017).
+        Note only really valid at 273 K.
+        """
         absCO2 = 10**(-0.1213*(self.pH*self.pH) + (0.9832*self.pH) -3.1741)
         unc = 0.2*absCO2
         if self.nominals:
@@ -88,6 +126,11 @@ class Enceladus(reactor):
 
     @staticmethod
     def interpo_CO2_H2O(Temp=273.15, oceanpH=8.0, salt='nominalCO2'):
+        """
+        Return the activity of CO2 and H2O at a given temperature and
+        wider ocean pH (273 K) by interpolating the values from the
+        carbonate speciation model.
+        """
         fn_preamble = os.path.dirname(__file__)+'/../../data/Enceladus/'
 
         aH2O = np.load(fn_preamble+salt+'/aH2O.npy')
@@ -105,6 +148,21 @@ class Enceladus(reactor):
 
     @staticmethod
     def get_CO2_from_HTHeating(T, pH, nominals=False, salts=False, CO2unc=0.):
+        """
+        Return the CO2 activity and H2O activity as ufloats from the carbonate
+        speciation model, or as a list with upper and lower bounds
+        (when salts==True)
+
+        Attributes
+        ----------
+        T : float
+            Temperature of your position in the ocean
+        pH : float
+            pH that the ocean would be at 273 K.
+        salts : boolean, optional
+            if True, use the carbonate speciation model and return
+            nominal, upper and lower bounds for both.
+        """
         aCO2, aH2O = Enceladus.interpo_CO2_H2O(T, pH)
         if aCO2<0:
             print('WARNING: negative CO2 at pH ', pH, 'Temperature', T, 'setting to 1e10 M')
@@ -129,8 +187,10 @@ class Enceladus(reactor):
 
     @staticmethod
     def getHsuT(pH):
-        """Get the temperature at the rock-water interface predicted by
-        Hsu et al 2015 if pH were constant"""
+        """
+        Get the temperature at the rock-water interface predicted by
+        Hsu et al 2015 if pH were constant.
+        """
         if pH==8:
             return 230.0+273.15
         if pH>8 and pH<9:
@@ -147,16 +207,42 @@ class Enceladus(reactor):
             return 90+273.15
 
     def get_exp_T(self, T_max, T_min, height):
+        """ Use simple exponential model to estimate T with depth."""
         return (T_max-T_min)*math.exp(-1.*height)+T_min
 
     def calc_mol_CH4(self, mol_CO2_oc):
+        """
+        Return the activity of CH4 from the activity of CO2 and mixing ratios.
+        """
         return (self.mixingratios['CH4']/self.mixingratios['CO2'])*mol_CO2_oc
 
     def calc_mol_H2(self, mol_CO2_oc):
+        """
+        Return the activity of H2 from the activity of CO2 and mixing ratios.
+        """
         return (self.mixingratios['H2']/self.mixingratios['CO2'])*mol_CO2_oc
 
 
     def initial_conditions(self, pH, mol_CO2, Pconc, H2Oact=1.0, oceanvals=False, mol_CO2_oc=None):
+        """
+        Set up the initial conditions of the ocean in the configuration
+        defined in the initialisation.
+
+        Attributes
+        ----------
+        pH : float
+            wider ocean (273 K) pH
+        mol_CO2 : float
+            Calculated activity of CO2 at this ocean location.
+        Pconc : ufloat
+            Concentration of phosphorus
+        H2Oact : float, optional
+            water activity, default 1.0.
+        oceanvals : boolean, optional
+            whether computing the wider ocean CO2 activity is needed.
+        mol_CO2_oc : float, optional
+            wider ocean CO2 activity. Default is None (then calculated here)
+        """
         if mol_CO2_oc == None:
             mol_CO2_oc = mol_CO2
         if oceanvals:
@@ -217,48 +303,8 @@ class Enceladus(reactor):
         # we already have C in the form of CO2 and CH4
         self.composition['NH3(aq)'] = reaction.reagent('NH3(aq)', self.env, phase='aq', conc=mol_NH3,
           activity=mol_NH3) # from Glein, Baross, Waite 2015
-        # plenty of O in water lol
-        # H is also in water, and the dissolved H2
-        # P and S we dont actually know, so let's arbitrarily say 1 micromole
+        # P and S we don't actually know.
         self.composition['P(aq)'] = reaction.reagent('P(aq)', self.env, phase='aq', conc=Pconc,
           activity=Pconc, thermo=False)
         self.composition['H2S(aq)'] = reaction.reagent('H2S(aq)', self.env, phase='aq', conc=mol_H2S,
           activity=mol_H2S, thermo=False)
-
-
-
-
-
-
-""" These are probably redundant but I'll hold onto them for now.
-
-    def perform_methanogenesis(self, molesCO2, number=1):
-        for c in self.reactionlist['Methanogenesis(thermo)'].reactants:
-            # Find total number of moles in system, then remove the amount
-            # that has been reacted away or formed.
-            c.molal = (((c.activity*1000.0*self.volume)
-              - (c.molar_ratio*molesCO2*number))/(1000.0*self.volume))
-            c.activity = c.molal
-        for c in self.reactionlist['Methanogenesis(thermo)'].products:
-            # Find total number of moles in system, then remove the amount
-            # that has been reacted away or formed.
-            c.molal = (((c.activity*1000.0*self.volume)
-              + (c.molar_ratio*molesCO2*number))/(1000.0*self.volume))
-            c.activity = c.molal
-
-    def perform_methanogenesis_redox(self, molesCO2, number=1):
-        for c in chain(self.reactionlist['Methanogenesis(redox)'].forward.reactants,
-          self.reactionlist['Methanogenesis(redox)'].reverse.products):
-            # Find total number of moles in system, then remove the amount
-            # that has been reacted away or formed.
-            c.molal = (((c.activity*1000.0*self.volume)
-              - (c.molar_ratio*molesCO2*number))/(1000.0*self.volume))
-            c.activity = c.molal
-        for c in chain(self.reactionlist['Methanogenesis(redox)'].reverse.reactants,
-          self.reactionlist['Methanogenesis(redox)'].forward.products):
-            # Find total number of moles in system, then remove the amount
-            # that has been reacted away or formed.
-            c.molal = (((c.activity*1000.0*self.volume)
-              + (c.molar_ratio*molesCO2*number))/(1000.0*self.volume))
-            c.activity = c.molal
-"""

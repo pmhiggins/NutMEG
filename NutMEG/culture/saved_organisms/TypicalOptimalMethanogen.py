@@ -8,11 +8,18 @@ import numpy as np
 
 
 #TODO: Tidy up
-#TODO: add in base_organism
+#TODO: add in a base_organism TOM
 
 
 class TypicalOptimalMethanogen(NutMEG.horde):
-    """Class for the typical optimal methanogen"""
+    """
+    Class for the typical optimal methanogen [TOM] as defined in
+    Higgins & Cockell 2020. The TOM mimicks a methanogen's behavior in
+    optimal conditions for a given temperature T.
+
+    Currently the TOM can only be initialised as a horde. kwargs can be any
+    initialisation parameter for a horde object.
+    """
 
     def __init__(self, R, orgtype='horde', paramchange={}, dbpath=nmp.std_dbpath, workoutID=False, fromdata=False, **kwargs):
         params = TypicalOptimalMethanogen.avg_org_params(R, paramchange, fromdata=fromdata)
@@ -29,7 +36,13 @@ class TypicalOptimalMethanogen(NutMEG.horde):
 
 
     def setup_methanogenesis(self, R, k_RTP=1.0):
-        """return a methanogenesis reaction object in reactor R"""
+        """
+        Return a methanogenesis reaction object in reactor R.
+
+        Optional argument k_RTP is used to set the rate constant. For most
+        TOMs this can be left to the default as it is updated seperately in
+        the initialisation.
+        """
 
         CO2 = NutMEG.reaction.reagent('CO2(aq)', R.env, phase='aq')
         H2aq = NutMEG.reaction.reagent('H2(aq)', R.env, phase='aq')
@@ -46,12 +59,19 @@ class TypicalOptimalMethanogen(NutMEG.horde):
 
     @staticmethod
     def CH4Rate_from_GrowthRate(growthrate, CH4conc=1e-8):
-        """Estimate the rate of CH4 production using the growth
-        rate. ref Powell 1983."""
+        """
+        Estimate the rate of CH4 production using the growth
+        rate. ref Powell 1983.
+        """
         return CH4conc*growthrate*(math.exp(growthrate) - 1)
 
     @staticmethod
     def kT1P1_to_kT2P2(kT1P1, T1, P1, T2, P2, S=0, headspace=(0.2,0.8)):
+        """
+        Convert between rate constants at different temperatures and
+        pressures. Uses dissolved gas conc method in Cockell et al. 2021 Venus
+        paper.
+        """
         if T1==T2 and P1==P2:
             return kT1P1
 
@@ -65,7 +85,10 @@ class TypicalOptimalMethanogen(NutMEG.horde):
 
     @staticmethod
     def avg_org_params(locale, paramchange={}, fromdata=False):
-        """get the 'average' methanogen parameters from the methanogens csv."""
+        """
+        Get the 'average' methanogen parameters from the methanogens csv.
+        Built from methods and application code in Higgins and Cockell 2020.
+        """
         # df = pd.read_csv(os.path.dirname(__file__)+'/../../data/methanogens.csv', header=0)
         # widths, lengths, Ts, pHs, CH4s, Pressures, GRs = [],[],[],[],[],[],[]
         # for index, row in df.iterrows():
