@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Getting Started &mdash; NutMEG 1.0 documentation</title>
+  <title>The core concept &mdash; NutMEG 1.0 documentation</title>
   
 
   
@@ -36,8 +36,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Structure and Hierarchy" href="class_structure.html" />
-    <link rel="prev" title="The core concept" href="coreconcept.html" /> 
+    <link rel="next" title="Getting Started" href="getting_started.html" />
+    <link rel="prev" title="NutMEG" href="../index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -83,12 +83,8 @@
             
               <p class="caption"><span class="caption-text">Guides</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="coreconcept.html">The core concept</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#installing-dependencies">Installing Dependencies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#structuring-nutmeg-projects">Structuring NutMEG Projects</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">The core concept</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="class_structure.html">Structure and Hierarchy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="database_structure.html">Database Structure</a></li>
 <li class="toctree-l1"><a class="reference internal" href="growthalgorithm.html">Growth Algorithm</a></li>
@@ -143,13 +139,13 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Getting Started</li>
+      <li>The core concept</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/guides/getting_started.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/guides/coreconcept.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -162,45 +158,38 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="getting-started">
-<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
-<p>This short guide will help you get NutMEG up and running. You can download the
-full package from <a class="reference external" href="https:github.com/pmhiggins/NutMEG">github</a>.</p>
-<div class="section" id="installing-dependencies">
-<h2>Installing Dependencies<a class="headerlink" href="#installing-dependencies" title="Permalink to this headline">¶</a></h2>
-<p>NutMEG has been built and is running on python 3.7. Previous versions of python
-may be stable but have not been tested. Users have noted errors occurring
-for systems running on python 3.8 and above. We are aware of this and will be
-pushing an unpdate in the near future.</p>
-<p>In order to perform certain chemical calculations, NutMEG has a dependency on
-the <a class="reference external" href="http://en.wikipedia.org/wiki/Hyperlink">reaktoro</a> package. <code class="docutils literal notranslate"><span class="pre">reaktoro</span></code>
-is hosted on conda-forge, so we recommend using NutMEG in a conda environment
-for ease of use.</p>
-<p>By far the simplest route to get up and running would be to install
-<a class="reference external" href="https://docs.conda.io/en/latest/miniconda.html">miniconda</a> then prepare to
-use NutMEG in a <code class="docutils literal notranslate"><span class="pre">conda</span></code> environment. In a terminal, write:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">config</span> <span class="o">--</span><span class="n">append</span> <span class="n">channels</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span>
-<span class="n">conda</span> <span class="n">install</span> <span class="n">reaktoro</span>
-</pre></div>
-</div>
-<p>NutMEG also depends on a few typical python libraries including <code class="docutils literal notranslate"><span class="pre">numpy</span></code>,
-<code class="docutils literal notranslate"><span class="pre">pandas</span></code>, and <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code>. If you don’t have these installed in your
-conda environment navigate to your NutMEG directory and run:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="structuring-nutmeg-projects">
-<h2>Structuring NutMEG Projects<a class="headerlink" href="#structuring-nutmeg-projects" title="Permalink to this headline">¶</a></h2>
-<p>While NutMEG is in development and not widely released, it will simply have to
-sit in project folders or somewhere you can append to <code class="docutils literal notranslate"><span class="pre">sys.path</span></code>. For example,
-you could structure your project folder like so:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>your_project/
-|-- NutMEG/
-`-- your_project_code.py
-</pre></div>
-</div>
-</div>
+  <div class="section" id="the-core-concept">
+<h1>The core concept<a class="headerlink" href="#the-core-concept" title="Permalink to this headline">¶</a></h1>
+<p>NutMEG is built on the idea of energetic habitability. Energy is the universal
+currency for life as we understand it. While metabolic processes vary, they
+will have a net energetic cost or yield which is quantifiable via standard
+chemical thermodynamics. By identifying energy sources and processes
+corresponding to maintenance (e.g. survival in adverse conditions) and growth
+we can assess the habitability of various environments.</p>
+<p>If the energetic availability in an environment outweighs the energetic cost of
+surviving there, we say it is energetically habitable. NutMEG estimates
+microbial growth via an approach where efficiencies are applied to the
+energetic input from metabolism (<span class="math notranslate nohighlight">\(P_{S}\)</span>) corresponding to  microbial maintenance
+(<span class="math notranslate nohighlight">\(\epsilon_{M}\)</span>), and nutrient uptake (<span class="math notranslate nohighlight">\(\epsilon_{UT}\)</span>). Any
+leftover energy can be directed into biomass synthesis (<span class="math notranslate nohighlight">\(P_{G}\)</span>).</p>
+<div class="math notranslate nohighlight">
+\[P_{G} = \epsilon_{UT} \epsilon_{M} P_{S}\]</div>
+<p>The maintenance efficiency reflects the total cost of microbial maintenance
+processes - ones which are necessary for survival but do not directly contribute
+to growth. These could include maintaining a specific internal pH
+(<span class="math notranslate nohighlight">\(P_{pH}\)</span>), repairing biomacromolecules as they break down with
+temperature (<span class="math notranslate nohighlight">\(P_{T}\)</span>), and defending against adverse salinity
+(<span class="math notranslate nohighlight">\(P_{SAL}\)</span>) to give a few examples. Mathematically it takes this form:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\epsilon_{M} = 1 - \frac{ P_{main} }{ P_{s} }\\P_{main} = P_{pH} + P_{T} + P_{SAL} + ...\end{aligned}\end{align} \]</div>
+<p>The nutrient uptake efficiency is more complex to compute. It represents the effect
+of limited availability of carbon, hydrogen, nitrogen, oxygen, phosphorus, or
+sulfur (CHNOPS) elements on the amount of biomass an organism can actually make
+per unit time.</p>
+<p>The core concept behind NutMEG is that if energy still remains after applying <span class="math notranslate nohighlight">\(\epsilon_{M}\)</span>
+and <span class="math notranslate nohighlight">\(\epsilon_{UT}\)</span> both the energy and nutrients are
+available in the local environment not just for an organism to survive, but for
+it to grow as well.</p>
 </div>
 
 
@@ -211,10 +200,10 @@ you could structure your project folder like so:</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="class_structure.html" class="btn btn-neutral float-right" title="Structure and Hierarchy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="getting_started.html" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="coreconcept.html" class="btn btn-neutral float-left" title="The core concept" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-neutral float-left" title="NutMEG" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -3,6 +3,20 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. note::
+  **Problems with the NutMEG API**
+
+  At the moment, the NutMEG API is not appearing on readthedocs. While I
+  work on a fix, an API which is up-to-date with the master branch can be
+  found on my
+  `personal website <https://higginsetal.com/docs/html/source/NutMEG.html>`_
+
+  While you're here, manuscripts for the papers which go with the code in
+  NutMEG_implementations are also available on my `publications page <https://higginsetal.com/#publications>`_
+
+
+
+
 NutMEG
 ======
 
@@ -24,6 +38,7 @@ what it can do at this stage.
     :maxdepth: 1
     :caption: Guides
 
+    guides/coreconcept
     guides/getting_started
     guides/class_structure
     guides/database_structure

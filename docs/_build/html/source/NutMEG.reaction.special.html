@@ -83,10 +83,13 @@
             
               <p class="caption"><span class="caption-text">Guides</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../guides/coreconcept.html">The core concept</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guides/getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guides/class_structure.html">Structure and Hierarchy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guides/database_structure.html">Database Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/growthalgorithm.html">Growth Algorithm</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guides/implementations.html">Using NutMEG-Implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/competitionexample.html">Simple example: simulating competition</a></li>
 </ul>
 <p class="caption"><span class="caption-text">API</span></p>
 <ul class="current">
@@ -109,27 +112,6 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="reference internal" href="NutMEG.reaction.html">NutMEG.reaction package</a><ul class="current">
-<li class="toctree-l2 current"><a class="reference internal" href="NutMEG.reaction.html#subpackages">Subpackages</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">NutMEG.reaction.special package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-NutMEG.reaction.special.Tdep">NutMEG.reaction.special.Tdep module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-NutMEG.reaction.special.plotter">NutMEG.reaction.special.plotter module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-NutMEG.reaction.special.solutions">NutMEG.reaction.special.solutions module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#module-NutMEG.reaction.special">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="NutMEG.reaction.thermo.html">NutMEG.reaction.thermo package</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="NutMEG.reaction.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="NutMEG.reaction.html#module-NutMEG.reaction.reaction">NutMEG.reaction.reaction module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="NutMEG.reaction.html#module-NutMEG.reaction.reagent">NutMEG.reaction.reagent module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="NutMEG.reaction.html#module-NutMEG.reaction">Module contents</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="NutMEG.culture.html">NutMEG.culture package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="NutMEG.applications.html">NutMEG.applications package</a></li>
 </ul>
 
             
@@ -268,7 +250,7 @@ form. For now, we are only considering water as the solvent.</p>
 <dl class="py class">
 <dt id="NutMEG.reaction.special.solutions.electrolyte">
 <em class="property">class </em><code class="sig-prename descclassname">NutMEG.reaction.special.solutions.</code><code class="sig-name descname">electrolyte</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reactants</span></em>, <em class="sig-param"><span class="n">products</span></em>, <em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">H2O</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.solutions.electrolyte" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">reaction.reaction.reaction</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">reaction.reaction</span></code></p>
 <p>Class for charged solutes in pH neutral solutions.</p>
 <p>Used to calculate the mean activity/coefficients of
 fully dissociated salts in solution.</p>
@@ -360,7 +342,7 @@ activity coefficient.</p>
 <dl class="py class">
 <dt id="NutMEG.reaction.special.solutions.neutralsol">
 <em class="property">class </em><code class="sig-prename descclassname">NutMEG.reaction.special.solutions.</code><code class="sig-name descname">neutralsol</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">reactants</span></em>, <em class="sig-param"><span class="n">products</span></em>, <em class="sig-param"><span class="n">env</span></em>, <em class="sig-param"><span class="n">solvent_activity</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.solutions.neutralsol" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">reaction.reaction.reaction</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">reaction.reaction</span></code></p>
 <p>Class for neutral solutes in neutral solutions, and so is rather
 general. The total activity of dissolved solutes can be
 calculated from the osmotic coefficient, which requires the
@@ -390,7 +372,7 @@ activity of the solvent to be known.</p>
 <dl class="py class">
 <dt id="NutMEG.reaction.special.solutions.redox">
 <em class="property">class </em><code class="sig-prename descclassname">NutMEG.reaction.special.solutions.</code><code class="sig-name descname">redox</code><span class="sig-paren">(</span><em class="sig-param">forward</em>, <em class="sig-param">reverse</em>, <em class="sig-param">cell</em>, <em class="sig-param">n</em>, <em class="sig-param">env=&lt;NutMEG.environment.environment.environment object&gt;</em>, <em class="sig-param">H2O=True</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reaction.special.solutions.redox" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">reaction.reaction.reaction</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">reaction.reaction</span></code></p>
 <p>Class for redox reactions in solution</p>
 <p>Will make extensive use of electrolye class, so in an ideal world
 our reactants have conc, molal, radius, and the V and V_RTP

@@ -8,7 +8,9 @@ full package from `github <https:github.com/pmhiggins/NutMEG>`_.
 Installing Dependencies
 -----------------------
 NutMEG has been built and is running on python 3.7. Previous versions of python
-may be stable but have not been tested.
+may be stable but have not been tested. Users have noted errors occurring 
+for systems running on python 3.8 and above. We are aware of this and will be 
+pushing an unpdate in the near future.
 
 In order to perform certain chemical calculations, NutMEG has a dependency on
 the `reaktoro <http://en.wikipedia.org/wiki/Hyperlink>`_ package. ``reaktoro``

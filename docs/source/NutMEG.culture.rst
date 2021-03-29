@@ -11,6 +11,7 @@ Subpackages
    NutMEG.culture.colony
    NutMEG.culture.horde
    NutMEG.culture.organism
+   NutMEG.culture.saved_organisms
 
 Submodules
 ----------
