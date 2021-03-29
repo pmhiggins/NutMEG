@@ -277,7 +277,7 @@ class base_organism:
         if self.respiration.G_C > 0.0 and self.metabolic_rate > 0.0:
             return (self.respiration.G_C*self.metabolic_rate)
         else:
-            # logger.warning(self.OrgID+' has no or negative energy supply!')
+            logger.warning(self.OrgID+' has no or negative energy supply!')
             return 1e-50
 
 
