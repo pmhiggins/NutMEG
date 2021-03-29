@@ -5,3 +5,4 @@ NutMEG
    :maxdepth: 4
 
    NutMEG
+   setup
