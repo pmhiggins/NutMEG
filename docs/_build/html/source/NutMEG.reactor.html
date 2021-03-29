@@ -83,6 +83,7 @@
             
               <p class="caption"><span class="caption-text">Guides</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../guides/coreconcept.html">The core concept</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guides/getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guides/class_structure.html">Structure and Hierarchy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guides/database_structure.html">Database Structure</a></li>
@@ -109,11 +110,9 @@
 <li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html">setup module</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="NutMEG.reaction.html">NutMEG.reaction package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="NutMEG.culture.html">NutMEG.culture package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="NutMEG.applications.html">NutMEG.applications package</a></li>
 </ul>
 
             
@@ -190,9 +189,8 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="NutMEG.reactor.saved_systems.html">NutMEG.reactor.saved_systems package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="NutMEG.reactor.saved_systems.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NutMEG.reactor.saved_systems.html#module-NutMEG.reactor.saved_systems.Enceladus">NutMEG.reactor.saved_systems.Enceladus module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="NutMEG.reactor.saved_systems.html#module-NutMEG.reactor.saved_systems.VenusDrop">NutMEG.reactor.saved_systems.VenusDrop module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="NutMEG.reactor.saved_systems.html#module-NutMEG.reactor.saved_systems.VenusDrop_Legacy">NutMEG.reactor.saved_systems.VenusDrop_Legacy module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="NutMEG.reactor.saved_systems.html#module-NutMEG.reactor.saved_systems.VenusDrop_comments">NutMEG.reactor.saved_systems.VenusDrop_comments module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="NutMEG.reactor.saved_systems.html#module-NutMEG.reactor.saved_systems">Module contents</a></li>
 </ul>
 </li>
@@ -364,7 +362,7 @@ NutMEG.reaction.reaction. Default is NutMEG.reaction.reaction.</p></li>
 
 <dl class="py method">
 <dt id="NutMEG.reactor.reactor.reactor.r_from_db">
-<em class="property">classmethod </em><code class="sig-name descname">r_from_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">LocID</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.reactor.reactor.r_from_db" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">r_from_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">LocID</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github2/NutMEG/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.reactor.reactor.r_from_db" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract a reactor from the SQL database at dbpath.</p>
 <p>Returns the saved reactor object</p>
 <dl class="field-list simple">
@@ -422,7 +420,7 @@ would be in time t [s]</p>
 <span id="nutmeg-reactor-reactor-dbhelper-module"></span><h2>NutMEG.reactor.reactor_dbhelper module<a class="headerlink" href="#module-NutMEG.reactor.reactor_dbhelper" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="NutMEG.reactor.reactor_dbhelper.rdb_helper">
-<em class="property">class </em><code class="sig-prename descclassname">NutMEG.reactor.reactor_dbhelper.</code><code class="sig-name descname">rdb_helper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">host</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.reactor_dbhelper.rdb_helper" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.reactor.reactor_dbhelper.</code><code class="sig-name descname">rdb_helper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">host</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github2/NutMEG/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.reactor_dbhelper.rdb_helper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class from managing how reactors and their attributes are stored in
 NutMEG’s database. There are three main tables of interest here:
@@ -507,7 +505,7 @@ with its parameters.</p>
 
 <dl class="py method">
 <dt id="NutMEG.reactor.reactor_dbhelper.rdb_helper.from_db">
-<em class="property">static </em><code class="sig-name descname">from_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">LocID</span></em>, <em class="sig-param"><span class="n">dbdict</span><span class="o">=</span><span class="default_value">{'CompID': ['TEXT', ''], 'Pressure': ['REAL', 0], 'Temperature': ['REAL', 0], 'Volume': ['REAL', 0], 'composition_inputs': ['TEXT', '{}'], 'pH': ['REAL', 0], 'reactions': ['TEXT', '']}</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.reactor_dbhelper.rdb_helper.from_db" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">from_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">LocID</span></em>, <em class="sig-param"><span class="n">dbdict</span><span class="o">=</span><span class="default_value">{'CompID': ['TEXT', ''], 'Pressure': ['REAL', 0], 'Temperature': ['REAL', 0], 'Volume': ['REAL', 0], 'composition_inputs': ['TEXT', '{}'], 'pH': ['REAL', 0], 'reactions': ['TEXT', '']}</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github2/NutMEG/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.reactor_dbhelper.rdb_helper.from_db" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract the data from the database and return a dictionary
 of parameters to initialise the reactor.</p>
 </dd></dl>

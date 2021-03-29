@@ -1,0 +1,293 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>NutMEG.culture.saved_organisms package &mdash; NutMEG 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="NutMEG.environment package" href="NutMEG.environment.html" />
+    <link rel="prev" title="NutMEG.culture.organism package" href="NutMEG.culture.organism.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> NutMEG
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Guides</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../guides/coreconcept.html">The core concept</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/class_structure.html">Structure and Hierarchy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/database_structure.html">Database Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/growthalgorithm.html">Growth Algorithm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/implementations.html">Using NutMEG-Implementations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guides/competitionexample.html">Simple example: simulating competition</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">NutMEG</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="NutMEG.html">NutMEG package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="NutMEG.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.applications.html">NutMEG.applications package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="NutMEG.culture.html">NutMEG.culture package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.environment.html">NutMEG.environment package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.plotter.html">NutMEG.plotter package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.reaction.html">NutMEG.reaction package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.reactor.html">NutMEG.reactor package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG.ecosystem">NutMEG.ecosystem module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG.ecosystem_dbhelper">NutMEG.ecosystem_dbhelper module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html">setup module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NutMEG</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="modules.html">NutMEG</a> &raquo;</li>
+        
+          <li><a href="NutMEG.html">NutMEG package</a> &raquo;</li>
+        
+          <li><a href="NutMEG.culture.html">NutMEG.culture package</a> &raquo;</li>
+        
+      <li>NutMEG.culture.saved_organisms package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/source/NutMEG.culture.saved_organisms.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="nutmeg-culture-saved-organisms-package">
+<h1>NutMEG.culture.saved_organisms package<a class="headerlink" href="#nutmeg-culture-saved-organisms-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-NutMEG.culture.saved_organisms.TypicalOptimalMethanogen">
+<span id="nutmeg-culture-saved-organisms-typicaloptimalmethanogen-module"></span><h2>NutMEG.culture.saved_organisms.TypicalOptimalMethanogen module<a class="headerlink" href="#module-NutMEG.culture.saved_organisms.TypicalOptimalMethanogen" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="NutMEG.culture.saved_organisms.TypicalOptimalMethanogen.TypicalOptimalMethanogen">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.culture.saved_organisms.TypicalOptimalMethanogen.</code><code class="sig-name descname">TypicalOptimalMethanogen</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">R</span></em>, <em class="sig-param"><span class="n">orgtype</span><span class="o">=</span><span class="default_value">'horde'</span></em>, <em class="sig-param"><span class="n">paramchange</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github2/NutMEG/NutMEG/util/../../NutMEG_db'</span></em>, <em class="sig-param"><span class="n">workoutID</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">fromdata</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.saved_organisms.TypicalOptimalMethanogen.TypicalOptimalMethanogen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="NutMEG.culture.horde.html#NutMEG.culture.horde.horde.horde" title="NutMEG.culture.horde.horde.horde"><code class="xref py py-class docutils literal notranslate"><span class="pre">NutMEG.culture.horde.horde.horde</span></code></a></p>
+<p>Class for the typical optimal methanogen [TOM] as defined in
+Higgins &amp; Cockell 2020. The TOM mimicks a methanogen’s behavior in
+optimal conditions for a given temperature T.</p>
+<p>Currently the TOM can only be initialised as a horde. kwargs can be any
+initialisation parameter for a horde object.</p>
+<dl class="py method">
+<dt id="NutMEG.culture.saved_organisms.TypicalOptimalMethanogen.TypicalOptimalMethanogen.CH4Rate_from_GrowthRate">
+<em class="property">static </em><code class="sig-name descname">CH4Rate_from_GrowthRate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">growthrate</span></em>, <em class="sig-param"><span class="n">CH4conc</span><span class="o">=</span><span class="default_value">1e-08</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.saved_organisms.TypicalOptimalMethanogen.TypicalOptimalMethanogen.CH4Rate_from_GrowthRate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate the rate of CH4 production using the growth
+rate. ref Powell 1983.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.saved_organisms.TypicalOptimalMethanogen.TypicalOptimalMethanogen.avg_org_params">
+<em class="property">static </em><code class="sig-name descname">avg_org_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">locale</span></em>, <em class="sig-param"><span class="n">paramchange</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">fromdata</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.saved_organisms.TypicalOptimalMethanogen.TypicalOptimalMethanogen.avg_org_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the ‘average’ methanogen parameters from the methanogens csv.
+Built from methods and application code in Higgins and Cockell 2020.</p>
+<p>Commented out code is for generating TOM data, which should be saved
+in NutMEG’s data directory so isn’t needed. Will leave here for future
+use if needed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.saved_organisms.TypicalOptimalMethanogen.TypicalOptimalMethanogen.kT1P1_to_kT2P2">
+<em class="property">static </em><code class="sig-name descname">kT1P1_to_kT2P2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">kT1P1</span></em>, <em class="sig-param"><span class="n">T1</span></em>, <em class="sig-param"><span class="n">P1</span></em>, <em class="sig-param"><span class="n">T2</span></em>, <em class="sig-param"><span class="n">P2</span></em>, <em class="sig-param"><span class="n">S</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">headspace</span><span class="o">=</span><span class="default_value">0.2, 0.8</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.saved_organisms.TypicalOptimalMethanogen.TypicalOptimalMethanogen.kT1P1_to_kT2P2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert between rate constants at different temperatures and
+pressures. Uses dissolved gas conc method in Cockell et al. 2021 Venus
+paper.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.culture.saved_organisms.TypicalOptimalMethanogen.TypicalOptimalMethanogen.setup_methanogenesis">
+<code class="sig-name descname">setup_methanogenesis</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">R</span></em>, <em class="sig-param"><span class="n">k_RTP</span><span class="o">=</span><span class="default_value">1.0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.culture.saved_organisms.TypicalOptimalMethanogen.TypicalOptimalMethanogen.setup_methanogenesis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a methanogenesis reaction object in reactor R.</p>
+<p>Optional argument k_RTP is used to set the rate constant. For most
+TOMs this can be left to the default as it is updated seperately in
+the initialisation.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NutMEG.culture.saved_organisms">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-NutMEG.culture.saved_organisms" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="NutMEG.environment.html" class="btn btn-neutral float-right" title="NutMEG.environment package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="NutMEG.culture.organism.html" class="btn btn-neutral float-left" title="NutMEG.culture.organism package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, P. M. Higgins
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

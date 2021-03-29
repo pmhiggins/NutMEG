@@ -36,6 +36,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="setup module" href="setup.html" />
     <link rel="prev" title="NutMEG.reactor package" href="NutMEG.reactor.html" /> 
 </head>
 
@@ -82,6 +83,7 @@
             
               <p class="caption"><span class="caption-text">Guides</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../guides/coreconcept.html">The core concept</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guides/getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guides/class_structure.html">Structure and Hierarchy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guides/database_structure.html">Database Structure</a></li>
@@ -108,11 +110,9 @@
 <li class="toctree-l3"><a class="reference internal" href="NutMEG.html#module-NutMEG">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html">setup module</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="NutMEG.reaction.html">NutMEG.reaction package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="NutMEG.culture.html">NutMEG.culture package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="NutMEG.applications.html">NutMEG.applications package</a></li>
 </ul>
 
             
@@ -187,6 +187,285 @@
 <h1>NutMEG.reactor.saved_systems package<a class="headerlink" href="#nutmeg-reactor-saved-systems-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-NutMEG.reactor.saved_systems.Enceladus">
+<span id="nutmeg-reactor-saved-systems-enceladus-module"></span><h2>NutMEG.reactor.saved_systems.Enceladus module<a class="headerlink" href="#module-NutMEG.reactor.saved_systems.Enceladus" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus">
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.reactor.saved_systems.Enceladus.</code><code class="sig-name descname">Enceladus</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">pH=8.5</em>, <em class="sig-param">depth=8.5</em>, <em class="sig-param">T=273.15</em>, <em class="sig-param">mixingratios={'CH4': 0.2+/-0.1</em>, <em class="sig-param">'CO2': 0.55+/-0.25</em>, <em class="sig-param">'H2': 0.9+/-0.5</em>, <em class="sig-param">'H2S': 0.0021+/-0.001</em>, <em class="sig-param">'NH3': 0.85+/-0.45}</em>, <em class="sig-param">CO2origin='pH'</em>, <em class="sig-param">tigerstripeT=197.0+/-20.0</em>, <em class="sig-param">Pconc=1e-06+/-0</em>, <em class="sig-param">workoutID=False</em>, <em class="sig-param">nominals=False</em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="NutMEG.reactor.html#NutMEG.reactor.reactor.reactor" title="NutMEG.reactor.reactor.reactor"><code class="xref py py-class docutils literal notranslate"><span class="pre">NutMEG.reactor.reactor.reactor</span></code></a></p>
+<p>The chemically active evirionment of the Enceladean Ocean.
+It has a few unique attributes, and at the moment does not take
+kwargs for reactors. This may be added in the future when the
+model is a bit more flexible.</p>
+<p>This is a saved instance of reactor, which contains the
+methanogenesis and environmental data for the moon. In the future
+this will be fleshed out with other constituents and maybe
+even other reactions/flows.</p>
+<dl class="py attribute">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.ocean_pH">
+<code class="sig-name descname">ocean_pH</code><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.ocean_pH" title="Permalink to this definition">¶</a></dt>
+<dd><p>pH of the ocean at 273.15 K</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.mixingratios">
+<code class="sig-name descname">mixingratios</code><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.mixingratios" title="Permalink to this definition">¶</a></dt>
+<dd><p>molar mixing ratio of the plume (wrt H2O) to use as ufloats. Default is
+the mixing ratios listed in Waite et al. 2017.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.CO2origin">
+<code class="sig-name descname">CO2origin</code><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.CO2origin" title="Permalink to this definition">¶</a></dt>
+<dd><p>By which methods to calculate the activity of CO2. Options include
+‘tigerstripe’, ‘pH’, ‘HTHeating’, ‘HTHeating20’, ‘HTHeatingSalts’.
+HTHeatingSalts is recommended for the best results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.tigerstripeT">
+<code class="sig-name descname">tigerstripeT</code><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.tigerstripeT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Temperature of the tiger stripes for estimating CO2 activity. Only
+required if you plan to use this technique
+(e.g. when CO2origin = ‘tigerstripe’)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ufloat, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.nominals">
+<code class="sig-name descname">nominals</code><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.nominals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether to return values as their nominal case (True) or as ufloats
+(False). Using ufloats can cause problems when working out reaction
+quotients.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>boolean, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.Pconc">
+<code class="sig-name descname">Pconc</code><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.Pconc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dissolved concentration of phosphorus in the ocean.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ufloat, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.workoutID">
+<code class="sig-name descname">workoutID</code><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.workoutID" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether to make an entry into the Enceladus table of the NutMEG
+database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>boolean, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.calc_mol_CH4">
+<code class="sig-name descname">calc_mol_CH4</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mol_CO2_oc</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.calc_mol_CH4" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the activity of CH4 from the activity of CO2 and mixing ratios.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.calc_mol_H2">
+<code class="sig-name descname">calc_mol_H2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mol_CO2_oc</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.calc_mol_H2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the activity of H2 from the activity of CO2 and mixing ratios.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.depth">
+<code class="sig-name descname">depth</code><em class="property"> = 8.5</em><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.depth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.env">
+<code class="sig-name descname">env</code><em class="property"> = &lt;NutMEG.environment.environment.environment object&gt;</em><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.env" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.getHsuT">
+<em class="property">static </em><code class="sig-name descname">getHsuT</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pH</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.getHsuT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the temperature at the rock-water interface predicted by
+Hsu et al 2015 if pH were constant.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.get_CO2_from_HTHeating">
+<em class="property">static </em><code class="sig-name descname">get_CO2_from_HTHeating</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">pH</span></em>, <em class="sig-param"><span class="n">nominals</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">salts</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">CO2unc</span><span class="o">=</span><span class="default_value">0.0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.get_CO2_from_HTHeating" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the CO2 activity and H2O activity as ufloats from the carbonate
+speciation model, or as a list with upper and lower bounds
+(when salts==True)</p>
+<dl class="py attribute">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.T">
+<code class="sig-name descname">T</code><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.T" title="Permalink to this definition">¶</a></dt>
+<dd><p>Temperature of your position in the ocean</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.pH">
+<code class="sig-name descname">pH</code><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.pH" title="Permalink to this definition">¶</a></dt>
+<dd><p>pH that the ocean would be at 273 K.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.salts">
+<code class="sig-name descname">salts</code><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.salts" title="Permalink to this definition">¶</a></dt>
+<dd><p>if True, use the carbonate speciation model and return
+nominal, upper and lower bounds for both.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>boolean, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.get_CO2_from_pH">
+<code class="sig-name descname">get_CO2_from_pH</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.get_CO2_from_pH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the CO2 activity as estimated from the pH in (Waite et al. 2017).
+Note only really valid at 273 K.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.get_exp_T">
+<code class="sig-name descname">get_exp_T</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">T_max</span></em>, <em class="sig-param"><span class="n">T_min</span></em>, <em class="sig-param"><span class="n">height</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.get_exp_T" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use simple exponential model to estimate T with depth.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.get_tigerstripe_CO2">
+<code class="sig-name descname">get_tigerstripe_CO2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">logform</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.get_tigerstripe_CO2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the CO2 activity as estimated by the tiger stripe temperature.
+(Glein and Waite 2020)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.initial_conditions">
+<code class="sig-name descname">initial_conditions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pH</span></em>, <em class="sig-param"><span class="n">mol_CO2</span></em>, <em class="sig-param"><span class="n">Pconc</span></em>, <em class="sig-param"><span class="n">H2Oact</span><span class="o">=</span><span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">oceanvals</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">mol_CO2_oc</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.initial_conditions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set up the initial conditions of the ocean in the configuration
+defined in the initialisation.</p>
+<dl class="py attribute">
+<dt id="id0">
+<code class="sig-name descname">pH</code><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<dd><p>wider ocean (273 K) pH</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.mol_CO2">
+<code class="sig-name descname">mol_CO2</code><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.mol_CO2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculated activity of CO2 at this ocean location.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="id1">
+<code class="sig-name descname">Pconc</code><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Concentration of phosphorus</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ufloat</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.H2Oact">
+<code class="sig-name descname">H2Oact</code><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.H2Oact" title="Permalink to this definition">¶</a></dt>
+<dd><p>water activity, default 1.0.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.oceanvals">
+<code class="sig-name descname">oceanvals</code><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.oceanvals" title="Permalink to this definition">¶</a></dt>
+<dd><p>whether computing the wider ocean CO2 activity is needed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>boolean, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.mol_CO2_oc">
+<code class="sig-name descname">mol_CO2_oc</code><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.mol_CO2_oc" title="Permalink to this definition">¶</a></dt>
+<dd><p>wider ocean CO2 activity. Default is None (then calculated here)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float, optional</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.interpo_CO2_H2O">
+<em class="property">static </em><code class="sig-name descname">interpo_CO2_H2O</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Temp</span><span class="o">=</span><span class="default_value">273.15</span></em>, <em class="sig-param"><span class="n">oceanpH</span><span class="o">=</span><span class="default_value">8.0</span></em>, <em class="sig-param"><span class="n">salt</span><span class="o">=</span><span class="default_value">'nominalCO2'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.interpo_CO2_H2O" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the activity of CO2 and H2O at a given temperature and
+wider ocean pH (273 K) by interpolating the values from the
+carbonate speciation model.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="NutMEG.reactor.saved_systems.Enceladus.Enceladus.volume">
+<code class="sig-name descname">volume</code><em class="property"> = 7540000000000000.0</em><a class="headerlink" href="#NutMEG.reactor.saved_systems.Enceladus.Enceladus.volume" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-NutMEG.reactor.saved_systems.VenusDrop">
 <span id="nutmeg-reactor-saved-systems-venusdrop-module"></span><h2>NutMEG.reactor.saved_systems.VenusDrop module<a class="headerlink" href="#module-NutMEG.reactor.saved_systems.VenusDrop" title="Permalink to this headline">¶</a></h2>
@@ -271,101 +550,6 @@ on its atmospheric ppm</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-NutMEG.reactor.saved_systems.VenusDrop_Legacy">
-<span id="nutmeg-reactor-saved-systems-venusdrop-legacy-module"></span><h2>NutMEG.reactor.saved_systems.VenusDrop_Legacy module<a class="headerlink" href="#module-NutMEG.reactor.saved_systems.VenusDrop_Legacy" title="Permalink to this headline">¶</a></h2>
-<dl class="py class">
-<dt id="NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop">
-<em class="property">class </em><code class="sig-prename descclassname">NutMEG.reactor.saved_systems.VenusDrop_Legacy.</code><code class="sig-name descname">VenusDrop</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">H2ppm</span><span class="o">=</span><span class="default_value">25</span></em>, <em class="sig-param"><span class="n">HSact</span><span class="o">=</span><span class="default_value">1e-10</span></em>, <em class="sig-param"><span class="n">T</span><span class="o">=</span><span class="default_value">298</span></em>, <em class="sig-param"><span class="n">P</span><span class="o">=</span><span class="default_value">100000</span></em>, <em class="sig-param"><span class="n">V</span><span class="o">=</span><span class="default_value">1.13e-16</span></em>, <em class="sig-param"><span class="n">setupcomp</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">workoutID</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="NutMEG.reactor.html#NutMEG.reactor.reactor.reactor" title="NutMEG.reactor.reactor.reactor"><code class="xref py py-class docutils literal notranslate"><span class="pre">NutMEG.reactor.reactor.reactor</span></code></a></p>
-<p>The chemically active evironment of a simple Venusian cloud droplet.</p>
-<p>This is an instance of reactor, with added methods to estimate the
-composition from cloud ppm values and setup specific possible venusian
-metabolisms. To start with, this only includes sulfate reduction.</p>
-<dl class="py method">
-<dt id="NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop.getgasconc">
-<em class="property">static </em><code class="sig-name descname">getgasconc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gas_name</span></em>, <em class="sig-param"><span class="n">P_gas</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">P_bar</span><span class="o">=</span><span class="default_value">101325</span></em>, <em class="sig-param"><span class="n">S</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop.getgasconc" title="Permalink to this definition">¶</a></dt>
-<dd><p>P_gas —partial pressure of gas in Pa</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop.initial_conditions">
-<code class="sig-name descname">initial_conditions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">H2ppm</span></em>, <em class="sig-param"><span class="n">HSact</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">setupcomp</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">addreaction</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop.initial_conditions" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop.solubilityEQ">
-<em class="property">static </em><code class="sig-name descname">solubilityEQ</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gas_name</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">S</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop.solubilityEQ" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop.solubilityEQparams">
-<em class="property">static </em><code class="sig-name descname">solubilityEQparams</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A1</span></em>, <em class="sig-param"><span class="n">A2</span></em>, <em class="sig-param"><span class="n">A3</span></em>, <em class="sig-param"><span class="n">B1</span></em>, <em class="sig-param"><span class="n">B2</span></em>, <em class="sig-param"><span class="n">B3</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">S</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop.solubilityEQparams" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop.update_conditions">
-<code class="sig-name descname">update_conditions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">H2ppm</span></em>, <em class="sig-param"><span class="n">HSact</span><span class="o">=</span><span class="default_value">0.0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_Legacy.VenusDrop.update_conditions" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</div>
-<div class="section" id="module-NutMEG.reactor.saved_systems.VenusDrop_comments">
-<span id="nutmeg-reactor-saved-systems-venusdrop-comments-module"></span><h2>NutMEG.reactor.saved_systems.VenusDrop_comments module<a class="headerlink" href="#module-NutMEG.reactor.saved_systems.VenusDrop_comments" title="Permalink to this headline">¶</a></h2>
-<dl class="py class">
-<dt id="NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop">
-<em class="property">class </em><code class="sig-prename descclassname">NutMEG.reactor.saved_systems.VenusDrop_comments.</code><code class="sig-name descname">VenusDrop</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">H2ppm</span><span class="o">=</span><span class="default_value">25</span></em>, <em class="sig-param"><span class="n">HSact</span><span class="o">=</span><span class="default_value">1e-10</span></em>, <em class="sig-param"><span class="n">T</span><span class="o">=</span><span class="default_value">298</span></em>, <em class="sig-param"><span class="n">P</span><span class="o">=</span><span class="default_value">100000</span></em>, <em class="sig-param"><span class="n">V</span><span class="o">=</span><span class="default_value">1.13e-16</span></em>, <em class="sig-param"><span class="n">setupcomp</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">workoutID</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="NutMEG.reactor.html#NutMEG.reactor.reactor.reactor" title="NutMEG.reactor.reactor.reactor"><code class="xref py py-class docutils literal notranslate"><span class="pre">NutMEG.reactor.reactor.reactor</span></code></a></p>
-<p>The chemically active evironment of a simple Venusian cloud droplet.</p>
-<p>This is an instance of reactor, with added methods to estimate the
-composition from cloud ppm values and setup specific possible venusian
-metabolisms.</p>
-<dl class="py method">
-<dt id="NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.getgasconc">
-<em class="property">static </em><code class="sig-name descname">getgasconc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gas_name</span></em>, <em class="sig-param"><span class="n">P_gas</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">P_bar</span><span class="o">=</span><span class="default_value">101325</span></em>, <em class="sig-param"><span class="n">S</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.getgasconc" title="Permalink to this definition">¶</a></dt>
-<dd><p>P_gas —partial pressure of gas in Pa</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.initial_conditions">
-<code class="sig-name descname">initial_conditions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">H2ppm</span></em>, <em class="sig-param"><span class="n">HSact</span><span class="o">=</span><span class="default_value">1e-10</span></em>, <em class="sig-param"><span class="n">setupcomp</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">addreaction</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.initial_conditions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set up a basic configuration, with pH 0 sulfuric acid
-droplet and dissolved H2.</p>
-<dl class="simple">
-<dt>H2ppm<span class="classifier">float</span></dt><dd><p>H2 parts per million in the atmosphere around the droplet.</p>
-</dd>
-<dt>HSact<span class="classifier">float</span></dt><dd><p>HS activity to use. Default is 1e-10</p>
-</dd>
-<dt>setupcomp<span class="classifier">bool</span></dt><dd><p>Whether to set up the standard composition. Default True</p>
-</dd>
-<dt>addreaction<span class="classifier">bool</span></dt><dd><p>Whether to include sulfate reduction in the reactionlist</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.solubilityEQ">
-<em class="property">static </em><code class="sig-name descname">solubilityEQ</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">gas_name</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">S</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.solubilityEQ" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.solubilityEQparams">
-<em class="property">static </em><code class="sig-name descname">solubilityEQparams</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">A1</span></em>, <em class="sig-param"><span class="n">A2</span></em>, <em class="sig-param"><span class="n">A3</span></em>, <em class="sig-param"><span class="n">B1</span></em>, <em class="sig-param"><span class="n">B2</span></em>, <em class="sig-param"><span class="n">B3</span></em>, <em class="sig-param"><span class="n">T</span></em>, <em class="sig-param"><span class="n">S</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.solubilityEQparams" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.update_conditions">
-<code class="sig-name descname">update_conditions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">H2ppm</span></em>, <em class="sig-param"><span class="n">HSact</span><span class="o">=</span><span class="default_value">1e-10</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.update_conditions" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.update_reagent">
-<code class="sig-name descname">update_reagent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">ppm</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.reactor.saved_systems.VenusDrop_comments.VenusDrop.update_reagent" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</div>
 <div class="section" id="module-NutMEG.reactor.saved_systems">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-NutMEG.reactor.saved_systems" title="Permalink to this headline">¶</a></h2>
 </div>
@@ -378,6 +562,8 @@ droplet and dissolved H2.</p>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="setup.html" class="btn btn-neutral float-right" title="setup module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="NutMEG.reactor.html" class="btn btn-neutral float-left" title="NutMEG.reactor package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

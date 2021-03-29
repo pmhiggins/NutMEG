@@ -83,6 +83,7 @@
             
               <p class="caption"><span class="caption-text">Guides</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../guides/coreconcept.html">The core concept</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guides/getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guides/class_structure.html">Structure and Hierarchy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../guides/database_structure.html">Database Structure</a></li>
@@ -109,6 +110,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#module-NutMEG">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html">setup module</a></li>
 </ul>
 </li>
 </ul>
@@ -223,6 +225,12 @@
 <li class="toctree-l4"><a class="reference internal" href="NutMEG.culture.organism.html#module-NutMEG.culture.organism">Module contents</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="NutMEG.culture.saved_organisms.html">NutMEG.culture.saved_organisms package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.culture.saved_organisms.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.culture.saved_organisms.html#module-NutMEG.culture.saved_organisms.TypicalOptimalMethanogen">NutMEG.culture.saved_organisms.TypicalOptimalMethanogen module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.culture.saved_organisms.html#module-NutMEG.culture.saved_organisms">Module contents</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="NutMEG.culture.html#submodules">Submodules</a></li>
@@ -274,9 +282,8 @@
 <li class="toctree-l2"><a class="reference internal" href="NutMEG.reactor.html#subpackages">Subpackages</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="NutMEG.reactor.saved_systems.html">NutMEG.reactor.saved_systems package</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="NutMEG.reactor.saved_systems.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NutMEG.reactor.saved_systems.html#module-NutMEG.reactor.saved_systems.Enceladus">NutMEG.reactor.saved_systems.Enceladus module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="NutMEG.reactor.saved_systems.html#module-NutMEG.reactor.saved_systems.VenusDrop">NutMEG.reactor.saved_systems.VenusDrop module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="NutMEG.reactor.saved_systems.html#module-NutMEG.reactor.saved_systems.VenusDrop_Legacy">NutMEG.reactor.saved_systems.VenusDrop_Legacy module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="NutMEG.reactor.saved_systems.html#module-NutMEG.reactor.saved_systems.VenusDrop_comments">NutMEG.reactor.saved_systems.VenusDrop_comments module</a></li>
 <li class="toctree-l4"><a class="reference internal" href="NutMEG.reactor.saved_systems.html#module-NutMEG.reactor.saved_systems">Module contents</a></li>
 </ul>
 </li>
@@ -298,7 +305,7 @@
 <span id="nutmeg-ecosystem-module"></span><h2>NutMEG.ecosystem module<a class="headerlink" href="#module-NutMEG.ecosystem" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="NutMEG.ecosystem.ecosystem">
-<em class="property">class </em><code class="sig-prename descclassname">NutMEG.ecosystem.</code><code class="sig-name descname">ecosystem</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">r</span></em>, <em class="sig-param"><span class="n">c</span></em>, <em class="sig-param"><span class="n">loggerlevel</span><span class="o">=</span><span class="default_value">'INFO'</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.ecosystem.ecosystem" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">NutMEG.ecosystem.</code><code class="sig-name descname">ecosystem</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">r</span></em>, <em class="sig-param"><span class="n">c</span></em>, <em class="sig-param"><span class="n">loggerlevel</span><span class="o">=</span><span class="default_value">'INFO'</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github2/NutMEG/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.ecosystem.ecosystem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Module to manage a unique ecosystem, containing a <code class="docutils literal notranslate"><span class="pre">culture</span></code>
 of organisms and their local environment (<code class="docutils literal notranslate"><span class="pre">reactor</span></code>)</p>
@@ -554,7 +561,7 @@ returned.</p>
 
 <dl class="py method">
 <dt id="NutMEG.ecosystem_dbhelper.db_helper.create_major_tables">
-<em class="property">static </em><code class="sig-name descname">create_major_tables</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">replace</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.ecosystem_dbhelper.db_helper.create_major_tables" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">create_major_tables</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">replace</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github2/NutMEG/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.ecosystem_dbhelper.db_helper.create_major_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create the major tables in the ecosystem database inside the
 file passsed. If replace is True, any tables of the same name will
 be deleted.</p>
@@ -591,7 +598,7 @@ too. Default False</p></li>
 
 <dl class="py method">
 <dt id="NutMEG.ecosystem_dbhelper.db_helper.extract_param_db_OrgLoc">
-<em class="property">static </em><code class="sig-name descname">extract_param_db_OrgLoc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">OrgIDs</span></em>, <em class="sig-param"><span class="n">LocID</span></em>, <em class="sig-param"><span class="n">OrgNums</span></em>, <em class="sig-param"><span class="n">param</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.ecosystem_dbhelper.db_helper.extract_param_db_OrgLoc" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">extract_param_db_OrgLoc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">OrgIDs</span></em>, <em class="sig-param"><span class="n">LocID</span></em>, <em class="sig-param"><span class="n">OrgNums</span></em>, <em class="sig-param"><span class="n">param</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github2/NutMEG/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.ecosystem_dbhelper.db_helper.extract_param_db_OrgLoc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch a specific parameter from a simulation, using the relevant
 OrgID and LocIDs as passed. If the param is a Summary variable, this
 returns the final value from that simulation., if its one of the
@@ -613,7 +620,7 @@ equivalent to parameters found in horde_output, culture_output etc.</p></li>
 
 <dl class="py method">
 <dt id="NutMEG.ecosystem_dbhelper.db_helper.extract_param_db_Sim">
-<em class="property">static </em><code class="sig-name descname">extract_param_db_Sim</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">SimID</span></em>, <em class="sig-param"><span class="n">param</span></em>, <em class="sig-param"><span class="n">OrgID</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.ecosystem_dbhelper.db_helper.extract_param_db_Sim" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">extract_param_db_Sim</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">SimID</span></em>, <em class="sig-param"><span class="n">param</span></em>, <em class="sig-param"><span class="n">OrgID</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github2/NutMEG/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.ecosystem_dbhelper.db_helper.extract_param_db_Sim" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch a specific parameter from a simulation, using its ID as
 passed. If the param is a Summary variable this returns the final
 value from that simulation, if its one of the others, return
@@ -634,13 +641,13 @@ extract. If this is the case, pass the OrgID. Default ‘’</p></li>
 
 <dl class="py method">
 <dt id="NutMEG.ecosystem_dbhelper.db_helper.findOrgIDsLocID">
-<em class="property">static </em><code class="sig-name descname">findOrgIDsLocID</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">SimID</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.ecosystem_dbhelper.db_helper.findOrgIDsLocID" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">findOrgIDsLocID</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">SimID</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github2/NutMEG/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.ecosystem_dbhelper.db_helper.findOrgIDsLocID" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the OrgIDs and LocID from the simualation that had SimID</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="NutMEG.ecosystem_dbhelper.db_helper.findSimID">
-<em class="property">static </em><code class="sig-name descname">findSimID</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">OrgIDs</span></em>, <em class="sig-param"><span class="n">LocID</span></em>, <em class="sig-param"><span class="n">OrgNums</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.ecosystem_dbhelper.db_helper.findSimID" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">findSimID</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">OrgIDs</span></em>, <em class="sig-param"><span class="n">LocID</span></em>, <em class="sig-param"><span class="n">OrgNums</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github2/NutMEG/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.ecosystem_dbhelper.db_helper.findSimID" title="Permalink to this definition">¶</a></dt>
 <dd><p>Look in the Summary table to see if a simulation has been done
 with these organisms and environments. If it has, return the SimID.</p>
 <dl class="field-list simple">
@@ -663,7 +670,7 @@ with these organisms and environments. If it has, return the SimID.</p>
 
 <dl class="py method">
 <dt id="NutMEG.ecosystem_dbhelper.db_helper.get_table_as_dataframe">
-<code class="sig-name descname">get_table_as_dataframe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.ecosystem_dbhelper.db_helper.get_table_as_dataframe" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_table_as_dataframe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github2/NutMEG/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.ecosystem_dbhelper.db_helper.get_table_as_dataframe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a table in the database as a pandas dataframe</p>
 </dd></dl>
 
@@ -675,7 +682,7 @@ with these organisms and environments. If it has, return the SimID.</p>
 
 <dl class="py method">
 <dt id="NutMEG.ecosystem_dbhelper.db_helper.print_major_tables">
-<em class="property">static </em><code class="sig-name descname">print_major_tables</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github/NutMEG/util/../../NutMEG_db'</span></em>, <em class="sig-param"><span class="n">FullResults</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.ecosystem_dbhelper.db_helper.print_major_tables" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">print_major_tables</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github2/NutMEG/NutMEG/util/../../NutMEG_db'</span></em>, <em class="sig-param"><span class="n">FullResults</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.ecosystem_dbhelper.db_helper.print_major_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print out the major databases (e.g. all without the sims).</p>
 <p>If you also want to pring out a FullResults table, pass
 FullResults as the SimID.</p>
@@ -683,13 +690,13 @@ FullResults as the SimID.</p>
 
 <dl class="py method">
 <dt id="NutMEG.ecosystem_dbhelper.db_helper.print_table">
-<em class="property">static </em><code class="sig-name descname">print_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tabname</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.ecosystem_dbhelper.db_helper.print_table" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">print_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tabname</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github2/NutMEG/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.ecosystem_dbhelper.db_helper.print_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>print out table tabname using pandas</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="NutMEG.ecosystem_dbhelper.db_helper.removesimdata">
-<em class="property">static </em><code class="sig-name descname">removesimdata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">SimID</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.ecosystem_dbhelper.db_helper.removesimdata" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="sig-name descname">removesimdata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">SimID</span></em>, <em class="sig-param"><span class="n">dbpath</span><span class="o">=</span><span class="default_value">'/Users/pete/github2/NutMEG/NutMEG/util/../../NutMEG_db'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#NutMEG.ecosystem_dbhelper.db_helper.removesimdata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete data from a simulation</p>
 </dd></dl>
 
