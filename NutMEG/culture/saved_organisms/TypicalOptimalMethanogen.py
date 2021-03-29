@@ -88,6 +88,10 @@ class TypicalOptimalMethanogen(NutMEG.horde):
         """
         Get the 'average' methanogen parameters from the methanogens csv.
         Built from methods and application code in Higgins and Cockell 2020.
+
+        Commented out code is for generating TOM data, which should be saved
+        in NutMEG's data directory so isn't needed. Will leave here for future
+        use if needed.
         """
         # df = pd.read_csv(os.path.dirname(__file__)+'/../../data/methanogens.csv', header=0)
         # widths, lengths, Ts, pHs, CH4s, Pressures, GRs = [],[],[],[],[],[],[]
