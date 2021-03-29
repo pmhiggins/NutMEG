@@ -179,9 +179,9 @@ class reactor:
 
         # redefine the reagents
         # according to the composition.
-        for rrxn in rxxn.reactants.keys():
+        for rrxn in list(rxxn.reactants.keys()):
             inlist = False
-            for c_name, c_rxt in self.composition.items():
+            for c_name, c_rxt in self.composition.copy().items():
                 inlist=True
                 if rrxn.name == c_name:
                     # this reagent is in both the passed reaction and
@@ -199,9 +199,9 @@ class reactor:
                   "'s composition.'")
                 self.composition[rrxn.name] = rrxn
 
-        for rrxn in rxxn.products.keys():
+        for rrxn in list(rxxn.products.keys()):
             inlist = False
-            for c_name, c_rxt in self.composition.items():
+            for c_name, c_rxt in self.composition.copy().items():
                 inlist=True
                 if rrxn.name == c_name:
                     # this reagent is in both the passed reaction and
