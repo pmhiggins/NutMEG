@@ -99,7 +99,7 @@ class VenusDrop(reactor):
               H.name:H, H2O.name:H2O, HS.name:HS})
 
 
-        self.pH = 10**(self.composition['H+'].activity)
+        self.pH = -math.log10((self.composition['H+'].activity))
 
         if addreaction:
             # put together an overall reaction fro sulfate reduction

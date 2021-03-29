@@ -22,6 +22,7 @@ import warnings
 from os import system
 import os.path
 import sqlite3
+from uncertainties import ufloat, umath
 
 R = 8.314472  # J/mol.K
 
@@ -228,16 +229,33 @@ class reaction:
         a = 1.
         for p, mr in self.products.items():
             if p.phase_ss == False:
-                A = float(getattr(p, attr))
-                if A != 0.:
-                    a = float(mr)
-                    multiplier = multiplier * math.pow(A, a)
+                try:
+                    A = float(getattr(p, attr))
+                    if A != 0.:
+                        a = float(mr)
+                        multiplier = multiplier * math.pow(A, a)
+                except:
+                    if attr=='activity':
+                        A=p.activity.n
+                        # print(p, A)
+                    if A != 0.:
+                        a = float(mr)
+                        multiplier = multiplier * umath.pow(A, a)
+
         for r, mr in self.reactants.items():
             if r.phase_ss == False:
-                A = float(getattr(r, attr))
-                if A != 0.:
-                    a = float(mr)
-                    multiplier = multiplier / math.pow(A, a)
+                try:
+                    A = float(getattr(r, attr))
+                    if A != 0.:
+                        a = float(mr)
+                        multiplier = multiplier / math.pow(A, a)
+                except:
+                    if attr=='activity':
+                        A=r.activity.n
+                        # print(r, A)
+                    if A != 0.:
+                        a = float(mr)
+                        multiplier = multiplier * umath.pow(A, a)
         return multiplier
 
 

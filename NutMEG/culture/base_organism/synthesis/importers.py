@@ -50,8 +50,9 @@ def AAreader(host_drymass, host_volume, filename='EColiSynth_AminoAcids.csv'):
                 Bio = BioMolecule(str(token[0]), float(token[5])) #name and molecular weight (also, Gibbs data)
                 Bio.frequency = float(token[6]) # frequency
                 Bio.conc_mol_per_cell = float(token[3])*host_drymass*1000 # data is in mol/(g cell) so convert
+                # for newconc, if implemented, use float[7] below
                 Bio.conc_mol_per_l = Bio.conc_mol_per_cell/(host_volume*1000) # convert to mol/l (volume is in SI units)
-
+                # print(str(token[0]), Bio.conc_mol_per_cell/(host_volume*1000), float(token[7]))
                 AA.append(Bio)
                 # the final 0 is for protein link counting
 

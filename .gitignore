@@ -1,2 +1,8 @@
+# no pyc or DS_Store (for MacOS) files
 *.pyc
 *.DS_Store
+
+# no NutMEG databases
+NutMEG_db
+NutMEG/data/synthesis/EColiSynth
+NutMEG/data/TPdb

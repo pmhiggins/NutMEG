@@ -278,7 +278,7 @@ class base_organism:
             return (self.respiration.G_C*self.metabolic_rate)
         else:
             logger.warning(self.OrgID+' has no or negative energy supply!')
-            return 0.0
+            return 1e-50
 
 
     def take_step(self, t, update_energetics=True):
