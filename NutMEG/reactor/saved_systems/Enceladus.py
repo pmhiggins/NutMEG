@@ -94,7 +94,7 @@ class Enceladus(reactor):
             mol_CO2lst, aH2Olst = Enceladus.get_CO2_from_HTHeating(T=self.env.T, pH=self.ocean_pH, nominals=self.nominals, CO2unc=0., salts=True)
             mol_CO2, aH2O = mol_CO2lst[0], aH2Olst[0]
             oceanvals=True
-
+        
         self.initial_conditions(self.pH, mol_CO2, Pconc, H2Oact=aH2O, oceanvals=oceanvals)
 
         reactor.__init__(self, name, env=self.env,
@@ -110,7 +110,7 @@ class Enceladus(reactor):
         if logform:
             return umath.log10(self.mixingratios['CO2']/100)+9.429-(2574/self.tigerstripeT)
         else:
-            return umath.pow(10, (umath.log10(self.mixingratios['CO2']/100)+9.429-(2574/TigerstripeT)))
+            return umath.pow(10, (umath.log10(self.mixingratios['CO2']/100)+9.429-(2574/self.tigerstripeT)))
 
     def get_CO2_from_pH(self):
         """
