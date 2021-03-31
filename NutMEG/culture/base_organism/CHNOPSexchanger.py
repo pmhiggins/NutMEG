@@ -177,6 +177,11 @@ class CHNOPSexchanger:
                 # because check_nutrients has throttled E_growth
                 self.host.locale.composition[food.name].activity -= (fraction_used*value[0][0]*t)
                 self.host.locale.composition[food.name].conc -= (fraction_used*value[0][0]*t)
+
+                if self.host.locale.composition[food.name].activity < 0. or self.host.locale.composition[food.name].conc <0.:
+                    self.host.locale.composition[food.name].activity =0.
+                    self.host.locale.composition[food.name].conc =0.
+                    
                 #food.activity -= (value[0][0]*t)
         # print(self.host.locale.composition['P(aq)'].activity)
         return ret
