@@ -21,6 +21,7 @@ from .reactor.reactor import reactor
 
 from .culture.base_organism.synthesis.BioMolecule import BioMolecule
 
+from .applications.theory_estimates import theory_estimates as apps_theory_estimates
 
 # from .util.loggersetup import loggersetup as logset
 # loggers = logset(__name__, level='DEBUG')
