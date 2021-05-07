@@ -63,7 +63,7 @@ class nutfig:
         #     db.close()
 
     @staticmethod
-    def extract_param_db_OrgLoc(OrgIDs, LocID, param):
+    def extract_param_db_OrgLoc(OrgIDs, LocID, OrgNums, param):
         """Fetch a specific parameter from a simulation, using the relevant
         OrgID and LocIDs as passed. If the param is 'FinBM' or 'PeakGR' this returns the final value from that simulation OR if the simulation
         failed, a volume of 1e-18 and growth rate of 0 is returned. If its
