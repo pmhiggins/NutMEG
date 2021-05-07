@@ -62,17 +62,20 @@ class Enceladus(reactor):
 
 
     def __init__(self, name, pH=8.5, depth=8.5, T=273.15,
-      mixingratios=Waite2017ratios,
+      mixingratios={},
       CO2origin='pH',
       tigerstripeT=uf(197,20),
       Pconc=uf(1e-6,0), workoutID=False,
-      nominals=False):
+      nominals=False,
+      saltlevel='nom',
+      **kwargs):
         self.depth=depth
         self.env.T=T
         self.env.P=(10.+(7.*self.depth))*100000 #80 at bottom, 10 at top, linear in between.
         self.ocean_pH = pH # the pH of the 'wider ocean' e.g. at 273 K.
         self.pH = pH # the pH at this section of the ocean, not nec. same as above.
-        self.mixingratios=mixingratios
+        self.mixingratios=Waite2017ratios
+        self.mixingratios.update(mixingratios)
         self.tigerstripeT = tigerstripeT
         self.nominals=nominals
 
@@ -82,25 +85,33 @@ class Enceladus(reactor):
 
         if CO2origin=='tigerstripe':
             mol_CO2 = self.get_tigerstripe_CO2()
+            self.initial_conditions(self.pH, mol_CO2, Pconc, H2Oact=aH2O, oceanvals=oceanvals)
         elif CO2origin=='pH':
             mol_CO2 = self.get_CO2_from_pH()
+            self.initial_conditions(self.pH, mol_CO2, Pconc, H2Oact=aH2O, oceanvals=oceanvals)
         elif CO2origin=='HTHeating':
             mol_CO2, aH2O = Enceladus.get_CO2_from_HTHeating(T=self.env.T, pH=self.ocean_pH, nominals=self.nominals)
             oceanvals=True
+            self.initial_conditions(self.pH, mol_CO2, Pconc, H2Oact=aH2O, oceanvals=oceanvals)
         elif CO2origin=='HTHeating20':
             mol_CO2, aH2O = Enceladus.get_CO2_from_HTHeating(T=self.env.T, pH=self.ocean_pH, nominals=self.nominals, CO2unc=0.2)
             oceanvals=True
+            self.initial_conditions(self.pH, mol_CO2, Pconc, H2Oact=aH2O, oceanvals=oceanvals)
         elif CO2origin=='HTHeatingSalts':
             mol_CO2lst, aH2Olst = Enceladus.get_CO2_from_HTHeating(T=self.env.T, pH=self.ocean_pH, nominals=self.nominals, CO2unc=0., salts=True)
-            mol_CO2, aH2O = mol_CO2lst[0], aH2Olst[0]
+            # mol_CO2, aH2O = mol_CO2lst[0], aH2Olst[0]
             oceanvals=True
-        
-        self.initial_conditions(self.pH, mol_CO2, Pconc, H2Oact=aH2O, oceanvals=oceanvals)
+            if saltlevel == 'nom':
+                self.initial_conditions(self.pH, mol_CO2lst[0], Pconc, H2Oact=aH2Olst[0], oceanvals=oceanvals)
+            elif saltlevel == 'high':
+                self.initial_conditions(self.pH, mol_CO2lst[1], Pconc, H2Oact=aH2Olst[1], oceanvals=oceanvals)
+            elif saltlevel == 'low':
+                self.initial_conditions(self.pH, mol_CO2lst[2], Pconc, H2Oact=aH2Olst[2], oceanvals=oceanvals)
 
         reactor.__init__(self, name, env=self.env,
           reactionlist=self.reactionlist,
           composition=self.composition,
-          workoutID=workoutID)
+          workoutID=workoutID, **kwargs)
 
     def get_tigerstripe_CO2(self, logform=False):
         """
