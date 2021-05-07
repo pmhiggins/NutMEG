@@ -51,7 +51,7 @@ class theory_estimates:
         replacement at 2% racemization. and Tijhuis et al (1993)'s trend with
         empirical data.
         """
-        ret = {'Lever10pc':0., 'Lever2pc':0., 'Tijhuis':0.}
+        ret = {'Lever10pc':0., 'Lever2pc':0., 'Tijhuis':0., 'TijhuisAerobe':0, 'TijhuisAnaerobe':0, 'Lever1/250':0}
         self.loc.change_T(T)
         for Td in ret.keys():
             self.org.maintenance.Tdef = Td

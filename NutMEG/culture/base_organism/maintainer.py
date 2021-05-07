@@ -119,9 +119,15 @@ class maintainer:
         elif self.Tdef=='Lever2pc':
             # Use the Lever calculation with replacement at 2% [QE]
             self.net_dict['T'] =  T_ad_calc.getLeverME(cutoff_pc=2)
+        elif self.Tdef =='Lever1/250':
+            self.net_dict['T'] =  T_ad_calc.getLeverME(cutoff_pc=0.4)
         elif self.Tdef=='Tijhuis':
             # use the Tijhuis calculation [QE]
-            self.net_dict['T'] = T_ad_calc.getTijuisME()
+            self.net_dict['T'] = T_ad_calc.getTijhuisME()
+        elif self.Tdef=='TijhuisAerobe':
+            self.net_dict['T'] = T_ad_calc.getTijhuisAerobe()
+        elif self.Tdef=='TijhuisAnaerobe':
+            self.net_dict['T'] = T_ad_calc.getTijhuisAnaerobe()
         elif self.Tdef=='None':
             # no temperature cost to be considered
             self.net_dict['T'] = 0

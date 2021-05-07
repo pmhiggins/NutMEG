@@ -22,7 +22,17 @@ class Tadaptations:
         return (100*self.host.E_synth*k_s)/cutoff_pc
 
     # Tijhuis calcualtion [QE Document]
-    def getTijuisME(self):
+    def getTijhuisME(self):
         """Power cost due to temperature according to Tijhuis 1993"""
         drym_ME = 4.5*math.exp((self.host.locale.env.T**(-1)-298**(-1))*((-6.94*10000)/8.31))
+        return (1000/3600)*(self.host.dry_mass/0.026)*drym_ME
+
+    def getTijhuisAerobe(self):
+        """Power cost due to temperature according to Tijhuis 1993"""
+        drym_ME = 5.7*math.exp((self.host.locale.env.T**(-1)-298**(-1))*((-6.94*10000)/8.31))
+        return (1000/3600)*(self.host.dry_mass/0.026)*drym_ME
+
+    def getTijhuisAnaerobe(self):
+        """Power cost due to temperature according to Tijhuis 1993"""
+        drym_ME = 3.3*math.exp((self.host.locale.env.T**(-1)-298**(-1))*((-6.94*10000)/8.31))
         return (1000/3600)*(self.host.dry_mass/0.026)*drym_ME
