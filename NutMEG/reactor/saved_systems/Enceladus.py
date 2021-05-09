@@ -19,15 +19,16 @@ Waite2017ratios = {'CO2': uf(0.55, 0.25), 'CH4': uf(0.2, 0.1), 'NH3': uf(0.85, 0
 class Enceladus(reactor):
 
     """
-    The chemically active evirionment of the Enceladean Ocean.
+    The chemically active evirionment of the Enceladean ocean.
     It has a few unique attributes, and at the moment does not take
     kwargs for reactors. This may be added in the future when the
-    model is a bit more flexible.
+    NutMEG is a little more flexible.
 
     This is a saved instance of reactor, which contains the
-    methanogenesis and environmental data for the moon. In the future
-    this will be fleshed out with other constituents and maybe
-    even other reactions/flows.
+    methanogenesis and environmental data for the moon. Initial composition
+    can be estimated using mixing ratios from Waite et al. (2017) or
+    user-specified ones. Concentration of CO2 and pH can be estimated at
+    elevated temperatures using data from Higgins et al. (2021).
 
     Attributes
     ----------
@@ -71,8 +72,8 @@ class Enceladus(reactor):
       **kwargs):
         self.depth=depth
         self.env.T=T
-        self.env.P=(10.+(7.*self.depth))*100000 #80 at bottom, 10 at top, linear in between.
-        self.ocean_pH = pH # the pH of the 'wider ocean' e.g. at 273 K.
+        self.env.P=(10.+(7.*self.depth))*100000 #80 at bottom, 10 at top, linear in between. Pressure has minimal effect on free energies.
+        self.ocean_pH = pH # the pH of the 'bulk ocean' e.g. at 273 K.
         self.pH = pH # the pH at this section of the ocean, not nec. same as above.
         self.mixingratios=Waite2017ratios
         self.mixingratios.update(mixingratios)
