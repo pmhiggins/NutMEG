@@ -41,6 +41,9 @@ class Enceladus(reactor):
         By which methods to calculate the activity of CO2. Options include
         'tigerstripe', 'pH', 'HTHeating', 'HTHeating20', 'HTHeatingSalts'.
         HTHeatingSalts is recommended for the best results.
+    depth : float, [0:1]
+        Fractional depth in the ocean, assuming 1 bar at the top and 100 bar
+        at the bottom
     tigerstripeT : ufloat, optional
         Temperature of the tiger stripes for estimating CO2 activity. Only
         required if you plan to use this technique
@@ -58,11 +61,11 @@ class Enceladus(reactor):
     """
 
     volume = 7.54e15 #m^3, from radius = 250km, depth = 10km
-    env = environment(T=300., P=70e5, V=volume)
-    depth=8.5
+    env = environment(T=273.15, P=10e5, V=volume)
+    depth=0.
 
 
-    def __init__(self, name, pH=8.5, depth=8.5, T=273.15,
+    def __init__(self, name, pH=8.5, depth=0., T=273.15,
       mixingratios={},
       CO2origin='pH',
       tigerstripeT=uf(197,20),
@@ -72,7 +75,7 @@ class Enceladus(reactor):
       **kwargs):
         self.depth=depth
         self.env.T=T
-        self.env.P=(10.+(7.*self.depth))*100000 #80 at bottom, 10 at top, linear in between. Pressure has minimal effect on free energies.
+        self.env.P=(1+(99*self.depth))*100000 #100 at bottom, 1 at top, linear in between. Pressure has minimal effect on standard free energies.
         self.ocean_pH = pH # the pH of the 'bulk ocean' e.g. at 273 K.
         self.pH = pH # the pH at this section of the ocean, not nec. same as above.
         self.mixingratios=Waite2017ratios
