@@ -309,6 +309,24 @@ class reactor:
         compdictstr+='}'
         return compdictstr
 
+    def update_pH(self, update, _from='pH'):
+        """ Update the pH of the reactor and [H+] to the float update. pass `from' as 'pH' to pass a pH value or 'H+' to pass a H+ concentration.
+        """
+        concH, pH = 0.,0.
+        if _from=='pH':
+            pH = update
+            concH = 10**(-pH)
+        elif _from=='H+':
+            concH = update
+            pH = - math.log10(concH)
+        else:
+            raise ValueError('Unclear what you are updating the pH with!')
+        self.composition['H+'].conc = concH
+        self.composition['H+'].activity = concH
+        self.pH = pH
+
+
+
     # def update_locale_db(self, dbpath=nmp.std_dbpath):
     #     db = sqlite3.connect(str(dbpath))
     #     cursor = db.cursor()
