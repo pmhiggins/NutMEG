@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import sqlite3
 import os
 import NutMEG
+import NutMEG.util.NutMEGparams as nmp
 
 std_dbpath=os.path.join(os.path.dirname(__file__), '../testDB')
 
@@ -37,12 +38,12 @@ class nutfig:
 
 
     @staticmethod
-    def extract_param_db_Sim(SimID, param):
+    def extract_param_db_Sim(SimID, param, **kwargs):
         """Fetch a specific parameter from a simulation, using its ID as
         passed. If the param is 'FinBM' or 'PeakGR' this returns the final
         value from that simulation, if its one of the others, this returns
         the full list of results"""
-        return NutMEG.ecosystem_dbhelper.db_helper.extract_param_db_Sim(SimID, param)
+        return NutMEG.ecosystem_dbhelper.db_helper.extract_param_db_Sim(SimID, param, dbpath=kwargs.pop('dbpath', nmp.std_dbpath))
         # db=sqlite3.connect(std_dbpath)
         # db.row_factory = lambda cursor, row: row[0]
         # cursor = db.cursor()
@@ -63,12 +64,12 @@ class nutfig:
         #     db.close()
 
     @staticmethod
-    def extract_param_db_OrgLoc(OrgIDs, LocID, OrgNums, param):
+    def extract_param_db_OrgLoc(OrgIDs, LocID, OrgNums, param, **kwargs):
         """Fetch a specific parameter from a simulation, using the relevant
         OrgID and LocIDs as passed. If the param is 'FinBM' or 'PeakGR' this returns the final value from that simulation OR if the simulation
         failed, a volume of 1e-18 and growth rate of 0 is returned. If its
         one of the others, this returns the full list of results."""
-        return NutMEG.ecosystem_dbhelper.db_helper.extract_param_db_OrgLoc(OrgIDs, LocID, OrgNums, param)
+        return NutMEG.ecosystem_dbhelper.db_helper.extract_param_db_OrgLoc(OrgIDs, LocID, OrgNums, param, dbpath=kwargs.pop('dbpath', nmp.std_dbpath))
         # db=sqlite3.connect(std_dbpath)
         # db.row_factory = lambda cursor, row: row[0]
         # cursor = db.cursor()
