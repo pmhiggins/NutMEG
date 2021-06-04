@@ -17,9 +17,13 @@ from .culture.horde.horde import horde
 from .culture.colony.colony import colony
 from .culture.culture import culture
 
+# reactor stuff
 from .reactor.reactor import reactor
 
+# more niche things, for specific computations and checking
 from .culture.base_organism.synthesis.BioMolecule import BioMolecule
+from .culture.base_organism.adaptations.pHadaptations import pHadaptations as pHadaptations
+
 
 from .applications.theory_estimates import theory_estimates as apps_theory_estimates
 
