@@ -254,6 +254,8 @@ class ecosystem:
             self.stoppingdict[stopper_name]['Count'] += 1
             if self.stoppingdict[stopper_name]['Count'] >= self.stoppingdict[stopper_name]['Consistency']:
                 logger.info('\n Stopped by ' + stopper_name+'.')
+                print('\n Stopped by ' + stopper_name+'. Min: '+str(min(orglst))+' Max: '+str(max(orglst)))
+                print(self.stoppingdict[stopper_name]['Max'], self.stoppingdict[stopper_name]['Min'])
                 return True
         else:
             self.stoppingdict[stopper_name]['Count'] = 0
