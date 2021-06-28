@@ -25,7 +25,12 @@ class horde(NutMEG.base_organism):
         The number of dead cells which are inactive, but still represent
         biomass.
     biomass_cell_ratio : float, kwarg
-        To be used for conversion between cell numbers and volumes, because some cells will be mid growth and bigger than others. Default 1.5.
+        To be used for conversion between cell numbers and volumes, because
+        some cells will be mid growth and bigger than others. Default 1.5.
+    deathrate : float, kwarg
+        Alternative to the lifespan attribute. Implement a death rate which
+        represents the fraction of the total horde biomass which becomes
+        inactive per second [s^-1]. Default 0.
     """
 
     def __init__(self, name, locale, metabolism, num,
@@ -48,6 +53,12 @@ class horde(NutMEG.base_organism):
           dry_mass=dry_mass,
           *args, **kwargs)
 
+        self.deathrate = kwargs.pop('deathrate', 0.)
+        if self.base_life_span < float('inf') and self.deathrate != 0:
+            raise ValueError('Horde initialised with a base_life_span and ' +\
+              'a deathrate! Please choose one or the other!')
+        if self.deathrate < 0:
+            raise ValueError('Negative death rate is unphysical')
 
         # self.maintenance = maintainer(self,
         #   Tdef=kwargs.pop('Tdef', 'None'), pHdef=kwargs.pop('pHdef', 'None'),
@@ -72,15 +83,23 @@ class horde(NutMEG.base_organism):
         make it do so.
         """
         raise TypeError('Horde objects cannot reproduce! Did you mean'+\
-          'to call update_num?')
+          'to call update_num_vol?')
 
 
-    def update_num(self, t):
+    def update_num_vol(self, t, new_biomass_cells):
         """After updating the volume, correct the number of organisms."""
 
-        change = round((self.volume) / \
+        change = round((self.volume + new_biomass_cells*self.base_volume) / \
           (self.base_volume * self.biomass_cell_ratio)) - self.num
+
+        if self.deathrate > 0.:
+            # implement death rate before we add the new biomass
+            self.num -= (self.deathrate*self.num*t)
+            self.volume -= (self.deathrate*self.volume*t)
+            self.deathnum += (self.deathrate*self.num*t)
+
         self.num += change
+        self.volume += new_biomass_cells*self.base_volume
 
         if self.base_life_span < float('inf'):
             # cells can die, so keep an eye on them.
@@ -158,8 +177,7 @@ class horde(NutMEG.base_organism):
               moles_consumed, re_type=type(self.respiration.net_pathway))
 
             self.E_growth=0
-            self.volume += new_biomass_cells*self.base_volume
-            self.update_num(t)
+            self.update_num_vol(t, new_biomass_cells)
 
         else:
             # no growth, but we still need to perform the metabolic reaction.
@@ -173,7 +191,7 @@ class horde(NutMEG.base_organism):
                 logger.warning('Not enough energy in reactor! Holding '+self.OrgID+'in stasis...')
 
                 self.E_growth = 0
-            self.update_num(t)
+            self.update_num_vol(t, 0.)
 
         self.output.appendvals(startnum, t)
 
