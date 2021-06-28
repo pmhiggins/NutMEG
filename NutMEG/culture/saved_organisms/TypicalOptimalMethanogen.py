@@ -23,6 +23,7 @@ class TypicalOptimalMethanogen(NutMEG.horde):
 
     def __init__(self, R, orgtype='horde', paramchange={}, dbpath=nmp.std_dbpath, workoutID=False, fromdata=False, **kwargs):
         params = TypicalOptimalMethanogen.avg_org_params(R, paramchange, fromdata=fromdata)
+        num= kwargs.pop('num', 500)
         params.update(kwargs)
         params.update({'workoutID':workoutID, 'dbpath':dbpath})
         params['k_RTP'] = 10**(
@@ -31,7 +32,7 @@ class TypicalOptimalMethanogen(NutMEG.horde):
             NutMEG.horde.__init__(self,
               'TypicalOptimalMethanogen', R,
               self.setup_methanogenesis(R, params['k_RTP']),
-              500,
+              num,
               **params)
 
 
