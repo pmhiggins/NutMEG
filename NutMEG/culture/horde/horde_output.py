@@ -33,7 +33,9 @@ class horde_output:
           'PowerSupply_'+n: np.array([]),
           'GrowthPower_'+n: np.array([]),
           'GrowthRate_'+n: np.array([]),
-          'CHNOPSUptakes_'+n:np.array([])}
+          'CHNOPSUptakes_'+n:np.array([]),
+          'tot_no_cells_'+n:np.array([]),
+          'Volume_tot_'+n:np.array([])}
 
 
     def refreshparams(self):
@@ -98,6 +100,14 @@ class horde_output:
           np.append(self.params['CHNOPSUptakes_'+n],
             hc.CHNOPS.get_uptake(numcells=hc.num)))
 
+        self.params['tot_no_cells_'+n] = (
+          np.append(self.params['tot_no_cells_'+n],
+            hc.get_population(inactive=True)))
+
+        self.params['Volume_tot_'+n] = (
+          np.append(self.params['Volume_tot_'+n],
+            hc.get_volume(inactive=True)))
+
 
         # throttled_E_growth?
 
@@ -116,4 +126,6 @@ class horde_output:
           ('PowerSupply_'+n, 'REAL'),
           ('GrowthPower_'+n, 'REAL'),
           ('GrowthRate_'+n, 'REAL'),
-          ('CHNOPSUptakes_'+n, 'TEXT')]
+          ('CHNOPSUptakes_'+n, 'TEXT'),
+          ('tot_no_cells_'+n, 'REAL'),
+          ('Volume_tot_'+n, 'REAL')]

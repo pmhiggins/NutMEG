@@ -23,7 +23,9 @@ empty_default_dbdict = {'Respiration' : ['TEXT', ''],
   'pHint' : ['REAL', 0],
   'n_ATP' : ['REAL', 0],
   'k_RTP' : ['REAL', 0],
-  'base_life_span' : ['REAL', float('inf')]
+  'base_life_span' : ['REAL', float('inf')],
+  'horde_deathrate' : ['REAL', 0.],
+  'horde_num' : ['REAL', 500]
   }
 
 class bodb_helper:
@@ -69,6 +71,13 @@ class bodb_helper:
               'k_RTP' : ['REAL', self.host.respiration.net_pathway.rate_constant_RTP],
               'base_life_span' : ['REAL', self.host.base_life_span]
               }
+            try:
+                self.dbdict['horde_deathrate'] = ['REAL', self.host.deathrate]
+                self.dbdict['horde_num'] = ['REAL', self.host.num]
+            except:
+                # not a horde, should be fine though...
+                self.dbdict['horde_deathrate'] = ['REAL', 0.]
+                self.dbdict['horde_num'] = ['REAL', 1]
         else:
             self.dbdict=dbdict
 
