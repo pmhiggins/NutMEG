@@ -137,6 +137,9 @@ class ecosystem:
             logger.debug('\n Starting step '+ str(step))
 
             startpop = [o.get_population() for o in self.c.all()]
+
+            self.r.update_composition(dt)
+
             try:
                 self.c.take_step(dt)
             except ZeroDivisionError as zde:
@@ -169,7 +172,6 @@ class ecosystem:
             except e:
                 raise e
 
-            self.r.update_composition(dt)
 
             first=False # we made it past the first step!
 
