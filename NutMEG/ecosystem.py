@@ -185,7 +185,8 @@ class ecosystem:
 
             if sum(endpop) <= 0.:
                 # full_results = self.dbh.dict_to_db(resultsdict, end=True)
-                self.output_step_data(step, full_results)
+                if not quiet:
+                    self.output_step_data(step, full_results)
                 logger.info('All of the organisms have died')
                 break
 
