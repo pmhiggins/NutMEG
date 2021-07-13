@@ -127,7 +127,7 @@ class steady_state_1org:
 
         tmax = min([50000*dt, 1e9])#self.timeframe])
         if golden:
-            dt=0.9/org2.deathrate
+            dt=0.1/org2.deathrate
             tmax=900/org2.deathrate
 
         # tmax = 1e9#min([50000*dt, 1e7])#self.timeframe])
