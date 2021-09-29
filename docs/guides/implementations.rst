@@ -23,4 +23,9 @@ Then to run some code:
 .. code::
 
     cd projects/NutMEG-Implementations/Venus
-    python3 EVenus.py 
+    python3 EVenus.py
+
+    .. note::
+      Much of the code in NutMEG-Implementations accompany scientific publications.
+      Manuscripts for these papers which go with the code in
+      NutMEG_implementations are available open-access on my `publications page <https://higginsetal.com/#publications>`_
