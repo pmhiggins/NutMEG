@@ -6,7 +6,9 @@ import math, ast
 
 class steady_state_1org:
     """
-    Class for achieving a steady state within some bounding parameters
+    Class for achieving a steady state within some bounding parameters.
+
+    This application is a work-in-progress, so  not yet properly documented!
     """
 
     def __init__(self, org, loc, bounds,
