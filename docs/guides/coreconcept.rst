@@ -25,9 +25,9 @@ to growth. These could include maintaining a specific internal pH
 temperature (:math:`P_{T}`), and defending against adverse salinity
 (:math:`P_{SAL}`) to give a few examples. Mathematically it takes this form:
 
-.. math::  
+.. math::
    \epsilon_{M} = 1 - \frac{ P_{main} }{ P_{s} }
-   
+
    P_{main} = P_{pH} + P_{T} + P_{SAL} + ...
 
 The nutrient uptake efficiency is more complex to compute. It represents the effect
@@ -39,3 +39,8 @@ The core concept behind NutMEG is that if energy still remains after applying :m
 and :math:`\epsilon_{UT}` both the energy and nutrients are
 available in the local environment not just for an organism to survive, but for
 it to grow as well.
+
+.. note ::
+
+    For more detail on these ideas, check out Higgins & Cockell (2020) J. R. Soc. Interface
+    `DOI: 10.1098/rsif.2020.0588 <https://doi.org/10.1098/rsif.2020.0588>`_, or Higgins (2022) `DOI: 10.7488/era/2078  <https://doi.org/10.7488/era/2078>`_

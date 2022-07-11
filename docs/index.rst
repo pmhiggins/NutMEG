@@ -20,6 +20,10 @@ used to create tentative growth predictions of known organisms in known environm
 Check out the `competition example <guides/competitionexample.html>`_ for an idea of
 what it can do at this stage.
 
+Naturally, the above means this documentation is also a work-in-progress. In the meantime
+the most thorough summary of NutMEG and its capapbilities can be found in `this thesis <http://dx.doi.org/10.7488/era/2078>`_,
+specifically Chapters 3 (for theory), 4 (for code design), and the appendix for bonus code examples.
+
 
 .. toctree::
     :maxdepth: 1
@@ -32,6 +36,13 @@ what it can do at this stage.
     guides/growthalgorithm
     guides/implementations
     guides/competitionexample
+    guides/citing_nutmeg
+
+.. toctree::
+  :maxdepth: 1
+  :caption: contact
+
+  contact/get_in_touch
 
 .. toctree::
     :maxdepth: 3

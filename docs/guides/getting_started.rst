@@ -8,12 +8,12 @@ full package from `github <https:github.com/pmhiggins/NutMEG>`_.
 Installing Dependencies
 -----------------------
 NutMEG has been built and is running on python 3.7. Previous versions of python
-may be stable but have not been tested. Users have noted errors occurring 
-for systems running on python 3.8 and above. We are aware of this and will be 
+may be stable but have not been tested. Users have noted errors occurring
+for systems running on python 3.8 and above. We are aware of this and will be
 pushing an unpdate in the near future.
 
 In order to perform certain chemical calculations, NutMEG has a dependency on
-the `reaktoro <http://en.wikipedia.org/wiki/Hyperlink>`_ package. ``reaktoro``
+the `reaktoro <http://reaktoro.org/v1/>`_ package. ``reaktoro``
 is hosted on conda-forge, so we recommend using NutMEG in a conda environment
 for ease of use.
 
@@ -24,7 +24,12 @@ use NutMEG in a ``conda`` environment. In a terminal, write:
 .. code::
 
     conda config --append channels conda-forge
-    conda install reaktoro
+    conda install reaktoro=1
+
+.. note ::
+
+    At the moment, NutMEG only works with reaktoro v1.x, not v2. We're hoping
+    to get it working on the newer version in the future.
 
 NutMEG also depends on a few typical python libraries including ``numpy``,
 ``pandas``, and ``matplotlib``. If you don't have these installed in your
