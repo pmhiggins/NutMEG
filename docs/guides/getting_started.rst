@@ -51,3 +51,12 @@ you could structure your project folder like so:
     your_project/
     |-- NutMEG/
     `-- your_project_code.py
+
+Or there is a way to permanently add it to your ``sys.path`` so you can more
+easily import NutMEG anywhere. Navigate to the ``site-packages`` folder of
+your conda environment and add a file ``usercustomize.py`` containing:
+
+..code::
+
+  import sys
+  sys.path.extend(['/path/to/NutMEG'])
