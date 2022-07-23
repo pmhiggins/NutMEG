@@ -41,6 +41,11 @@ class Enceladus(reactor):
         By which methods to calculate the activity of CO2. Options include
         'tigerstripe', 'pH', 'HTHeating', 'HTHeating20', 'HTHeatingSalts'.
         HTHeatingSalts is recommended for the best results.
+    DIC : float
+        The concentration of total dissolved inorganic carbon, if HTHeatingSalts
+        is the method of carabonate speciation determination this is set
+        according to the salt level in the ocean. If not, it is set to the
+        nominal value 0.03.
     depth : float, [0:1]
         Fractional depth in the ocean, assuming 1 bar at the top and 100 bar
         at the bottom
@@ -82,6 +87,7 @@ class Enceladus(reactor):
         self.mixingratios.update(mixingratios)
         self.tigerstripeT = tigerstripeT
         self.nominals=nominals
+        self.DIC=0.03
 
         mol_CO2 = 0.
         aH2O=1.
@@ -109,12 +115,15 @@ class Enceladus(reactor):
                 self.initial_conditions(self.pH, mol_CO2lst[0], Pconc, H2Oact=aH2Olst[0], oceanvals=oceanvals)
             elif saltlevel == 'high':
                 self.initial_conditions(self.pH, mol_CO2lst[1], Pconc, H2Oact=aH2Olst[1], oceanvals=oceanvals)
+                self.DIC = 0.1
             elif saltlevel == 'low':
                 self.initial_conditions(self.pH, mol_CO2lst[2], Pconc, H2Oact=aH2Olst[2], oceanvals=oceanvals)
+                self.DIC=0.01
 
         reactor.__init__(self, name, env=self.env,
           reactionlist=self.reactionlist,
           composition=self.composition,
+          pH=self.pH,
           workoutID=workoutID, **kwargs)
 
     def get_tigerstripe_CO2(self, logform=False):
