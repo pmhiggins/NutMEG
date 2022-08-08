@@ -1,6 +1,7 @@
 # no pyc or DS_Store (for MacOS) files
 *.pyc
 *.DS_Store
+*.log
 
 # no NutMEG databases
 NutMEG_db
