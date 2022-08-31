@@ -108,9 +108,9 @@ class Enceladus(reactor):
             oceanvals=True
             self.initial_conditions(pH_T, mol_CO2, Pconc, H2Oact=aH2O, oceanvals=oceanvals)
         elif CO2origin=='HTHeatingSalts':
-            mol_CO2lst, aH2Olst, pH_Tlst = Enceladus.get_CO2_from_HTHeating(T=self.env.T, pH_0=self.ocean_pH, nominals=self.nominals, CO2unc=0., salts=True)
-            # mol_CO2, aH2O = mol_CO2lst[0], aH2Olst[0]
-            mol_CO2lst_oc = Enceladus.get_CO2_from_HTHeating(T=273.15, pH_0=self.ocean_pH, nominals=self.nominals, CO2unc=0., salts=True)[0]
+            # note the nominals is false here - we need the bounds  for the different salt levels
+            mol_CO2lst, aH2Olst, pH_Tlst = Enceladus.get_CO2_from_HTHeating(T=self.env.T, pH_0=self.ocean_pH, nominals=False, CO2unc=0., salts=True)
+            mol_CO2lst_oc = Enceladus.get_CO2_from_HTHeating(T=273.15, pH_0=self.ocean_pH, nominals=False, CO2unc=0., salts=True)[0]
             oceanvals=False
             if saltlevel == 'nom':
                 self.initial_conditions(pH_Tlst[0], mol_CO2lst[0], Pconc, H2Oact=aH2Olst[0], oceanvals=oceanvals, mol_CO2_oc=mol_CO2lst_oc[0])
@@ -208,7 +208,7 @@ class Enceladus(reactor):
             else:
                 return uf(1e-10, 2e-11), uf(aH2O,0), uf(pHT,0)
         if nominals:
-            return aCO2, aH2O
+            return aCO2, aH2O, pHT
         elif salts:
             aCO2_hs, aH2O_hs, pHT_hs = Enceladus.interpo_CO2_H2O(T, pH_0, salt='highsalt')
             aCO2_ls, aH2O_ls, pHT_ls = Enceladus.interpo_CO2_H2O(T, pH_0, salt='lowsalt')
@@ -297,6 +297,7 @@ class Enceladus(reactor):
             mol_NH3 = mol_NH3.n
             mol_H2S = mol_H2S.n
             mol_H=mol_H.n
+            _Pconc = Pconc.n
 
         # reagents
         CO2 = reaction.reagent('CO2(aq)', self.env, phase='g', conc=mol_CO2,
@@ -340,7 +341,7 @@ class Enceladus(reactor):
         self.composition['NH3(aq)'] = reaction.reagent('NH3(aq)', self.env, phase='aq', conc=mol_NH3,
           activity=mol_NH3) # from Glein, Baross, Waite 2015
         # P and S we don't actually know.
-        self.composition['P(aq)'] = reaction.reagent('P(aq)', self.env, phase='aq', conc=Pconc,
-          activity=Pconc, thermo=False)
+        self.composition['P(aq)'] = reaction.reagent('P(aq)', self.env, phase='aq', conc=_Pconc,
+          activity=_Pconc, thermo=False)
         self.composition['H2S(aq)'] = reaction.reagent('H2S(aq)', self.env, phase='aq', conc=mol_H2S,
           activity=mol_H2S, thermo=False)
