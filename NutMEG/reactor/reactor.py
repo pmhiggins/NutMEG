@@ -121,10 +121,18 @@ class reactor:
 
         Pass overwrite as True if you want to overwrite the data we
         currently have about the reagents with what you have passed.
+
+        NB this function does not add new reagents to the reactor.
         """
         # add the reaction into reationlist
         self.reactionlist[rxxn.equation] = {type(rxxn):rxxn}
         self.unify_reaction(rxxn, overwrite=overwrite)
+
+    def add_reagent(self, rct):
+        if rct.name in list(self.composition.keys()):
+            raise ValueError('New reagent tried to overwrite one in this reactor!')
+        # otherwise it's brand new, add away.
+        self.composition[rct.name] = rct
 
     def update_composition(self, t):
         """ If there are inflows into the composition, make the changes there
