@@ -66,8 +66,7 @@ class Enceladus(reactor):
     """
 
     volume = 7.54e15 #m^3, from radius = 250km, depth = 10km
-    env = environment(T=273.15, P=10e5, V=volume)
-    depth=0.
+    global_env = environment(T=273.15, P=10e5, V=volume)
 
 
     def __init__(self, name, pH=8.5, depth=0., T=273.15,
@@ -79,8 +78,9 @@ class Enceladus(reactor):
       saltlevel='nom',
       **kwargs):
         self.depth=depth
-        self.env.T=T
-        self.env.P=(1+(99*self.depth))*100000 #100 at bottom, 1 at top, linear in between. Pressure has minimal effect on standard free energies.
+        self.env=environment(T=T, V=kwargs.pop('V', 0.001), P=1e5)
+        # self.env.T=T
+        # self.env.P=(1+(99*self.depth))*100000 #100 at bottom, 1 at top, linear in between. Pressure has minimal effect on standard free energies.
         self.ocean_pH = pH # the pH of the 'bulk ocean' e.g. at 273 K.
         self.pH = pH # the pH at this section of the ocean, not nec. same as above.
         self.mixingratios=Waite2017ratios
