@@ -128,6 +128,8 @@ class maintainer:
             self.net_dict['T'] = T_ad_calc.getTijhuisAerobe()
         elif self.Tdef=='TijhuisAnaerobe':
             self.net_dict['T'] = T_ad_calc.getTijhuisAnaerobe()
+        elif self.Tdef=='TOM':
+            self.net_dict['T'] = T_ad_calc.getTOM()
         elif self.Tdef=='None':
             # no temperature cost to be considered
             self.net_dict['T'] = 0
