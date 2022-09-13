@@ -120,6 +120,8 @@ class Enceladus(reactor):
             elif saltlevel == 'low':
                 self.initial_conditions(pH_Tlst[2], mol_CO2lst[2], Pconc, H2Oact=aH2Olst[2], oceanvals=oceanvals, mol_CO2_oc=mol_CO2lst_oc[2])
                 self.DIC=0.01
+            else:
+                raise ValueError("Unrecognised saltlevel, should be 'nom', 'high', or 'low' ")
 
         reactor.__init__(self, name, env=self.env,
           reactionlist=self.reactionlist,
