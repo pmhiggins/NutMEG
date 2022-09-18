@@ -158,6 +158,6 @@ class TypicalOptimalMethanogen(NutMEG.horde):
           'n_ATP':paramchange.get('n_ATP', 1.0),
           'lifespan':paramchange.get('lifespan',float('inf')),
           'k_RTP' : k_RTP,
-          'max_metabolic_rate' : maxmet}
+          'max_metabolic_rate' : paramchange.get('maxmet', maxmet)}
 
         return avg_org_uniqueparams
