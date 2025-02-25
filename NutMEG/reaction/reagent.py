@@ -97,9 +97,9 @@ class reagent:
             raise ValueError("Incorrectly defined phase for reagent "
               + str(name) + ", must be one of 's', 'l', 'g', or 'aq'.")
         # pass Thermo as False to update thermochemical parameters yourself
-        if name != 'e-' and thermo:
+        if name != 'e-' and name != 'H+' and thermo:
             self.GetThermoParams()
-        elif name == 'e-':
+        elif name == 'e-' or name== 'H+':
             self.std_formation_enthalpy_RTP = 0.    # J/mol
             self.std_formation_entropy_RTP = 0.    # J/mol K
             self.std_formation_gibbs_env = 0.
@@ -162,84 +162,28 @@ class reagent:
         """Import the reagent's thermal parameters at both RTP and in
         the current environment.
         """
+        self.rto_thermo = reagent_thermo(self)
+
         if self.std_formation_entropy_RTP is None:
-            self.import_RTP_params()
+            G, _, H, S, Cp, _ = self.rto_thermo.get_RTP_params()
+            self.std_formation_gibbs_RTP = G
+            self.std_formation_enthalpy_RTP = H
+            self.std_formation_entropy_RTP = S
+            self.Cp_RTP = Cp
+
         if self.env.T != 298.15 or self.env.P != 101325.0:
-            self.import_params_db()
+            G, _, H, S, Cp, _ = self.rto_thermo.get_thermo_params()
+            self.std_formation_gibbs_env = G
+            self.std_formation_enthalpy_env = H
+            self.std_formation_entropy_env = S
+            self.Cp_RTP = Cp
+
         else:
             # we're in RTP so no need to look up the data again
             self.std_formation_enthalpy_env = self.std_formation_enthalpy_RTP
             self.std_formation_entropy_env = self.std_formation_entropy_RTP
             self.std_formation_gibbs_env = self.std_formation_gibbs_RTP
             self.Cp_env = self.Cp_RTP
-
-
-    def import_RTP_params(self):
-        """Import thermodynamic RTP data from the SQLite database data/TPdb.
-        If the data doesn't exist, calculate it using reaktoro.
-
-        Updates std formation gibbs, enthalpy, entropy at RTP.
-        """
-        rt = reagent_thermo(self)
-        try:
-            ThermoData = rt.db_select(T=298.15, P=101325.0)
-            self.std_formation_gibbs_RTP = float(ThermoData[0])
-            self.std_formation_enthalpy_RTP = float(ThermoData[1])
-            self.std_formation_entropy_RTP = float(ThermoData[2])
-            self.Cp_RTP = float(ThermoData[3])
-        except Exception as e:
-            # looks like it isn't in the database, better add it!
-            logger.info('Adding ' + self.name
-              + ' properties at RTP to the database')
-
-            datasent = rt.thermo_to_db(T=298.15, P=101325.0)
-
-            # now try again if it went in
-            if datasent:
-                ThermoData = rt.db_select(T=298.15, P=101325.0)
-                self.std_formation_gibbs_RTP = float(ThermoData[0])
-                self.std_formation_enthalpy_RTP = float(ThermoData[1])
-                self.std_formation_entropy_RTP = float(ThermoData[2])
-                self.Cp_RTP = float(ThermoData[3])
-            else:
-                # this thing shouldn't be using thermo params
-                self.thermo = False
-
-
-    def import_params_db(self):
-        """Import thermodynamic data from the SQLite database data/TPdb.
-        If the data doesn't exist, calculate it using reaktoro.
-
-        Updates std formation gibbs, enthalpy, entropy in current environment.
-        """
-        rt = reagent_thermo(self)
-        try:
-
-            ThermoData = rt.db_select()
-            self.std_formation_gibbs_env = float(ThermoData[0])
-            self.std_formation_enthalpy_env = float(ThermoData[1])
-            self.std_formation_entropy_env = float(ThermoData[2])
-            self.Cp_env = float(ThermoData[3])
-        except Exception as e:
-            # looks like it isn't in the database, better add it!
-            logger.info('Adding ' + self.name + ' properties at T = '
-              + str(round(self.env.T,2)) + ' K and P = ' + str(round(self.env.P,0))
-              + ' Pa to the database...')
-
-
-            datasent = rt.thermo_to_db()
-
-            if datasent:
-                # now try again
-                ThermoData = rt.db_select()
-                self.std_formation_gibbs_env = float(ThermoData[0])
-                self.std_formation_enthalpy_env = float(ThermoData[1])
-                self.std_formation_entropy_env = float(ThermoData[2])
-                self.Cp_env = float(ThermoData[3])
-            else:
-                # this thing shouldn't be using thermo params
-                self.thermo = False
-
 
 
 

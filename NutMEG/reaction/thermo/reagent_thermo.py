@@ -4,15 +4,9 @@ Class for thermodynamic calculations regarding reagents
 
 """
 
-from reaktoro import Database, Thermo
-import sqlite3 as sql
+from reaktoro import SupcrtDatabase
 import os
-import logging
 
-db = Database("supcrt07-organics.xml")
-thermo = Thermo(db)
-rtodbpath = os.path.join(os.path.dirname(__file__), '../../data/TPdb')
-# TPdb = sql.connect(dbpath)
 
 import NutMEG.util.NutMEGparams as nmp
 from NutMEG.util.loggersetup import loggersetup as logset
@@ -21,8 +15,22 @@ logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.pri
 
 class reagent_thermo:
 
-    def __init__(self, host):
+    def __init__(self, host, db="supcrt07-organics"):
         self.host=host
+        self.dbname=db
+
+        self.T, self.P = None, None
+        self.get_thermo_params() # calculates dG and lnK in current rtr.env.
+
+
+    def get_db(self):
+        if self.dbname == None:
+            _db = SupcrtDatabase("supcrt07-organics")
+        elif type(self.dbname) == type(' '):
+            _db = SupcrtDatabase(self.dbname)
+        else:
+            _db = self.dbname
+        return _db
 
 
     def get_thermo_params(self, T=None, P=None):
@@ -30,61 +38,36 @@ class reagent_thermo:
         reagent.
         """
         T, P = self.TPcheck(T, P)
-        species = self.host.name
-        G = thermo.standardPartialMolarGibbsEnergy(T, P, species).val
-        Hz= thermo.standardPartialMolarHelmholtzEnergy(T, P, species).val
-        H = thermo.standardPartialMolarEnthalpy(T, P, species).val
-        S = thermo.standardPartialMolarEntropy(T, P, species).val
-        Cp= thermo.standardPartialMolarHeatCapacityConstP(T, P, species).val
-        Cv= thermo.standardPartialMolarHeatCapacityConstV(T, P, species).val
 
-        return G, Hz, H, S, Cp, Cv
+        if self.T == T and self.P == P:
+            # T and P have not changed, no need to recalculate
+            return self.G, self.Hz, self.H, self.S, self.Cp, self.Cv
+        else:
+            # they have changed, recalculate.
+
+            # creating a reaktoro reaction is simpler than building a ChemicalSystem
+            # and yield the same result.
+            rkt_rxn = self.get_db().reaction(self.host.name)
+            rprops = rkt_rxn.props(T, 'K', P, 'Pa')
+
+            # We have to take the -ve value of thermo properties,
+            # because reaktoro builds the reaction with our species as the 'product'.
+
+            self.G = - rprops.dG0
+            self.Hz= - rprops.dA0
+            self.H = - rprops.dH0
+            self.S = - rprops.dS0
+            self.Cp= - rprops.dCp0
+            self.Cv= - rprops.dCv0
+
+            self.T = T
+            self.P = P
+            return self.G, self.Hz, self.H, self.S, self.Cp, self.Cv
 
     def get_RTP_params(self):
         """return the thermodynamic parameters at RTP. """
         return self.get_thermo_params(T=298.15, P=101325.0)
 
-    def thermo_to_db(self, T=None, P=None):
-        """Get ther thermodynamic parameters and save them to an SQLite
-        database for retrieval elsewhere.
-        """
-        T, P = self.TPcheck(T, P)
-        TPdb = sql.connect(rtodbpath)
-        cursor = TPdb.cursor()
-        try:
-            cursor.execute('CREATE TABLE IF NOT EXISTS [' + self.host.name + \
-              '] (T REAL, P REAL, G REAL, Hz REAL, ' + \
-              'H REAL, S REAL, Cp REAL, Cv REAL)')
-
-            G, Hz, H, S, Cp, Cv = self.get_thermo_params(T, P)
-            cursor.execute(' INSERT INTO [' + self.host.name + ']' + \
-              '(T, P, G, Hz, H, S, Cp, Cv) VALUES(?,?,?,?,?,?,?, ?)', (T, P,
-              G, Hz, H, S, Cp, Cv))
-            TPdb.commit()
-            return True
-        except:
-            logger.warning('There is no thermodynamic data available for ' + \
-            'your species: ' + self.host.name)
-            return False
-            #raise
-        finally:
-            TPdb.close()
-
-
-    def db_select(self, paramschain='G, H, S, Cp', T=None, P=None):
-        """Extract paramschain from the database for the host species"""
-        T, P = self.TPcheck(T, P)
-        TPdb = sql.connect(rtodbpath)
-        cursor = TPdb.cursor()
-        try:
-            cursor.execute('SELECT ' + paramschain + ' FROM ['+self.host.name+
-              '] WHERE T=? AND P=?', (T, P))
-            data = cursor.fetchone()
-            return data
-        except:
-            raise
-        finally:
-            TPdb.close()
 
     def TPcheck(self, T, P):
         """Ensure passed temperature and pressure is rounded to avoid

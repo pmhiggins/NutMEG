@@ -157,7 +157,9 @@ class reaction:
         for re in chain(list(self.reactants), list(self.products)):
             if re.name !='e-' and not re.thermo:
                 return False # At least one does not have the data
-        return True # We have everything!
+        # we must have everything and can use reaktoro's thermo databases.
+        self.rto_thermo = reaction_thermo(self)
+        return True
 
 
 
@@ -461,7 +463,7 @@ class reaction:
         """Update the energetic parameters of the reagents using reaktoro.
         """
         for r in chain(list(self.reactants), list(self.products)):
-            if r.name != 'e-':
+            if r.name != 'e-' and r.name != 'H+':
                 r.import_params_db()
 
     def rto_current_env(self):
@@ -469,8 +471,7 @@ class reaction:
         for the current state of this reaction.
         """
 
-        rt = reaction_thermo(self)
-        stdG, lnK = rt.get_stdG_lnK()
+        stdG, lnK = self.rto_thermo.get_stdG_lnK()
 
         # update reaction parameters
         self.std_molar_gibbs = float(stdG)
