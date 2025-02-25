@@ -170,15 +170,15 @@ class respirator:
 
         celldata is in the form [activity ADP, activity P, activity ATP, pH]
         """
-        ADP = rxn.reagent('+H3ADP1-(aq)', self.locale.env, activity=celldata[0],
+        ADP = rxn.reagent('+H3(ADP)(aq)', self.locale.env, activity=celldata[0],
           phase='aq')
         P = rxn.reagent('H3PO4(aq)', self.locale.env, activity=celldata[1],
           phase='aq')
-        ATP = rxn.reagent('+H4ATP-(aq)', self.locale.env, activity=celldata[2],
+        ATP = rxn.reagent('+H4(ATP)(aq)', self.locale.env, activity=celldata[2],
           phase='aq')
         #H = reaction.reagent('H+', self.env, activity=(10**-celldata[3]),
         #  phase='aq', molar_ratio=2.)
-        H2O = rxn.reagent('H2O(l)', self.locale.env, phase='l',
+        H2O = rxn.reagent('H2O(aq)', self.locale.env, phase='l',
           conc=55.5, phase_ss=True, activity=1.0)
 
         self.ATP_production = rxn.reaction({ADP:1, P:1},
