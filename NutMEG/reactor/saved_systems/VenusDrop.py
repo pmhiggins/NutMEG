@@ -91,7 +91,7 @@ class VenusDrop(reactor):
             HS = reaction.reagent('HS-', self.env, phase='aq', charge=-1,
               conc=HSact, activity=HSact)
 
-            H2O = reaction.reagent('H2O(l)', self.env, phase='l', conc=55.5,
+            H2O = reaction.reagent('H2O(aq)', self.env, phase='l', conc=55.5,
               phase_ss=True, activity=1)
 
             # add these reagents to the composition of the VenusDrop
@@ -105,7 +105,7 @@ class VenusDrop(reactor):
             # put together an overall reaction fro sulfate reduction
             r = {self.composition['H2(aq)']:4, self.composition['SO4--']:1,
               self.composition['H+']:1}
-            p = {self.composition['HS-']:1, self.composition['H2O(l)']:4}
+            p = {self.composition['HS-']:1, self.composition['H2O(aq)']:4}
             thermaloa = reaction.reaction(r,p,self.env)
 
             # add this reaction to the VenusDrop reactor.

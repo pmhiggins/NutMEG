@@ -99,6 +99,43 @@ class reactor:
         R.LocID = LocID
         return R
 
+    @classmethod
+    def from_rto_state(cls, state, props, name='rto'):
+        """
+        Build a reactor object from a reaktoro ChemicalState and its
+        ChemicalProps attribute. This method populates a reactor with
+        the aqueous and gaseous species present in the reaktoro ChemicalState.
+        """
+
+        R = cls(name, workoutID=False)
+
+        # set reactor physcial env to match the rto state.
+        R.env.T, R.env.P = float(state.temperature()), float(state.pressure())
+
+        # The reaktoro ChemicalSystem.
+        # This manages the phases, which in turn manage the species.
+        system = state.system()
+
+        rto_nm_phases = {'AqueousPhase': 'aq',
+          'GaseousPhase': 'g'}
+        # mineralphases go by the name of the mineral in rkt,
+        # so we need to rethink how to include 's'
+
+        # populate the reactor with reagents read from the reaktoro system
+        for phase in system.phases():
+            for species in phase.species():
+
+                _s = rxn.reagent(species.name(),
+                  R.env, phase=rto_nm_phases[phase.name()],
+                  activity=float(props.speciesActivity(species.name())),
+                  gamma=float(props.speciesActivityCoefficient(species.name())),
+                  conc=float(props.speciesConcentration(species.name())),
+                  charge=float(species.charge())
+                )
+
+                R.composition[species.name()] = _s
+        return R
+
 
     def rlist_from_ReactIDs(self, ReactIDs):
         """Set reactionlist from a list of ReactIDs"""

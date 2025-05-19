@@ -258,7 +258,7 @@ class Enceladus(reactor):
         return (self.mixingratios['H2']/self.mixingratios['CO2'])*mol_CO2_oc
 
 
-    def initial_conditions(self, pH, mol_CO2, Pconc, H2Oact=1.0, oceanvals=False, mol_CO2_oc=None):
+    def initial_conditions(self, pH, mol_CO2, Pconc=0.1, H2Oact=1.0, oceanvals=False, mol_CO2_oc=None):
         """
         Set up the initial conditions of the ocean in the configuration
         defined in the initialisation.
@@ -318,12 +318,12 @@ class Enceladus(reactor):
 
         # overall
         r = {self.composition['CO2(aq)']:1, self.composition['H2(aq)']:4}
-        p = {self.composition['Methane(aq)']:1, self.composition['H2O(l)']:2}
+        p = {self.composition['Methane(aq)']:1, self.composition['H2O(aq)']:2}
         thermaloa = reaction.reaction(r,p,self.env)
 
         # redox
         fr = {self.composition['CO2(aq)']:1, self.composition['H+']:8, el:8}
-        fp = {self.composition['Methane(aq)']:1, self.composition['H2O(l)']:2}
+        fp = {self.composition['Methane(aq)']:1, self.composition['H2O(aq)']:2}
         fwd = reaction.redox_half(fr, fp, self.env, 8, -0.244)
 
         rr = {self.composition['H+']:8, el:8}
@@ -343,7 +343,7 @@ class Enceladus(reactor):
         self.composition['NH3(aq)'] = reaction.reagent('NH3(aq)', self.env, phase='aq', conc=mol_NH3,
           activity=mol_NH3) # from Glein, Baross, Waite 2015
         # P and S we don't actually know.
-        self.composition['P(aq)'] = reaction.reagent('P(aq)', self.env, phase='aq', conc=_Pconc,
-          activity=_Pconc, thermo=False)
+        self.composition['P(aq)'] = reaction.reagent('P(aq)', self.env, phase='aq', conc=Pconc,
+          activity=Pconc, thermo=False)
         self.composition['H2S(aq)'] = reaction.reagent('H2S(aq)', self.env, phase='aq', conc=mol_H2S,
           activity=mol_H2S, thermo=False)

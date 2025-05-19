@@ -177,14 +177,12 @@ class reagent:
             self.std_formation_enthalpy_env = H
             self.std_formation_entropy_env = S
             self.Cp_RTP = Cp
-
         else:
             # we're in RTP so no need to look up the data again
             self.std_formation_enthalpy_env = self.std_formation_enthalpy_RTP
             self.std_formation_entropy_env = self.std_formation_entropy_RTP
             self.std_formation_gibbs_env = self.std_formation_gibbs_RTP
             self.Cp_env = self.Cp_RTP
-
 
 
     """
