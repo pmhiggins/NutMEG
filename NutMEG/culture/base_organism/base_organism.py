@@ -101,7 +101,7 @@ class base_organism:
         self.name=name
         self.locale = locale
         self.respiration = respirator(self, metabolism,
-          kwargs.pop('n_ATP', 1.0), k_RTP=kwargs.pop('k_RTP', None), overwrite=kwargs.pop('overwrite', False))
+          kwargs.pop('n_ATP', 1.0), k_RTP=kwargs.pop('k_RTP', None), overwrite=kwargs.pop('overwrite', False), **kwargs)
         self.age = kwargs.pop('age', 0.)
         self.mass=mass
         self.dry_mass=dry_mass

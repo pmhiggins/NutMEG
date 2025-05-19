@@ -92,8 +92,10 @@ class respirator:
       # the organism.
 
     def __init__(self, host, net_pathway, n_ATP,
+      rate_func='first order', rate_func_args={},
+      forcing_parameters=None, F_attrs=None,
       celldata=[0.0001, 0.004, 0.005, 7.], name='pathway',
-      xi=1.0, G_net_pathway=None, pathwaytype=None,
+      G_net_pathway=None, pathwaytype=None,
       *args, **kwargs):
         """
         Parameters
@@ -119,7 +121,7 @@ class respirator:
             self.net_pathway = self.locale.reactionlist[net_pathway.equation][type(net_pathway)]
         else:
             raise ValueError('Unable to process your reaction type')
-        self.xi=xi
+
         if G_net_pathway is not None:
             self.G_A = G_net_pathway
         else:
@@ -163,6 +165,58 @@ class respirator:
 
         self.G_C = self.n_ATP*self.G_P
 
+        # set up rate function.
+        if rate_func == 'first order':
+            self.rate_func = self._rf_first_order
+        elif rate_func == 'Arrhenius':
+            self.rate_func = self.net_pathway.calculate_rate
+        elif rate_func == 'zeroth order':
+            self.rate_func = lambda: self.net_pathway.rate_constant_env
+        else:
+            self.rate_func = rate_func
+        self.rate_func_args = rate_func_args
+
+
+        ## setup forcing parameters for respiration
+        # Load default forcing functions
+        self.forcing_parameters = {}
+        if not F_attrs:
+            self.F_attrs = {'xi':1.0}
+        self._set_default_forcing()
+
+        if forcing_parameters:
+            for name, (func, arg_keys) in forcing_parameters.items():
+                self.set_forcing_parameter(name, func, arg_keys)
+
+
+    def _set_default_forcing(self):
+        """ set up the default list of forcing functions.
+        Currently only contains thermodynamic forcing.
+        """
+        self.forcing_parameters["thermodynamic"] = (lambda resp, xi: max(0., 1-math.exp(-(resp.f_T())/(xi*8.314472*resp.locale.env.T))), ['xi'])
+
+    def f_T(self):
+        """ get the thermodynamicforcing of free energy """
+        _f = -self.G_A-self.G_C
+        if _f>0:
+            return _f
+        else:
+            return -1.
+
+    def set_forcing_parameter(self, name, func, arg_keys):
+        """
+        Set or override a forcing function and define its required arguments.
+        Note that your function MUST take a respiration object as its first argument.
+        Names of remaining arguments should be listed in arg_keys. Be sure to update
+        respirator.F_attrs with the arguments you wish to use, or you will recieve a cryptic error.
+        """
+        if not callable(func):
+            raise ValueError(f"Forcing function for {name} must be callable.")
+        if not isinstance(arg_keys, list):
+            raise TypeError(f"Argument keys for {name} must be a list of parameter names.")
+
+        self.forcing_parameters[name] = (func, arg_keys)
+
 
     def build_ATP_reaction(self, celldata):
         """Create a reaction object describing the formation of ATP using
@@ -192,20 +246,31 @@ class respirator:
 
 
     def get_rate(self):
-        """Update the rate of reaction in the last state this object
-        was left in.
+        """
+        Update the rate of reaction in the last state this object
+        was left in. Applies kinetic forcing parameters based on environement,
+        if they are included in the respirator'a forcing_parameters attribute.
         """
         self.G_A = self.net_pathway.molar_gibbs
-        f = (-self.G_A-self.G_C)
-        # ^ the net of energy released, thermodynamic driving force.
-        if f <= 0:
-            self.F_T = 0. # reaction cannot proceed. Technically, it goes backwards
-        else:
-            self.F_T = 1-math.exp(-f/(self.xi*8.314472*self.locale.env.T))
 
+        rate_modifier = 1.
+        # loop through all defined forcing functions
+        # this is implementing the multiplicative monod model.
+        for name, (func, arg_keys) in self.forcing_parameters.items():
+            # Extract necessary arguments from the environment
+            args = [self.F_attrs[key] for key in arg_keys if key in self.F_attrs]
+            rate_modifier *= func(self, *args)  # Apply the forcing function
+            # print(arg_keys, func(self, *args), rate_modifier)
+
+        self.rate = rate_modifier * self.rate_func(*self.rate_func_args)
+
+
+    def _rf_first_order(self):
+        """
+        First order rate law to be added to rate_laws.
+        """
         conc_multiplier = 1.0
         for r, mr in self.net_pathway.reactants.items():
             conc_multiplier = conc_multiplier*(r.activity**mr)
 
-        self.rate = (self.net_pathway.rate_constant_env * \
-          conc_multiplier*self.F_T)
+        return self.net_pathway.rate_constant_env * conc_multiplier
