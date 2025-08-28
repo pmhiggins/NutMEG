@@ -167,19 +167,21 @@ class Enceladus(reactor):
         pHfloats = np.linspace(7.,12., num=11)
         Tfloats = np.linspace(273.15, 473.15, num=21)
 
-        fCO2 = interpolate.interp2d(Tfloats,pHfloats,aCO2,kind='cubic')
 
-        fH2O = interpolate.interp2d(Tfloats,pHfloats,aH2O,kind='cubic')
+        fCO2 = interpolate.RectBivariateSpline(Tfloats,pHfloats,aCO2.T)
 
-        fpH = interpolate.interp2d(Tfloats,pHfloats,pHHT,kind='cubic')
+        fH2O = interpolate.RectBivariateSpline(Tfloats,pHfloats,aH2O.T)
+
+        fpH = interpolate.RectBivariateSpline(Tfloats,pHfloats,pHHT.T)
 
         aCO2 = fCO2(Temp, oceanpH)
+
 
         if len(aCO2) > 1 :
             # return as lists
             return aCO2, fH2O(Temp, oceanpH), fpH(Temp, oceanpH)
         else:
-            return aCO2[0], fH2O(Temp, oceanpH)[0], fpH(Temp, oceanpH)[0]
+            return aCO2[0][0], fH2O(Temp, oceanpH)[0][0], fpH(Temp, oceanpH)[0][0]
 
     @staticmethod
     def get_CO2_from_HTHeating(T, pH_0, nominals=False, salts=False, CO2unc=0.):
@@ -308,10 +310,10 @@ class Enceladus(reactor):
           activity=mol_H2)
         CH4aq = reaction.reagent('Methane(aq)', self.env, phase='g', conc=mol_CH4,
           activity=mol_CH4)
-        H2O = reaction.reagent('H2O(l)', self.env, phase='l', conc=uf(55.5, 0), activity=uf(H2Oact,0))
-        el = reaction.reagent('e-', self.env, charge=-1)
+        H2O = reaction.reagent('H2O(aq)', self.env, phase='l', conc=uf(55.5, 0), activity=uf(H2Oact,0))
+        el = reaction.reagent('e-', self.env, charge=-1, thermo=False)
         H = reaction.reagent('H+', self.env, charge=1, conc=mol_H,
-          phase='aq', activity=mol_H)
+          phase='aq', activity=mol_H, thermo=False)
 
         self.composition = {CO2.name:CO2, H2aq.name:H2aq,
           CH4aq.name:CH4aq, H2O.name:H2O, H.name:H}

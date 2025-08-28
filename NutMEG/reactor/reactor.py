@@ -300,6 +300,12 @@ class reactor:
         """Update reactor pressure in Pa"""
         self.env.P = float(P)
 
+    def contains_reagent(self, rname):
+        if rname in self.composition:
+            return True
+        else:
+            return False
+
 
     # def Comp_to_db(self, pH, CompID=None, dbpath=nmp.std_dbpath):
     #     """ Send the composition data to the database"""
