@@ -1,9 +1,21 @@
 import NutMEG
 import pandas as pd
-import os, math, sys, ast
+import os, math, sys, ast, yaml
 
 
 class KineticallyLimitedOrganism(NutMEG.horde):
+    """
+    Class for establishing an organism with known kinetic forcing parameters.
+
+    The KLO initialises a kinietically limited horde-like object in a more
+    user-friendly way than the base horde class. Forcing functions and their
+    attributes can be passed directly to the __init__ function or, more simply,
+    use the Builtin constructor function to read-in a known
+    KineticallyLimitedOrganism from one of NutMEG's kinetic databases.
+
+    # TODO: add explainer for kinetic databases to NutMEG docs.
+
+    """
 
     def __init__(self, name, R, rxn,
       donor=None, acceptor=None,
@@ -43,48 +55,94 @@ class KineticallyLimitedOrganism(NutMEG.horde):
 
 
     @classmethod
-    def Builtin(cls, ID, R, num=500, **horde_kwargs):
+    def Builtin(cls, ID, R, num=500, db_fn='default', **horde_kwargs):
 
-        orgs_df = pd.read_csv(os.path.dirname(__file__)+'/KLO_db.txt', sep='\t', index_col=0)
+        print(ID)
 
-        if ID in orgs_df.index.tolist():#['Pathway'].tolist():
+        with open(os.path.dirname(__file__)+'/KLO_db.yaml', 'r') as f:
+            org_data = yaml.safe_load(f)
 
-
-            rgts = {R.composition[k]:v for k,v in zip(ast.literal_eval(orgs_df.loc[ID]['ReactantNames']), ast.literal_eval(orgs_df.loc[ID]['ReactantStoichiometry']))}
-            prods = {R.composition[k]:v for k,v in zip(ast.literal_eval(orgs_df['ProductNames'][ID]), ast.literal_eval(orgs_df['ProductStoichiometry'][ID]))}
-            rxn = NutMEG.reaction.reaction(rgts, prods, R.env)
-            rxn.rate_constant_env = orgs_df.loc[ID]['k_max']
-
-            F_attrs = {k:orgs_df[k][ID] for k in ['K_A', 'K_D', 'xi']}
-
-            F_funcs = {}
-            if orgs_df['F_A_ID'][ID] != 'default':
-                FFA, FFB = cls.builtin_forcing_funcs(orgs_df['F_A_ID'][ID], R)
-                F_funcs['F_A'] = (FFA, FFB)
-            if orgs_df['F_D_ID'][ID] != 'default':
-                FFA, FFB = cls.builtin_forcing_funcs(orgs_df['F_D_ID'][ID], R)
-                F_funcs['F_D'] = (FFA, FFB)
-
-
-            return cls(ID, R, rxn,
-              donor=orgs_df['Donor'][ID],
-              acceptor=orgs_df['Acceptor'][ID],
-              F_funcs=F_funcs,
-              F_attrs=F_attrs,
-              rate_func='zeroth order',
-              n_ATP=orgs_df['n_ATP'][ID],
-              num=num, **horde_kwargs)
-
-        else:
+        org_props = None
+        try:
+            org_props = org_data.get(ID)
+        except:
             raise ValueError(ID+' not found in KLO_db.')
+
+
+        rgts = {R.composition[k]:v for k,v in org_props.get('Reactants', {}).items()}
+        prods = {R.composition[k]:v for k,v in org_props.get('Products', {}).items()}
+
+        rxn = NutMEG.reaction.reaction(rgts, prods, R.env)
+
+        rxn.rate_constant_env = org_props.get('Bioenergetics')['k_max'] * org_props.get('dry_mass', 1e-12)
+
+        # forcing function attributes
+        F_attrs = {
+          'K_A' : org_props.get('F_A', {}).get('K_A', 0.),
+          'K_D' : org_props.get('F_D', {}).get('K_D', 0.),
+          'xi' : org_props.get('Bioenergetics', {}).get('xi')
+        }
+
+
+        # non-default forcing functions
+        F_funcs = {}
+        for F in ('F_A', 'F_D', 'F_Temp', 'F_pH'):
+
+            F_ID = org_props.get(F, {'ID':'default'}).get('ID')
+            # {'ID':'default'} is used as the catch to make sure changes
+            # aren't made where the forcing function is not applicable.
+
+            if F_ID != 'default':
+                FFA, FFB = cls.builtin_forcing_funcs(F_ID, R)
+                F_funcs[F] = (FFA, FFB)
+
+
+        return cls(ID, R, rxn,
+          donor=org_props.get('Donor'),
+          acceptor=org_props.get('Acceptor'),
+          F_funcs=F_funcs,
+          F_attrs=F_attrs,
+          rate_func='zeroth order',
+          n_ATP=org_props.get('Bioenergetics').get('n_ATP'),
+          num=num, **horde_kwargs)
+
+
 
     @staticmethod
     def builtin_forcing_funcs(ID, R):
 
         if ID == 'MineralGoethite':
-            return (lambda resp, K_A: 1./((resp.host.bm_conc/resp.host.locale.composition['Goethite'].conc) + K_A)), ['K_A']
+            return (lambda resp, K_A: (resp.host.bm_conc/resp.host.locale.composition['Goethite'].conc)/((resp.host.bm_conc/resp.host.locale.composition['Goethite'].conc) + K_A)), ['K_A']
         else:
             raise ValueError('Unknown custom forcing function bassed to builtin_forcing_funcs')
+
+    @staticmethod
+    def suggest_orgs(R, products=False):
+        """
+        Suggest a list of organism keys in the KLO database that are
+        compatible with reactor R for habitability analyses.
+        """
+        with open(os.path.dirname(__file__)+'/KLO_db.yaml', 'r') as f:
+            data = yaml.safe_load(f)
+        print(data)
+
+        viables = []
+        for org in data.keys():
+            viable = True
+            for k,v in data[org]['Reactants'].items():
+                # k is the species name
+                if not R.contains_reagent(k):
+                    viable=False
+            if products:
+                for k,v in data[org]['Products'].items():
+                    # k is the species name
+                    if not R.contains_reagent(k):
+                        viable=False
+            if viable:
+                viables.append(org)
+
+        return viables
+
 
 """
 class Methanogen_H2_HCO3(KineticallyLimitedOrganism):
