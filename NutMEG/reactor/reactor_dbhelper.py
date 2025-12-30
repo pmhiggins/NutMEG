@@ -347,7 +347,7 @@ class rdb_helper:
         compdictstr='{'
         for key in sorted(self.host.composition):
             compdictstr += "'" + str(key) + "' : " + \
-              str(self.host.composition[key].activity) +', '
+              str(round(self.host.composition[key].activity,2)) +', '
         compdictstr+='}'
         return compdictstr
 

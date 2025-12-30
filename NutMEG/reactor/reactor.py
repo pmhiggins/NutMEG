@@ -178,7 +178,15 @@ class reactor:
             self.composition[c].activity += r*t
             self.composition[c].conc += r*t
 
-
+    def take_step(self, t):
+        """
+        perform time-sensitive updates to the reactor's attributes with time
+        step t. This function is designed for child classes or to be overwritten
+        with (abiotic) specifics for a reactor implementation. The basic case
+        is to update the composition by any fixed rate changes in
+        reactor.composition_inputs.
+        """
+        self.update_composition(t)
 
     def unify_reaction(self, rxxn, overwrite=False):
         """Add the reaction and its reagents to the reactor, ensuring there is

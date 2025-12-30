@@ -138,7 +138,7 @@ class ecosystem:
 
             startpop = [o.get_population() for o in self.c.all()]
 
-            self.r.update_composition(dt)
+            self.r.take_step(dt)
 
             try:
                 self.c.take_step(dt)
@@ -153,7 +153,7 @@ class ecosystem:
                     logger.info('First step error, saving initial conditions ' + \
                       'as results.')
                     for col in self.c.all():
-                        col.output.appendvals(col.get_population(), dt)
+                        col.output.appendvals(dt)
                     self.c.output.appendvals()
                 resultsdict['Time'].append(t)
                 resultsdict['Composition'].append(self.r.getconcs())
@@ -163,7 +163,7 @@ class ecosystem:
                 logger.info('Other error occurred while taking step')
                 logger.info('Saving data up to error...')
                 for col in self.c.all():
-                    col.output.appendvals(col.get_population(), dt)
+                    col.output.appendvals(dt)
                 self.c.output.appendvals()
                 resultsdict['Time'].append(t)
                 resultsdict['Composition'].append(self.r.getconcs())
