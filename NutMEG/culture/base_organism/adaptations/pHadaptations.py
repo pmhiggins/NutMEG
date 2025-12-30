@@ -21,15 +21,15 @@ class pHadaptations:
 
 
     def _getfluxH(self):
-        K = self.host.memb_pot*96485/(8.31*self.host.locale.env.T)
+        K = self.host.membrane_potential*96485/(8.31*self.host.locale.env.T)
         concs = {'in':10**-self.host.pH_interior, 'out':10**-self.host.locale.pH}
-        return GoldmanEQ(self.host.PermH, K, concs, self.host.surfacearea, self.host.locale.env.T, q=1)
+        return GoldmanEQ(self.host.membrane_permH, K, concs, self.host.surfacearea, self.host.locale.env.T, q=1)
 
     def _getfluxOH(self):
-        K = self.host.memb_pot*96485/(8.31*self.host.locale.env.T)
+        K = self.host.membrane_potential*96485/(8.31*self.host.locale.env.T)
         concs = {'in':10**(self.host.pH_interior-14),
           'out':10**(self.host.locale.pH-14)}
-        return GoldmanEQ(self.host.PermOH, K, concs, self.host.surfacearea, self.host.locale.env.T, q=-1)
+        return GoldmanEQ(self.host.membrane_permOH, K, concs, self.host.surfacearea, self.host.locale.env.T, q=-1)
 
     def _getEnergyPump(self):
         return(8.31*self.host.locale.env.T*abs(self.host.pH_interior-self.host.locale.pH))

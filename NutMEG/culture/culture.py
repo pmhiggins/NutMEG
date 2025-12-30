@@ -103,10 +103,10 @@ class culture:
         order hordes, colonies."""
         gr = []
         for h in self.hordes:
-            gr.append(h.output.params['GrowthRate_'+h.OrgID][-1])
+            gr.append(h.growth_rate)
         if not self.lite:
             for c in self.colonies:
-                gr.append(c.output.params['GrowthRate_'+c.OrgID][-1])
+                gr.append(c.growth_rate)
         return gr
 
     def get_maintenance_fractions(self):
@@ -114,10 +114,10 @@ class culture:
         in the order hordes, colonies."""
         mf = []
         for h in self.hordes:
-            mf.append(h.output.params['MaintenanceFrac_'+h.OrgID][-1])
+            mf.append(h.maintenance.P_loss)
         if not self.lite:
             for c in self.colonies:
-                mf.append(c.output.params['MaintenanceFrac_'+c.OrgID][-1])
+                mf.append(c.get_average_maintenance_fraction())
         return mf
 
 

@@ -6,19 +6,12 @@ class organism(NutMEG.base_organism):
     """
 
 
-    def __init__(self, name, locale, metabolism,
-      maintenance=None,
-      CHNOPS=None,
-      mass=1.e-16,
-      E_synth=None,
-      volume=1.e-18):
-        NutMEG.base_organism.__init__(self, name=name, locale=locale,
-          metabolism=metabolism,
-          maintenance=maintenance,
-          CHNOPS=CHNOPS,
-          mass=mass,
-          E_synth=E_synth,
-          volume=volume)
+    def __init__(self, name, locale, metabolism, **bo_kwargs):
+
+        NutMEG.base_organism.__init__(self, name, locale,
+          metabolism, **bo_kwargs)
+
+        warnings.warn('nutMEG.organism.organism is depreciated.')
 
 
 

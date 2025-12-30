@@ -36,10 +36,10 @@ class CHNOPSexchanger:
     one day we will be able to inmprove it considerably.
     """
 
-    uptake_consts = {'C':1e-10, 'H':1e-10, 'N':1e-10,
-      'O':1e-10, 'P':1e-10, 'S':1e-10}
+    # uptake_consts = {'C':1e-10, 'H':1e-10, 'N':1e-10,
+    #   'O':1e-10, 'P':1e-10, 'S':1e-10}
 
-    def get_default_nutrients(self):
+    def get_default_nutrient_properties(self):
         """set up the nutrients dictionary, using cell composition values of
         E. Coli. This could be adapted in future child classes for specific
         organisms if the data is available.
@@ -47,28 +47,66 @@ class CHNOPSexchanger:
         # in an ideal world, we would have uptakes and constants from individual
         # chemicals rather than just the elements as shown here.
         return {
-          'C':[[0.0, 0.50/12.0, 0.0, self.uptake_consts['C']], []],
-          'H':[[0.0, 0.09, 0.0, self.uptake_consts['H']], []],
-          'N':[[0.0, 0.15/14.0, 0.0, self.uptake_consts['N']], []],
-          'O':[[0.0, 0.20/16.0, 0.0, self.uptake_consts['O']], []],
-          'P':[[0.0, 0.04/31.0, 0.0, self.uptake_consts['P']], []],
-          'S':[[0.0, 0.02/32.0, 0.0, self.uptake_consts['S']], []]}
+          'C':[0.0, 0.50/12.0, 0.0],
+          'H':[0.0, 0.09, 0.0],
+          'N':[0.0, 0.15/14.0, 0.0],
+          'O':[0.0, 0.20/16.0, 0.0],
+          'P':[0.0, 0.04/31.0, 0.0],
+          'S':[0.0, 0.02/32.0, 0.0]}
 
       # approx, adapted slightly from E Coli values in microbiology book
       # (Atlas 1995)
 
 
 
-    def __init__(self, host, *args, **kwargs):
+    def __init__(self, host, max_growth_rate=None,
+          CHNOPS_forcing_parameters=None, CHNOPS_F_attrs=None,
+          nutrient_sources={'P':['H2PO4-']}):
+
         self.host = host
+
+        if max_growth_rate:
+            self.max_growth_rate = max_growth_rate
+            self.ratelimiting = True
+        else:
+            self.ratelimiting = False
+
+        ## setup forcing parameters for biomass growth
+        # Load default forcing functions
+        self.forcing_parameters = {}
+        self.F_attrs = CHNOPS_F_attrs # TODO: a function that checks this format is correct
+
+        if CHNOPS_forcing_parameters:
+            for name, (func, arg_keys) in CHNOPS_forcing_parameters.items():
+                self.set_forcing_parameter(name, func, arg_keys)
+
         self.limiter = ''
-        self.uptake_consts.update(kwargs.pop('uptake_consts', {}))
+        # self.uptake_consts.update(kwargs.pop('uptake_consts', {}))
+        self.nutrient_sources = nutrient_sources
         self.find_nutrients(init=True)
 
 
 
-    def find_nutrients(self, init=False, ignore=[]):
-        """ Look in the host's locale to find reagents which could work as a
+
+    def set_forcing_parameter(self, name, func, arg_keys):
+        """
+        Set or override a forcing function and define its required arguments.
+        Note that your function MUST take a CHNOPSexchanger object as its first argument.
+        Names of remaining arguments should be listed in arg_keys. Be sure to update
+        CHNOPSexchanger.F_attrs with the arguments you wish to use,
+        or you will recieve a cryptic error.
+        """
+        if not callable(func):
+            raise ValueError(f"Forcing function for {name} must be callable.")
+        if not isinstance(arg_keys, list):
+            raise TypeError(f"Argument keys for {name} must be a list of parameter names.")
+
+        self.forcing_parameters[name] = (func, arg_keys)
+
+
+    def find_nutrients(self, init=False):
+        """
+        Look in the host's locale to find reagents which could work as a
         nutrient source and update nutrients as appropriate.
         Pass init as True to set up the nutrients dict from scratch.
 
@@ -79,48 +117,116 @@ class CHNOPSexchanger:
         """
 
         if init:
-            self.nutrients = self.get_default_nutrients()
-            for key, value in self.host.locale.composition.items():
-                if key not in ignore:
-                    for keyn, valuen in self.nutrients.items():
-                        if keyn in key:
-                            self.nutrients[keyn][0][2] += value.activity
-                            self.nutrients[keyn][1].append(value)
+            default_nutrient_properties = self.get_default_nutrient_properties()
+            self.nutrient_properties = {}
+
+            for key, value in self.nutrient_sources.items():
+                # only populate actual properties with the nutrients
+                # requested in the initialisation
+                self.nutrient_properties[key] = default_nutrient_properties[key]
+                for this_source in value:
+                    self.nutrient_properties[key][2] += self.host.locale.composition[this_source].activity
+
+            # for key, value in self.host.locale.composition.items():
+            #     if key not in ignore:
+            #         for keyn, valuen in self.nutrients.items():
+            #             if keyn in key:
+            #                 self.nutrients[keyn][0][2] += value.activity
+            #                 self.nutrients[keyn][1].append(value.name)
         else:
-            for key, value in self.nutrients.items():
-                value[0][2] = 0.0
-                for r in value[1]:
-                    value[0][2] += r.activity
+            for key, value in self.nutrient_properties.items():
+                value[2] = 0.0
+                for r in self.nutrient_sources[key]:
+                    value[2] += self.host.locale.composition[r].activity
 
 
 
-    def update_nutrient_yield(self, numcells=1):
-        """Get the nutrient concentrations available from the host's locale.
+    # def update_nutrient_yield(self, numcells=1):
+    #     """Get the nutrient concentrations available from the host's locale.
+    #
+    #     Parameters
+    #     ----------
+    #     numcells : int, optional
+    #         number of cells we need nutrients for, as this will be greater than
+    #         one for hordes.
+    #     """
+    #     self.find_nutrients()
+    #     MaxMolOrg= {}
+    #     for key, value in self.nutrients.items():
+    #         # work out the max amount of cells we can get from each
+    #         MaxMolOrg[key] = numcells*value[0][2]*value[0][3]/value[0][1]
+    #         # units: dry g / (L s)
+    #     # the smallest value of MaxMolOrg[0] corresponds to the limiting element.
+    #     sublimiter = min(MaxMolOrg, key=MaxMolOrg.get)
+    #     self.limiter=(sublimiter)
+    #     logger.info(self.limiter+' is the limiting nutrient for '+self.host.name)
+    #     # loop over again and assign each with the max we can make
+    #     factor = MaxMolOrg[sublimiter]#/self.nutrients[limiter][0][1]
+    #     for key, value in self.nutrients.items():
+    #         value[0][0] = factor*value[0][1]*(self.host.locale.volume*1000) # convert to L
 
-        Parameters
-        ----------
-        numcells : int, optional
-            number of cells we need nutrients for, as this will be greater than
-            one for hordes.
+
+    def get_expected_growth_rate(self):
+
+        rate_modifier = 1.
+        # loop through all defined growth forcing functions
+        # this is implementing the multiplicative monod model.
+        for name, (func, arg_keys) in self.forcing_parameters.items():
+            # Extract necessary arguments from the environment
+            args = [self.F_attrs[key] for key in arg_keys if key in self.F_attrs]
+            # print(self.F_attrs)
+            # print(arg_keys)
+            # print(args)
+
+            rate_modifier *= func(self, *args)  # Apply the forcing function
+            # print(rate_modifier)
+
+        mu_expected = rate_modifier * self.max_growth_rate
+
+        return mu_expected
+
+
+
+    def get_expected_growth_power(self):
+
+        mu_e = self.get_expected_growth_rate()
+        return mu_e * self.host.E_synth
+
+
+    def growth_power_with_throttling(self):
         """
-        self.find_nutrients()
-        MaxMolOrg= {}
-        for key, value in self.nutrients.items():
-            # work out the max amount of cells we can get from each
-            MaxMolOrg[key] = numcells*value[0][2]*value[0][3]/value[0][1]
-            # units: dry g / (L s)
-        # the smallest value of MaxMolOrg[0] corresponds to the limiting element.
-        sublimiter = min(MaxMolOrg, key=MaxMolOrg.get)
-        self.limiter=(sublimiter)
-        logger.info(self.limiter+' is the limiting nutrient for '+self.host.name)
-        # loop over again and assign each with the max we can make
-        factor = MaxMolOrg[sublimiter]#/self.nutrients[limiter][0][1]
-        for key, value in self.nutrients.items():
-            value[0][0] = factor*value[0][1]*(self.host.locale.volume*1000) # convert to L
+        returns (P_rebuild, P_growth). First element: biomass to be rebuilt. It's
+        energy cost has already been accounted for, but it also has a nutrient cost.
+        Second element: Net actual growth power after throttling. Due to P_rebuild,
+        this value may be negative.
+        """
+
+        P_ex = self.get_expected_growth_power()
+
+        P_rebuild = self.host.maintenance.P_rebuild
+        P_growth = self.host.P_EL_growth
+        # P_build =  P_rebuild + P_growth
+
+        if (P_rebuild + P_growth) < P_ex:
+            # the requested biomass can be built in this step
+            # return the rebuilding power, then the growing power
+            return P_rebuild, P_growth
+            # self.grow_with_nutrients((P_G + P_den), t)
+        else:
+            # the requested biomass cannot be built in this step.
+            # instead build the rate-limited amount P_ex
+            if P_rebuild < P_ex:
+                # maintenance is possible, but not the originally intended growth
+                return P_rebuild, (P_ex - P_rebuild)
+            else:
+                # not even complete maintenance is possible, a negative net growth
+                # is returned (i.e. the biosphere shrinks)
+                return P_ex, (P_ex - P_rebuild)
+
+            # self.grow_with_nutrients(P_ex, t)
 
 
-    def grow_with_nutrients(self, E_growth, t, updatenutrients=True,
-      checknutrients=True, ret=0.0, numcells=1):
+    def grow_with_nutrients(self, t, numcells=1):
         """Convert as much of E_growth [J] into biomass as possible in time t
         [s] based on nutrient availability. Remove the nutrients required from
         ``host.locale`` to build that biomass and pass back any leftover energy.
@@ -158,83 +264,111 @@ class CHNOPSexchanger:
         This function does NOT grow the ``host`` (e.g. change its volume and
         mass). That should be done elsewhere.
         """
-        if checknutrients:
-            ret = self.check_nutrients(E_growth, t, updatenutrients=updatenutrients, numcells=numcells)
 
-        if self.limiter=='Energy':
-            # throttle how much we take up to match the incoming growth energy
-            for key, value in self.nutrients.items():
-                value[0][0] = value[0][0]*self.g/self.maxg
+        self.host.maintenance.calculate_P_rebuild()
+        P_build = self.host.P_EL_growth + self.host.maintenance.P_rebuild
+        P_net = self.host.P_EL_growth
 
-        fraction_used = 1.0-(ret/E_growth)
-        for key, value in self.nutrients.items():
+        if self.ratelimiting:
+            P_rebuild, P_grow = self.growth_power_with_throttling()
+            P_net = P_grow
+            P_build = P_rebuild + max(P_grow, 0.)
+
+
+
+        # prognosis: don't need updatenutrients, update_nutrient_yield, or to call find_nutrients again
+
+        # if checknutrients:
+        #     ret = self.check_nutrients(E_growth, t, updatenutrients=updatenutrients, numcells=numcells)
+        #
+        # if self.limiter=='Energy':
+        #     # throttle how much we take up to match the incoming growth energy
+        #     for key, value in self.nutrients.items():
+        #         value[0][0] = value[0][0]*self.g/self.maxg
+
+        tobuild = numcells * self.host.dry_mass * P_build * t /self.host.E_synth # g of cells
+
+        # for key, value in self.nutrients.items():
+        #     food = random.choices(value[1], comps)[0]
+        #     if food.name != 'H2O(l)':# and food.activity >=1e-12:
+
+
+        for key in self.nutrient_sources.keys():
+            if self.nutrient_properties[key][2] == 0.:
+                # all food eaten! Return all the power for building biomass
+                # biosphere may shrink as a result.
+                return 0. - self.host.maintenance.P_rebuild
+
             # consume the relevant amount of nutrient
             # where there are multiple sources pick a random one
-            comps = [self.host.locale.composition[f.name].activity for f in value[1]]
-            food = random.choices(value[1], comps)[0]
-            if food.name != 'H2O(l)':# and food.activity >=1e-12:
-                # only remove the fraction we have actually picked up
-                # because check_nutrients has throttled E_growth
-                self.host.locale.composition[food.name].activity -= (fraction_used*value[0][0]*t)
-                self.host.locale.composition[food.name].conc -= (fraction_used*value[0][0]*t)
+            food = random.choices(self.nutrient_sources[key])[0]
 
-                if self.host.locale.composition[food.name].activity < 0. or self.host.locale.composition[food.name].conc <0.:
-                    self.host.locale.composition[food.name].activity =0.
-                    self.host.locale.composition[food.name].conc =0.
-                    
-                #food.activity -= (value[0][0]*t)
-        # print(self.host.locale.composition['P(aq)'].activity)
-        return ret
+            # only remove the fraction we have actually picked up
+            total_rmv = (tobuild*self.nutrient_properties[key][1]*t)
 
-    def check_nutrients(self, E_growth, t, updatenutrients=True, numcells=1):
-        """Given a timestep ``t`` and potential growth input ``E_growth``,
-        compute how much of that energy can be used.
+            self.host.locale.composition[food].activity -= total_rmv
+            self.host.locale.composition[food].conc -= total_rmv
+            self.nutrient_properties[key][2] -= total_rmv
+            self.nutrient_properties[key][0] = total_rmv/numcells
 
-        Parameters
-        ----------
-        E_growth : float
-            Total Energy available for growth in ``t`` in J
-        t : float
-            Time frame for which this energy is available in s.
-        updatenutrients : bool, optional
-            Whether to update the nutrients dict before comparing growth
-            estimates. Default True.
-        numcells : int, optional
-            Number of cells to be considering for this growth, if a horde is
-            being used for example. Default 1.
-        Return
-        ------
-        Any E_growth which cannot be converted into biomass because of nutrient
-        limitation.
-        """
-        if updatenutrients:
-            self.update_nutrient_yield(numcells=numcells)
-        # see how many g cell we can possibly make in the time
-        # here we use carbon, but any of them should be equivalent it's just a
-        # unit change
-        self.maxg = t*self.nutrients['C'][0][0]/(self.nutrients['C'][0][1])
+            if self.host.locale.composition[food].activity < 0. or self.host.locale.composition[food].conc <0.:
+                self.host.locale.composition[food].activity =0.
+                self.host.locale.composition[food].conc =0.
 
-        # use E_synth to work out how many grams the energy can yield
-        self.g = (E_growth/self.host.E_synth)*self.host.dry_mass*1000 # convert to g
+                # reset the nutrient dictionaries to deal with any float errors
+                self.find_nutrients(init=False)
 
-        if self.g < self.maxg:
-            logger.debug('organism(s) are energy limited')
-            self.limiter='Energy'
+        return P_net
 
-            # we can use all the energy in grow_with_nutrients
-            return 0.0
-            # the energy is limiting, not the substrate, we need to lower
-            # our yields proportionately. This is done in grow_with_nutrients
-
-        elif self.maxg <= 0.0:
-            logger.debug('organism(s) fatally substrate limited by '+self.limiter+'!')
-            self.host.throttling = 'substrate: '+self.limiter
-            return E_growth
-        else:
-            logger.debug('organism(s) are substrate limited')
-            self.host.throttling = 'substrate: '+self.limiter
-            # there must be energy left over, send it back
-            return E_growth*(1.0-(self.maxg/self.g))
+    # def check_nutrients(self, E_growth, t, updatenutrients=True, numcells=1):
+    #     """Given a timestep ``t`` and potential growth input ``E_growth``,
+    #     compute how much of that energy can be used.
+    #
+    #     Parameters
+    #     ----------
+    #     E_growth : float
+    #         Total Energy available for growth in ``t`` in J
+    #     t : float
+    #         Time frame for which this energy is available in s.
+    #     updatenutrients : bool, optional
+    #         Whether to update the nutrients dict before comparing growth
+    #         estimates. Default True.
+    #     numcells : int, optional
+    #         Number of cells to be considering for this growth, if a horde is
+    #         being used for example. Default 1.
+    #     Return
+    #     ------
+    #     Any E_growth which cannot be converted into biomass because of nutrient
+    #     limitation.
+    #     """
+    #     if updatenutrients:
+    #         self.update_nutrient_yield(numcells=numcells)
+    #     # see how many g cell we can possibly make in the time
+    #     # here we use carbon, but any of them should be equivalent it's just a
+    #     # unit change
+    #     self.maxg = t*self.nutrients['C'][0][0]/(self.nutrients['C'][0][1])
+    #
+    #     # use E_synth to work out how many grams the energy can yield
+    #     self.g = (E_growth/self.host.E_synth)*self.host.dry_mass*1000 # convert to g
+    #
+    #     if self.g < self.maxg:
+    #         logger.debug('organism(s) are energy limited')
+    #         self.limiter='Energy'
+    #
+    #         # we can use all the energy in grow_with_nutrients
+    #         return 0.0
+    #         # the energy is limiting, not the substrate, we need to lower
+    #         # our yields proportionately. This is done in grow_with_nutrients
+    #
+    #     elif self.maxg <= 0.0:
+    #         logger.debug('organism(s) fatally substrate limited by '+self.limiter+'!')
+    #         self.host.throttling = 'substrate: '+self.limiter
+    #         return E_growth
+    #     else:
+    #         logger.debug('organism(s) are substrate limited')
+    #         self.host.throttling = 'substrate: '+self.limiter
+    #         # there must be energy left over, send it back
+    #         return E_growth*(1.0-(self.maxg/self.g))
 
 
 
@@ -250,10 +384,12 @@ class CHNOPSexchanger:
 
     def get_uptake(self, numcells=1):
         """ Return a dictionary showing the uptake rate of each nutient"""
+        if numcells==0:
+            return '{}'
         utdictstr='{'
-        for key in sorted(self.nutrients):
+        for key in sorted(self.nutrient_properties):
             utdictstr += ("'" +key+ "': " + \
-              str(self.nutrients[key][0][0]/numcells) +', ')
+              str(self.nutrient_properties[key][0]/numcells) +', ')
             # compdict[key] = E.composition[key].activity
         utdictstr+='}'
         return utdictstr

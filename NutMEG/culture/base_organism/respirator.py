@@ -1,5 +1,5 @@
 
-import sys
+import sys, warnings
 sys.path.append("../..")
 import math
 from NutMEG import reaction as rxn
@@ -91,12 +91,14 @@ class respirator:
     # rate = None # the actual rate, corrected for other limiters in
       # the organism.
 
-    def __init__(self, host, net_pathway, n_ATP,
+    def __init__(self, host, net_pathway,
+      n_ATP=1., max_metabolic_rate=None,
       rate_func='first order', rate_func_args={},
-      forcing_parameters=None, F_attrs=None,
-      celldata=[0.0001, 0.004, 0.005, 7.], name='pathway',
-      G_net_pathway=None, pathwaytype=None,
-      *args, **kwargs):
+      kinetic_forcing_parameters=None, kinetic_F_attrs=None,
+      rate_constant_env=None, rate_constant_RTP=None,
+      celldata=[0.0001, 0.004, 0.005, 7.],
+      overwrite_net_pathway=False, G_net_pathway=None, pathwaytype=None,
+      n_T=None, n_HP=None, n_HR=None, G_C=None):
         """
         Parameters
         ----------
@@ -108,22 +110,29 @@ class respirator:
         """
         self.host = host
         self.locale = host.locale
-        self.name = name
-        # unify the pathway with the local environment
-        if type(net_pathway) is str:
-            if pathwaytype == None:
-                pathwaytype = type(rxn.reaction({},{}, self.locale.env))
-            self.net_pathway = self.locale.reactionlist[net_pathway][pathwaytype]
-        elif type(net_pathway) is rxn.reaction or rxn.redox:
-            # add reaction direct to the reactor, if it isn't there already
-            self.locale.add_reaction(net_pathway, overwrite=kwargs.pop('overwrite', False))
-            #set self.net_pathway now it has been unified
-            self.net_pathway = self.locale.reactionlist[net_pathway.equation][type(net_pathway)]
-        else:
-            raise ValueError('Unable to process your reaction type')
 
-        if G_net_pathway is not None:
+
+        #### unify the pathway with the local environment
+        if overwrite_net_pathway:
+            if type(net_pathway) is str:
+                if pathwaytype == None:
+                    pathwaytype = type(rxn.reaction({},{}, self.locale.env))
+                self.net_pathway = self.locale.reactionlist[net_pathway][pathwaytype]
+            elif type(net_pathway) is rxn.reaction or rxn.redox:
+                # add reaction direct to the reactor, if it isn't there already
+                self.locale.add_reaction(net_pathway, overwrite=overwrite_net_pathway)
+                #set self.net_pathway now it has been unified
+                self.net_pathway = self.locale.reactionlist[net_pathway.equation][type(net_pathway)]
+            else:
+                raise ValueError('Reactor of ',self.host.name, 'is unable to process net_pathway type')
+        else:
+            self.net_pathway = self.locale.reactionlist[net_pathway.equation][type(net_pathway)]
+
+        #### set up overall free energy of metabolic reaction
+
+        if G_net_pathway:
             self.G_A = G_net_pathway
+            self.net_pathway.molar_gibbs = self.G_A
         else:
             # get the molar gibbs from the net pathway reaction ourselves
             self.net_pathway.rto_current_env()
@@ -131,62 +140,87 @@ class respirator:
               updatestdGibbs=False)
             self.G_A = self.net_pathway.molar_gibbs
 
-        self.build_ATP_reaction(celldata) # also gets G_P
+
+        #### set up ATP production (conservable energy)
+
+        self.G_P = 50000
+        # self.build_ATP_reaction(celldata) # also sets G_P
 
         if n_ATP is None:
-            self.n_P = kwargs.pop('n_P', 0.0)
-            self.n_HP = kwargs.pop('n_HP', 3.0)
-            self.n_HR = kwargs.pop('n_HR', 0.0)
-            self.n_ATP = (self.n_P + (self.n_HR/self.n_HP))
+            if n_P and n_HP and n_HR:
+                self.n_ATP = self.get_nATP_from_protons(n_P,n_HP,n_HR)
+            elif G_C:
+                # conservable gibbs has been passed directly.
+                # use this to set a proxy n_ATP
+                self.n_ATP = G_C / self.G_P
+            else:
+                warnings.warn('No n_ATP or G_C calculable in ',self.host.name,' respirator.')
         else:
             self.n_ATP = n_ATP
 
-        # self.k_RTP = kwargs.pop('k_RTP', 0.035/3600.)
-        if self.net_pathway.rate_constant_RTP is None:
-            self.net_pathway.rate_constant_RTP = kwargs.pop('k_RTP', 0.0001586)
-
-        if not self.net_pathway.bool_rate_constants():
-            raise ValueError('Rate constant unknown, we cannnot' + \
-            'calucate respiration rates without them!')
-
-        if self.net_pathway.rate_constant_env == None:
-            #if we don't know the rate constant outside RTP,
-            # it often changes by 2x every increase by 10 K.
-            self.net_pathway.rate_constant_env = ( \
-              self.net_pathway.rate_constant_RTP * \
-              (2**((self.locale.env.T-298)/10)))
-
-        #self.k_RTP = kwargs.pop('k_RTP', 0.065/60.)
-        # self.k_T = self.k_RTP*math.exp(298.0/self.locale.env.T)
-
-        # self.k_T = 34.7/3600#self.k_RTP*math.exp(6000*((1/298)-(1/self.locale.env.T)))
-          # ^ get the rate const at this temperature
-          # (only accurate for near RTP)
-
         self.G_C = self.n_ATP*self.G_P
 
-        # set up rate function.
+
+        #### set up metabolic rates
+
+        # if a rate constant is passed, the net_pathway's rate constant will be
+        # overwritten. If not, it will be left untouched.
+        if rate_constant_env:
+            self.net_pathway.rate_constant_env=rate_constant_env
+        if rate_constant_RTP:
+            self.net_pathway.rate_constant_RTP=rate_constant_RTP
+
+        if not self.net_pathway.bool_rate_constants():
+            warnings.warn('Respirator initiated without any rate constants')
+             # unknown, we cannnot' + \
+            # 'calucate respiration rates without them!')
+        else:
+            if self.net_pathway.rate_constant_RTP and not self.net_pathway.rate_constant_env:
+                # if we don't know the rate constant outside RTP,
+                # it often changes by 2x every increase by 10 K.
+                self.net_pathway.rate_constant_env = ( \
+                  self.net_pathway.rate_constant_RTP * \
+                  (2**((self.locale.env.T-298)/10)))
+
+        #### set up rate function.
+        self.max_metabolic_rate = max_metabolic_rate
         if rate_func == 'first order':
+            self.rate_func_ID = 'first order'
             self.rate_func = self._rf_first_order
         elif rate_func == 'Arrhenius':
+            self.rate_func_ID = 'Arrhenius'
             self.rate_func = self.net_pathway.calculate_rate
         elif rate_func == 'zeroth order':
+            self.rate_func_ID = 'zeroth order'
             self.rate_func = lambda: self.net_pathway.rate_constant_env
+            self.max_metabolic_rate = self.net_pathway.rate_constant_env
         else:
             self.rate_func = rate_func
         self.rate_func_args = rate_func_args
 
 
-        ## setup forcing parameters for respiration
+        #### setup forcing parameters for respiration
         # Load default forcing functions
         self.forcing_parameters = {}
-        if not F_attrs:
+        self.F_attrs = {}
+        if not kinetic_F_attrs:
             self.F_attrs = {'xi':1.0}
+        else:
+            self.F_attrs = kinetic_F_attrs
+            self.F_attrs['xi'] = kinetic_F_attrs.get('xi', 1.0)
         self._set_default_forcing()
 
-        if forcing_parameters:
-            for name, (func, arg_keys) in forcing_parameters.items():
+        if kinetic_forcing_parameters:
+            for name, (func, arg_keys) in kinetic_forcing_parameters.items():
                 self.set_forcing_parameter(name, func, arg_keys)
+
+        self.get_rate()
+
+
+
+    @staticmethod
+    def get_nATP_from_protons(n_P, n_HR, n_HP):
+        return n_P + (n_HR/n_HP)
 
 
     def _set_default_forcing(self):
@@ -195,13 +229,16 @@ class respirator:
         """
         self.forcing_parameters["thermodynamic"] = (lambda resp, xi: max(0., 1-math.exp(-(resp.f_T())/(xi*8.314472*resp.locale.env.T))), ['xi'])
 
+
     def f_T(self):
         """ get the thermodynamicforcing of free energy """
+
         _f = -self.G_A-self.G_C
         if _f>0:
             return _f
         else:
             return -1.
+
 
     def set_forcing_parameter(self, name, func, arg_keys):
         """
@@ -244,6 +281,19 @@ class respirator:
         self.G_P = self.ATP_production.molar_gibbs
 
 
+    def get_forcing_fraction(self, F_ID):
+        """
+        For forcing parameter with identifier F_ID, return the instantaneous
+        rate forcing (usually between 0 and 1).
+        """
+        try:
+            func, arg_keys = self.forcing_parameters[F_ID]
+            args = [self.F_attrs[key] for key in arg_keys if key in self.F_attrs]
+            return func(self, *args)  # Apply the forcing function
+        except:
+            warnings.warn("Forcing parameter: '"+F_ID+" not present for "+self.host.name)
+            return None
+
 
     def get_rate(self):
         """
@@ -264,10 +314,33 @@ class respirator:
 
         self.rate = rate_modifier * self.rate_func(*self.rate_func_args)
 
+        # if there is a hard-coded max rate, check that we have not exceeded it.
+        if self.max_metabolic_rate:
+            if self.rate > self.max_metabolic_rate:
+                self.rate = self.max_metabolic_rate
+
+
+
+    def metabolic_energy_density(self):
+        """
+        Return an approximation of the energy density [J/kg H2O] for the
+        net_pathway.
+
+        Calculates the smallest energy yield from 'using up' the metabolic
+        reagents. In reality, the free energy would change as the concentration
+        decreases, so this is only a measure of the energy density available
+        for this metabolism at this moment in time.
+        """
+        ED = []
+        for r, mr in self.net_pathway.reactants.items():
+            if r.name != 'H2O(aq)' and r.name != 'H+' and r.name != 'OH-':
+                ED.append(r.conc*-self.G_A/mr)
+        return min(ED)
+
 
     def _rf_first_order(self):
         """
-        First order rate law to be added to rate_laws.
+        Generic first order rate law to be added to rate_laws.
         """
         conc_multiplier = 1.0
         for r, mr in self.net_pathway.reactants.items():

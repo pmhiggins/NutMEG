@@ -34,27 +34,25 @@ class horde(NutMEG.base_organism):
     """
 
     def __init__(self, name, locale, metabolism, num,
-      maintenance=None,
-      CHNOPS=None,
-      mass=1e-15,
-      dry_mass=3e-16,
-      *args, **kwargs):
+      unit='cells',
+      deathrate=0.,
+      biomass_cell_ratio=1.5,
+      workoutID=True,
+      **bo_kwargs):
 
         self.name = name
         self.num = num
+        self.unit = unit
         self.deathnum=0.
-        wID = kwargs.pop('workoutID', True)
-        kwargs['workoutID'] = False
 
-        NutMEG.base_organism.__init__(self, name, locale,
-          metabolism,
-          CHNOPS=CHNOPS,
-          mass=mass,
-          dry_mass=dry_mass,
-          *args, **kwargs)
+        # don't let the parent initialisation set the ID just yet
+        wID = bo_kwargs.pop('workoutID', workoutID)
+        bo_kwargs['workoutID'] = False
 
-        self.deathrate = kwargs.pop('deathrate', 0.)
-        if self.base_life_span < float('inf') and self.deathrate != 0:
+        super().__init__(name, locale, metabolism, **bo_kwargs)
+
+        self.deathrate = deathrate
+        if self.base_life_span and self.deathrate != 0:
             raise ValueError('Horde initialised with a base_life_span and ' +\
               'a deathrate! Please choose one or the other!')
         if self.deathrate < 0:
@@ -64,7 +62,7 @@ class horde(NutMEG.base_organism):
         #   Tdef=kwargs.pop('Tdef', 'None'), pHdef=kwargs.pop('pHdef', 'None'),
         #   Basal=kwargs.pop('Basal',0.0))
 
-        self.biomass_cell_ratio=kwargs.pop('biomass_cell_ratio',1.5)
+        self.biomass_cell_ratio=biomass_cell_ratio
         self.volume=self.num*self.base_volume*self.biomass_cell_ratio
         self.OrgID = ''
         self.output = horde_output(self)
@@ -98,10 +96,15 @@ class horde(NutMEG.base_organism):
             self.volume -= (self.deathrate*self.volume*t)
             self.deathnum += (self.deathrate*self.num*t)
 
+        self.growth_rate = (change / (self.num*t))
+
         self.num += change
         self.volume += new_biomass_cells*self.base_volume
+        if change <0:
+            self.deathnum += -change
 
-        if self.base_life_span < float('inf'):
+
+        if self.base_life_span:
             # cells can die, so keep an eye on them.
             self.historicnum.append(change)
 
@@ -115,86 +118,76 @@ class horde(NutMEG.base_organism):
             if self.num <0:
                 # make sure we don't go below zero
                 self.num=0.
-                self.voume=0.
+                self.volume=0.
 
 
 
 
 
-    def take_step(self, t):
+    def take_step(self, t, update_energetics=False):
         """Overwrite base_organisms take_step. Send the horde forward by time t.
         Perform all metabolic reactions and grow the horde if possible.
         """
         logger.debug(self.OrgID + ' taking step.')
 
+        startnum = deepcopy(self.num)
+        if startnum == 0:
+            self.output.appendvals(t)
+            return
+
         self.age += t
 
-        self.P_s = self.get_supplied_power(update_energetics=True)
+        self.P_s = self.get_supplied_power(update_energetics=update_energetics)
         logger.debug(self.OrgID+' supplied power = ' + str(self.P_s))
 
-        self.P_growth = self.maintenance.compute_P_growth(
+        self.P_EL_growth = self.maintenance.compute_P_growth(
           self.P_s)
-        logger.debug(self.OrgID+' growth power = ' + str(self.P_growth))
+        logger.debug(self.OrgID+' EL growth power = ' + str(self.P_EL_growth))
 
         self.E_store += self.maintenance.get_P_store()*self.num*t
         logger.debug(self.OrgID+' energy store = ' + str(self.E_store))
 
+        P_G_net = self.CHNOPS.grow_with_nutrients(t, numcells=self.num)
+        # net power used for growth is passed back.
+        # there is a chance this can be negative, if denaturation and
+        # nutrient limitation are important.
+
+        # if P_G_net is greater than 0, it corresponds to all the power
+        # from P_growth that can acually go into growing new biomass.
+        # If there is a maintenance process that requires rebuilding, that
+        # energy cost was already accounted for in the respirator.
+        if P_G_net > 0.:
+            self.P_growth = P_G_net # energy and nutrient limited growth power
+            self.P_s -= (self.P_EL_growth - self.P_growth)
+
+        # if P_G_net is less than 0, nutrient availability prevents biomass
+        # synthesis so strongly that no energy will be useful for new growth.
+        # As the repair energy cost is already factored in, the maximum
+        # useful P_S is equal to P_M and no (or negative) growth occurs.
+        elif P_G_net <= 0.:
+            self.P_growth =P_G_net
+            self.P_s -= self.P_EL_growth
+
+
+        logger.debug(self.OrgID+' net growth power = ' + str(self.P_growth))
+
+        # reduce the cell specific respiration rate accordingly
+        self.respiration.rate = self.P_s / self.respiration.G_C
+
+        # perform the catabolic reaction with the locale
+        moles_consumed = self.num*self.respiration.rate*t
+        self.locale.perform_reaction(self.respiration.net_pathway.equation,
+          moles_consumed, re_type=type(self.respiration.net_pathway))
+
+        self.E_growth = self.P_growth * t # instantaneous cell-specific energy into growth
+
         E_growth_step = self.P_growth*t*self.num # the amount of energy
           # going into growth this step for the whole horde
-        logger.debug(self.OrgID+' net growth energy available = ' + str(E_growth_step))
 
-        if E_growth_step >0:
-            #this needs a big check
-            E_back = self.CHNOPS.check_nutrients(E_growth_step, t, numcells=self.num)
-            # E_back = self.CHNOPS.grow_with_nutrients(E_growth_step, t, numcells=self.num)
-        else:
-            E_back = 0
+        new_biomass_cells = E_growth_step/self.E_synth
+        self.update_num_vol(t, new_biomass_cells)
 
-        self.E_growth += (E_growth_step - E_back)
-        logger.debug(self.OrgID+' total energy to be used for growth = ' + str(self.E_growth))
-
-        startnum = deepcopy(self.num)
-
-        if self.E_growth > 0.:
-            self.CHNOPS.grow_with_nutrients(E_growth_step, t, checknutrients=False, ret=E_back)
-
-            new_biomass_cells = self.E_growth/self.E_synth
-
-            # new_biomass_cells, left = divmod(self.E_growth/self.E_synth, 1.0)
-            # self.E_growth = left*self.E_synth
-
-
-            moles_consumed = ((1-(E_back/(self.num*self.P_s*t))) * \
-              self.num*self.respiration.rate*t)
-
-
-            # ((self.E_growth/E_growth_step) * \
-            #   self.num*self.respiration.rate*t)
-              # The fraction on the front corrects for CHNOPS limitation: the
-              # metabolism doesn't need to run so fast.
-            logger.debug('Performing '+self.OrgID+"'s reaction with "+str(moles_consumed)+' mol.')
-            self.locale.perform_reaction(self.respiration.net_pathway.equation,
-              moles_consumed, re_type=type(self.respiration.net_pathway))
-
-            self.E_growth=0
-            self.update_num_vol(t, new_biomass_cells)
-
-        else:
-            # no growth, but we still need to perform the metabolic reaction.
-            moles_consumed = self.respiration.rate*t*self.num
-
-            if self.respiration.net_pathway.molar_gibbs != 0:
-                logger.debug('Performing '+self.OrgID+"'s reaction with "+str(moles_consumed)+' mol.')
-                self.locale.perform_reaction(self.respiration.net_pathway.equation,
-                  moles_consumed, re_type=type(self.respiration.net_pathway))
-            else:
-                logger.warning('Not enough energy in reactor! Holding '+self.OrgID+'in stasis...')
-
-                self.E_growth = 0
-            self.update_num_vol(t, 0.)
-
-        self.output.appendvals(startnum, t)
-
+        self.output.appendvals(t)
         self.molecons += moles_consumed
 
 

@@ -76,7 +76,7 @@ class colony_output:
 
         self.params['GrowthRate_'+n] = (
           np.append(self.params['GrowthRate_'+n],
-            ((len(hc.collection)/startnum)-1)/dt))
+            hc.growth_rate))
 
         # CHNOPS
         self.params['CHNOPSUptakes_'+n] = (

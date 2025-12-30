@@ -13,19 +13,28 @@ empty_default_dbdict = {'Respiration' : ['TEXT', ''],
   'Esynth' : ['REAL', 0],
   'DryMass' : ['REAL', 0],
   'Mass' : ['REAL', 0],
-  'MaintenancePower' : ['TEXT', ''],
+  'MaintenancePowers' : ['TEXT', ''],
   'Volume' : ['REAL', 0],
-  'Tdef' : ['TEXT', ''],
-  'pHdef' : ['TEXT', ''],
-  'MembranePot' : ['REAL', 0],
-  'PermH' : ['REAL', 0],
-  'PermOH' : ['REAL', 0],
-  'pHint' : ['REAL', 0],
-  'n_ATP' : ['REAL', 0],
-  'k_RTP' : ['REAL', 0],
-  'base_life_span' : ['REAL', float('inf')],
-  'horde_deathrate' : ['REAL', 0.],
-  'horde_num' : ['REAL', 500]
+  'maintenance_Tdef' : ['TEXT', ''],
+  'maintenance_pHdef' : ['TEXT', ''],
+  'membrane_potential' : ['REAL', 0],
+  'membrane_permH' : ['REAL', 0],
+  'membrane_permOH' : ['REAL', 0],
+  'pH_interior' : ['REAL', 0],
+  'respiration_n_ATP' : ['REAL', 0],
+  'respiration_k_RTP' : ['REAL', 0],
+  'respiration_k_env' : ['REAL', 0],
+  # 'respiration_kinetic_forcing_IDs' : ['REAL', (,)],
+  'respiration_kinetic_forcing_attrs' : ['REAL', {}],
+  'respiration_rate_function_ID' : ['TEXT', ''],
+  # 'CHNOPS_forcing_IDS' : ['REAL', (,)],
+  'CHNOPS_forcing_attrs' : ['REAL', {}],
+  'CHNOPS_nutrient_sources' : ['REAL', {}],
+  'CHNOPS_max_growth_rate' : ['REAL', 0],
+  'base_life_span' : ['REAL', 0],
+  'horde_deathrate' : ['REAL', 0],
+  'horde_num' : ['REAL', 500],
+  'horde_biomass_cell_ratio]' : ['REAL',0]
   }
 
 class bodb_helper:
@@ -49,7 +58,10 @@ class bodb_helper:
     def __init__(self, host, dbpath=nmp.std_dbpath):
 
         self.host = host
-        self.dbpath = dbpath
+        if not dbpath:
+            self.dbpath = nmp.std_dbpath
+        else:
+            self.dbpath = dbpath
 
     def get_db_sqlparams(self, dbdict=None):
         """Get the parameters to import into the database as a dictionary
@@ -59,25 +71,37 @@ class bodb_helper:
               'Esynth' : ['REAL', self.host.E_synth],
               'DryMass' : ['REAL', self.host.dry_mass],
               'Mass' : ['REAL', self.host.mass],
-              'MaintenancePower' : ['TEXT', self.host.maintenance.get_netdictstr()],
               'Volume' : ['REAL', self.host.base_volume],
-              'Tdef' : ['TEXT', self.host.maintenance.Tdef],
-              'pHdef' : ['TEXT', self.host.maintenance.pHdef],
-              'MembranePot' : ['REAL', self.host.memb_pot],
-              'PermH' : ['REAL', self.host.PermH],
-              'PermOH' : ['REAL', self.host.PermOH],
-              'pHint' : ['REAL', self.host.pH_interior],
-              'n_ATP' : ['REAL', self.host.respiration.n_ATP],
-              'k_RTP' : ['REAL', self.host.respiration.net_pathway.rate_constant_RTP],
+              'MaintenancePowers' : ['TEXT', self.host.maintenance.get_netdictstr()],
+              'maintenance_Tdef' : ['TEXT', self.host.maintenance.Tdef],
+              'maintenance_pHdef' : ['TEXT', self.host.maintenance.pHdef],
+              'maintenance_rebuild' : ['TEXT', self.host.maintenance.rebuild],
+              'membrane_potential' : ['REAL', self.host.membrane_potential],
+              'membrane_permH' : ['REAL', self.host.membrane_permH],
+              'membrane_permH' : ['REAL', self.host.membrane_permOH],
+              'pH_interior' : ['REAL', self.host.pH_interior],
+              'respiration_n_ATP' : ['REAL', self.host.respiration.n_ATP],
+              'respiration_k_RTP' : ['REAL', self.host.respiration.net_pathway.rate_constant_RTP],
+              'respiration_k_env' : ['REAL', self.host.respiration.net_pathway.rate_constant_env],
+              # 'respiration_kinetic_forcing_IDs' : ['REAL', sorted(self.host.respiration.forcing_parameters)],
+              'respiration_kinetic_forcing_attrs' : ['REAL', self.host.respiration.F_attrs],
+              'respiration_rate_function_ID' : ['TEXT', self.host.respiration.rate_func_ID],
+              # 'CHNOPS_forcing_IDS' : ['REAL', sorted(self.host.CHNOPS.forcing_parameters)],
+              'CHNOPS_forcing_attrs' : ['REAL', self.host.CHNOPS.F_attrs],
+              'CHNOPS_nutrient_sources' : ['REAL', self.host.CHNOPS.nutrient_sources],
+              'CHNOPS_max_growth_rate' : ['REAL', self.host.CHNOPS.max_growth_rate],
               'base_life_span' : ['REAL', self.host.base_life_span]
               }
             try:
                 self.dbdict['horde_deathrate'] = ['REAL', self.host.deathrate]
                 self.dbdict['horde_num'] = ['REAL', self.host.num]
+                self.dbdict['horde_biomass_cell_ratio'] = ['REAL', self.host.biomass_cell_ratio]
             except:
                 # not a horde, should be fine though...
                 self.dbdict['horde_deathrate'] = ['REAL', 0.]
                 self.dbdict['horde_num'] = ['REAL', 1]
+                self.dbdict['horde_biomass_cell_ratio'] = ['REAL', 1.5]
+
         else:
             self.dbdict=dbdict
 

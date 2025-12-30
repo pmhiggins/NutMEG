@@ -45,7 +45,7 @@ class horde_output:
         specific parameters you want to monitor."""
         self.buildbaseparams()
 
-    def appendvals(self, startnum, dt):
+    def appendvals(self, dt):
         """Add parameters at the present time to params.
 
         Parameters
@@ -93,7 +93,7 @@ class horde_output:
 
         self.params['GrowthRate_'+n] = (
           np.append(self.params['GrowthRate_'+n],
-            ((hc.num/startnum-1))/dt))
+            hc.growth_rate))
 
         # CHNOPS
         self.params['CHNOPSUptakes_'+n] = (

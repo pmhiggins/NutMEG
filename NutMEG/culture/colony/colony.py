@@ -81,14 +81,14 @@ class colony():
             self.collection = np.append(self.collection, new_population)
 
 
-    def take_step(self, t):
+    def take_step(self, t, update_energetics=False):
         """ Advance the colony by time t.
 
         We calculate the local environment only once to save doing it
         for every organsim.
         """
 
-        self.base_Ps = self.base.get_supplied_power(update_energetics=True)
+        self.base_Ps = self.base.get_supplied_power(update_energetics=update_energetics)
 
         deceased = [] # List the organisms that must be removed
         counter = 0
@@ -112,6 +112,7 @@ class colony():
         # remove the now inactive organisms
         np.delete(self.collection, deceased)
 
+        self.growth_rate = ((len(self.collection)/startnum)-1)/t
 
         # update the colony with its new composition?
         # this could be doing nothing, and could also accidentally be replenishing stuff. Check, and debug if necessary.
@@ -122,7 +123,7 @@ class colony():
           overwrite=True)
 
         #update the data output
-        self.output.appendvals(startnum, t)
+        self.output.appendvals(t)
 
 
     def select_timestep(self, factorup=1.01):
@@ -131,29 +132,26 @@ class colony():
 
         dt = 0.005/1.2
         Egrow=0.
+        org = deepcopy(self.collection[0]) # as not to meddle with the org
         while Egrow < (factorup-1)*org.E_synth:
+
+            org.E_growth=0. # in the colony initialisation they're randomised
+              # so knock it back down to 0.
 
             dt = dt*1.2 # amke the timestep 20% bigger
             logger.debug('Trying: ' + str(dt) + ' ... Prev. Energy retrieved = '
-              + str(Eretrieved) + ' J')
+              + str(Egrow) + ' J')
 
             if dt > 365*24*3600*1e9:
                 # There is no growth in a billion years
                 # pass this as the maximum time step
                 return 365*24*3600*1e9
 
-            org = deepcopy(self.collection[0]) # as not to meddle with the org
-
-            org.E_growth=0. # in the colony initialisation they're randomised
-              # so knock it back down to 0.
-
-
             try:
                 org.take_step(dt, update_energetics=True)
                 Egrow = org.E_growth
             except:
                 logger.debug('Error encountered while trying this timestep')
-
 
 
         logger.info('Min timestep for ' + self.name + ': ' + str(dt) + ' s')
@@ -209,12 +207,3 @@ class colony():
             avg += sum(o.maintenance.frac_dict.values())
         avg = avg / self.get_population()
         return avg
-
-    def getCHNOPSut(self):
-        """ Return the rate of uptake of each CHNOPS element for the
-        whole colony.
-        """
-        utlst = []
-        for col in self.collection:
-            utlst.append(col.CHNOPS.get_uptake())
-        return utlst
