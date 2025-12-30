@@ -37,6 +37,14 @@ class maintainer:
         there yet contact me!
     P_loss : float
         Instantaneous fractional power loss due to all maintenance in W/organism
+    rebuild : list, optional
+        Which maintenance processes required biomass replacement. List should
+        contain string keys corresponding to the maintenance processes that
+        require biomass synthesis and hence reduce the energy available for
+        new growth. For example, setting ``rebuild = ['T']`` tells the maintainer
+        that the energy used to defend against temperature must be used to
+        synthesise biomass and hence also consume the organism's nutrient budget.
+        Default value is empty (ie, maintenance processes do not need new biomass).
 
 
     """
@@ -49,7 +57,8 @@ class maintainer:
       net_dict={},
       supply=1.0,
       Tdef='None',
-      pHdef='None'):
+      pHdef='None',
+      rebuild=[]):
 
         self.host = host # this is a reference to the host organism for
           # e.g. if the environment changes.
@@ -63,6 +72,7 @@ class maintainer:
         self.get_P_pH()
         self.frac_dict={}
         self.update_frac_dict(supply)
+        self.rebuild = rebuild
 
 
 
@@ -165,12 +175,23 @@ class maintainer:
 
 
     def compute_P_growth(self, P_supply):
-        """Compute and return the power that can go into growing new biomass
-        from the incoming power supply ``P_supply`` in W/cell.
+        """Compute and return the maximum power that can go into growing new
+        biomass from the incoming power supply ``P_supply`` in W/cell.
         """
 
         self.update_P_loss(P_supply)
         return (P_supply * (1.0 - self.P_loss))
+
+
+    def calculate_P_rebuild(self):
+        """
+        sum together all the maintenance powers that are flagged as
+        requiring biomass rebuilt
+        """
+
+        self.P_rebuild = 0.
+        for rb in self.rebuild:
+            self.P_rebuild += self.net_dict[rb]
 
 
     def get_netdictstr(self):
