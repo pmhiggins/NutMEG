@@ -29,8 +29,6 @@ class KineticallyLimitedOrganism(NutMEG.horde):
       max_growth_rate=None,
       **horde_kwargs):
 
-        print(horde_kwargs)
-
         respiration_kwargs={
           'kinetic_forcing_parameters': kinetic_F_funcs,
           'kinetic_F_attrs': kinetic_F_attrs,
@@ -38,7 +36,11 @@ class KineticallyLimitedOrganism(NutMEG.horde):
           'rate_func':kinetic_rate_func,
           'n_ATP':n_ATP}
 
-        horde_kwargs['respiration_kwargs'] = respiration_kwargs
+        if 'respiration_kwargs' in horde_kwargs:
+            horde_kwargs['respiration_kwargs'].update(respiration_kwargs)
+        else:
+            horde_kwargs['respiration_kwargs'] = respiration_kwargs
+
 
         CHNOPS_kwargs = {
           'max_growth_rate' : max_growth_rate,
@@ -46,7 +48,10 @@ class KineticallyLimitedOrganism(NutMEG.horde):
           'CHNOPS_F_attrs': growth_F_attrs,
         }
 
-        horde_kwargs['CHNOPS_kwargs'] = CHNOPS_kwargs
+        if 'CHNOPS_kwargs' in horde_kwargs:
+            horde_kwargs['CHNOPS_kwargs'].update(CHNOPS_kwargs)
+        else:
+            horde_kwargs['CHNOPS_kwargs'] = CHNOPS_kwargs
 
         super().__init__(
           name, R,
@@ -93,10 +98,9 @@ class KineticallyLimitedOrganism(NutMEG.horde):
     @classmethod
     def Builtin(cls, ID, R, num=500, db_fn='default', **horde_kwargs):
 
-        print(ID)
         org_date = None
 
-        if db_fn == default:
+        if db_fn == 'default':
             db_fn = os.path.dirname(__file__)+'/KLO_db.yaml'
 
         with open(db_fn, 'r') as f:
@@ -113,6 +117,8 @@ class KineticallyLimitedOrganism(NutMEG.horde):
         prods = {R.composition[k]:v for k,v in org_props.get('Products', {}).items()}
 
         rxn = NutMEG.reaction.reaction(rgts, prods, R.env)
+        R.add_reaction(rxn, overwrite=False)
+
 
         rxn.rate_constant_env = org_props.get('Bioenergetics')['k_max'] * org_props.get('dry_mass', 3e-13)
 
@@ -210,7 +216,6 @@ class KineticallyLimitedOrganism(NutMEG.horde):
         """
         with open(os.path.dirname(__file__)+'/KLO_db.yaml', 'r') as f:
             data = yaml.safe_load(f)
-        print(data)
 
         viables = []
         for org in data.keys():
