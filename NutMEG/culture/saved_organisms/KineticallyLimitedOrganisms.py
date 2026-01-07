@@ -190,17 +190,17 @@ class KineticallyLimitedOrganism(NutMEG.horde):
 
 
 
-    @staticmethod
-    def builtin_forcing_funcs(funcID, attrs):
-
-        if funcID == 'Monod':
-            # 2 attrs: substrate ID (e.g., 'H2(aq)'), and Monod half-saturation constant
-            return (lambda resp, S, K: resp.host.locale.composition[S].conc/(resp.host.locale.composition[S].conc + K), [attrs['S'], attrs['K']])
-        if funcID == 'MineralGoethite':
-            return (lambda resp, K: (resp.host.bm_conc/resp.host.locale.composition['Goethite'].conc)/((resp.host.bm_conc/resp.host.locale.composition['Goethite'].conc) + K)), [attrs['K']]
-
-        else:
-            raise ValueError('Unknown custom forcing function bassed to builtin_forcing_funcs')
+    # @staticmethod
+    # def builtin_forcing_funcs(funcID, attrs):
+    #
+    #     if funcID == 'Monod':
+    #         # 2 attrs: substrate ID (e.g., 'H2(aq)'), and Monod half-saturation constant
+    #         return (lambda resp, S, K: resp.host.locale.composition[S].conc/(resp.host.locale.composition[S].conc + K), [attrs['S'], attrs['K']])
+    #     if funcID == 'MineralGoethite':
+    #         return (lambda resp, K: (resp.host.bm_conc/resp.host.locale.composition['Goethite'].conc)/((resp.host.bm_conc/resp.host.locale.composition['Goethite'].conc) + K)), [attrs['K']]
+    #
+    #     else:
+    #         raise ValueError('Unknown custom forcing function bassed to builtin_forcing_funcs')
 
     @staticmethod
     def suggest_orgs(R, products=False):

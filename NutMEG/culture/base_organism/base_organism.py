@@ -112,7 +112,6 @@ class base_organism:
         self.name=name
         self.locale = locale
         self.respiration = respirator(self, metabolism, **respiration_kwargs)
-          # kwargs.get('n_ATP', 1.0), k_RTP=kwargs.get('k_RTP', None), overwrite=kwargs.get('overwrite', False), **kwargs)
         self.age = age
         self.mass=mass
         self.dry_mass=dry_mass
@@ -238,6 +237,19 @@ class base_organism:
     #         self.respiration.net_pathway.rate_constant_env = ( \
     #           self.respiration.net_pathway.rate_constant_RTP * \
     #           (2**((self.locale.env.T-298)/10)))
+
+
+    @staticmethod
+    def builtin_forcing_funcs(funcID, attrs):
+
+        if funcID == 'Monod':
+            # 2 attrs: substrate ID (e.g., 'H2(aq)'), and Monod half-saturation constant
+            return (lambda _org, S, K: _org.locale.composition[S].conc/(_org.locale.composition[S].conc + K), [attrs['S'], attrs['K']])
+        if funcID == 'MineralGoethite':
+            return (lambda _org, K: (_org.bm_conc/_org.locale.composition['Goethite'].conc)/((_org.bm_conc/_org.locale.composition['Goethite'].conc) + K)), [attrs['K']]
+
+        else:
+            raise ValueError('Unknown custom forcing function bassed to builtin_forcing_funcs')
 
 
     def get_ESynth(self, AA=False, comp=None):
