@@ -96,7 +96,7 @@ class respirator:
       rate_func='first order', rate_func_args={},
       kinetic_forcing_parameters=None, kinetic_F_attrs=None,
       rate_constant_env=None, rate_constant_RTP=None,
-      celldata=[0.0001, 0.004, 0.005, 7.],
+      celldata=[0.0001, 0.004, 0.005, 7.], G_ATP=None,
       overwrite_net_pathway=False, G_net_pathway=None, pathwaytype=None,
       n_T=None, n_HP=None, n_HR=None, G_C=None):
         """
@@ -143,8 +143,15 @@ class respirator:
 
         #### set up ATP production (conservable energy)
 
-        self.G_P = 50000
-        # self.build_ATP_reaction(celldata) # also sets G_P
+        # self.G_P = 50000
+        if G_ATP is None:
+            self.build_ATP_reaction(celldata) # also sets G_P
+        elif G_ATP == 'default':
+            self.G_P = 59623.7 # ATP production at RTP, default celldata
+        elif type(G_ATP) == type(0.) or type(G_ATP) == type(0):
+            self.G_P = float(G_ATP)
+        else:
+            raise TypeError('Unknown type of G_ATP passed: '+str(type(G_ATP)))
 
         if n_ATP is None:
             if n_P and n_HP and n_HR:
