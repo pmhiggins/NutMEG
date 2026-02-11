@@ -1,6 +1,7 @@
 import NutMEG
 import pandas as pd
 import os, math, sys, ast, yaml
+import collections.abc
 
 
 class KineticallyLimitedOrganism(NutMEG.horde):
@@ -94,9 +95,21 @@ class KineticallyLimitedOrganism(NutMEG.horde):
         self.donor_name = donor
         self.acceptor_name = acceptor
 
+    @staticmethod
+    def deep_update(d, u):
+        """
+        Update dictionary d with dictionary u, mindful of depth. e.g., this will
+        update nested dictionary keys without affecting other keys.
+        """
+        for ak, av in u.items():
+            if isinstance(av, collections.abc.Mapping):
+                d[ak] = KineticallyLimitedOrganism.deep_update(d.get(ak, {}), av)
+            else:
+                d[ak] = av
+        return d
 
     @classmethod
-    def Builtin(cls, ID, R, num=500, db_fn='default', **horde_kwargs):
+    def Builtin(cls, ID, R, num=500, db_fn='default', adjustments={}, **horde_kwargs):
 
         org_date = None
 
@@ -111,6 +124,9 @@ class KineticallyLimitedOrganism(NutMEG.horde):
             org_props = org_data.get(ID)
         except:
             raise ValueError(ID+' not found in KLO_db.')
+
+        # add adjustments to database entries passed by user.
+        org_props = KineticallyLimitedOrganism.deep_update(org_props, adjustments)
 
 
         rgts = {R.composition[k]:v for k,v in org_props.get('Reactants', {}).items()}
