@@ -10,6 +10,7 @@ from itertools import chain
 from uncertainties import ufloat as uf
 import uncertainties.umath as umath
 import numpy as np
+import pandas as pd
 from scipy import interpolate
 
 
@@ -67,6 +68,17 @@ class Enceladus(reactor):
 
     volume = 7.54e15 #m^3, from radius = 250km, depth = 10km
     global_env = environment(T=273.15, P=10e5, V=volume)
+
+    H24_species_amendments = {
+      'H2O(aq)' : 'H2O',
+      'H+' : 'H+',
+      'OH-' : 'OH-',
+      'Na+' : 'Na+',
+      'Cl-' : 'Cl-',
+      'HCO3-' : 'HCO3-',
+      'CO2(aq)' : 'CO2(aq)',
+      'CO3-2' : 'CO3-2'
+      }
 
 
     def __init__(self, name, pH=8.5, depth=0., T=273.15,
@@ -128,6 +140,134 @@ class Enceladus(reactor):
           composition=self.composition,
           pH=self.pH,
           workoutID=workoutID, **kwargs)
+
+
+
+    @classmethod
+    def get_Enceladus_Higgins2024(cls, name, T, pH_bo, Cl, P=1e5,
+      chemical_species='default', mixingratios='default', spec_model='pitzerPHREEQC', depth=None,
+      workoutID=False, **kwargs):
+        """
+        Get an Enceladus object using the chemical speciations calcluated in
+        Higgins et al (2024) (doi: 10.1029/2023JE008166).
+        """
+
+        _env=environment(T=T, V=kwargs.get('V', 0.001), P=P)
+
+        _mixingratios = None
+        if mixingratios == 'default':
+            _mixingratios = Waite2017ratios
+        elif type(mixingratios) is type({}):
+            _mixingratios = mixingratios
+        else:
+            raise ValueError('Unrecognised form of mixingratios')
+
+        ## we need the reactionlist and composition now
+
+        _this = reactor(name, env=_env,
+          workoutID=False, **kwargs)
+
+        _this.ocean_pH = pH_bo
+        _this.mixingratios = _mixingratios
+        _this.nominals = True
+        _this = Enceladus.set_Higgins2024_composition(
+          _this, Cl, spec_model=spec_model, chemical_species='default') # updates composition only, no gases
+
+
+        # assign the remaining Enceladus-specific attributes
+        _this.depth=depth
+        _this.ocean_pH = pH_bo
+        _this.mixingratios = _mixingratios # make sure set above
+
+        return _this
+
+
+
+    @staticmethod
+    def set_Higgins2024_composition(rtr, Cl, spec_model='pitzerPHREEQC', chemical_species='default'):
+        """
+        Update the Enceladus reactor with the chemical speciation from
+        Higgins et al (2024) (doi: 10.1029/2023JE008166).
+        """
+
+        ### retrieve the chemical speciation
+        specdir = os.path.dirname(__file__)+'/../../data/Enceladus/H24speciation/Clconc_'+str(Cl)
+        df = pd.read_csv(specdir+'/spec_1bar_'+spec_model+'.csv')
+        _df = df[df['T'] == rtr.env.T]
+        __df = _df[_df['pH_bo'] == rtr.ocean_pH] #isolates for the line of the df we need.
+
+
+        ### add the aqueous species
+        _chemical_species = Enceladus.H24_species_amendments
+        if type(chemical_species) == type({}):
+            _chemical_species.update(chemical_species)
+
+        for k,v in _chemical_species.items():
+            try:
+                g = float(__df['g'+v].iloc[0])
+                rtr.composition[k].gamma = __df['g'+v]
+
+                if k == 'H2O(aq)':
+                    a = float(__df['a'+v].iloc[0])
+                    rtr.composition[k].activity = a
+                else:
+                    m = float(__df['m'+v].iloc[0])
+                    rtr.composition[k].activity = g*m
+
+                    # set both conc and molal to the same value, with molal act. coeff.
+                    # this is because some legacy code used activity=conc for reactions
+                    # so any taking place with conc should still be valid
+                    rtr.composition[k].conc = m
+                    rtr.composition[k].molal = m
+            except KeyError:
+                # the species is not present in the reactor yet
+                g = float(__df['g'+v].iloc[0])
+                m = float(__df['m'+v].iloc[0])
+                rct = reaction.reagent(k, rtr.env, phase='aq',
+                  conc=m, activity=m*g, molal=m, gamma=g)
+                rtr.add_reagent(rct)
+
+        rtr.DIC = rtr.composition['HCO3-'].molal + rtr.composition['CO2(aq)'].molal + rtr.composition['CO3-2'].molal
+
+        ### add the dissolved gases H2 and CH4
+        mol_CH4 = (rtr.mixingratios['CH4']/rtr.mixingratios['CO2'])*rtr.composition['CO2(aq)'].molal
+        mol_CH4 = mol_CH4.n # this implementation does not use uncertainties.py
+        try:
+            rtr.composition['Methane(aq)'].conc = mol_CH4
+            rtr.composition['Methane(aq)'].molal = mol_CH4
+            rtr.composition['Methane(aq)'].activity = mol_CH4
+
+        except:
+            CH4aq = reaction.reagent('Methane(aq)', rtr.env, phase='aq', conc=mol_CH4,
+              activity=mol_CH4, molal=mol_CH4)
+            rtr.composition[CH4aq.name] = CH4aq
+
+        mol_H2 = (rtr.mixingratios['H2']/rtr.mixingratios['CO2'])*rtr.composition['CO2(aq)'].molal
+        mol_H2 = mol_H2.n
+        try:
+            rtr.composition['H2(aq)'].conc = mol_H2
+            rtr.composition['H2(aq)'].molal = mol_H2
+            rtr.composition['H2(aq)'].activity = mol_H2
+        except:
+            H2aq = reaction.reagent('H2(aq)', rtr.env, phase='aq', conc=mol_H2,
+              activity=mol_H2, molal=mol_H2)
+            rtr.composition[H2aq.name] = H2aq
+
+            ### set up methanogenesis reaction
+            # keep this in the except catch because we only need to create
+            # the reaction if we are creating the reagents too. e.g.,
+            # if just resetting concs, we don't have to redo the thermodynamics.
+            r = {rtr.composition['CO2(aq)']:1, rtr.composition['H2(aq)']:4}
+            p = {rtr.composition['Methane(aq)']:1, rtr.composition['H2O(aq)']:2}
+            MG = reaction.reaction(r,p,rtr.env)
+            rtr.add_reaction(MG, overwrite=False)
+
+        return rtr
+
+
+
+
+
 
     def get_tigerstripe_CO2(self, logform=False):
         """
