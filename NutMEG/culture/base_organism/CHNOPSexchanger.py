@@ -61,7 +61,7 @@ class CHNOPSexchanger:
 
     def __init__(self, host, max_growth_rate=None,
           CHNOPS_forcing_parameters=None, CHNOPS_F_attrs=None,
-          nutrient_sources={'P':['H2PO4-']}):
+          nutrient_sources={}):
 
         self.host = host
 
