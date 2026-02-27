@@ -27,6 +27,35 @@ Methanogenesis_H2_HCO3_sediment:
       S: HCO3-
       ref: Chen2019Frontiers
 
+Methanogenesis_H2_CO2_sediment:
+  Reactants:
+    H2(aq): 4
+    CO2(aq): 1
+  Products:
+    Methane(aq): 1
+    H2O(aq): 2
+  Acceptor: CO2(aq)
+  Donor: H2(aq)
+  Bioenergetics:
+    k_max: 1.0e-5
+    xi: 1
+    n_ATP: 1.
+    ref: Higgins2020
+  KineticForcing:
+    F_D:
+      F_ID: Donor
+      func: Monod
+      K: 4.7e-06
+      S: H2(aq)
+      ref: JinRoden2011
+    F_A:
+      F_ID: Acceptor
+      func: Monod
+      K: 2.e-3
+      S: CO2(aq)
+      ref: Chen2019Frontiers
+
+
 Methanogenesis_Acetate_sediment:
   Reactants:
     Acetate-: 1.
@@ -254,3 +283,269 @@ SulfateReduction_H2_SO4_sediment:
       F_ID: Donor
       func: Monod
       S: H2(aq)
+
+
+
+SulfateReduction_CH4_Dale06:
+  Reactants:
+    Methane(aq): 0.125
+    SO4-2: 0.125
+    H+: 0.125
+  Products:
+    HS-: 0.125
+    HCO3-: 0.125
+    H2O(aq): 0.125
+  Acceptor: SO4-2
+  Donor: Methane(aq)
+  Bioenergetics:
+    k_max: 6.09e-6
+    xi: 1
+    n_ATP: 0.66
+    ref: Dale2006
+  KineticForcing:
+    F_D:
+      F_ID: Donor
+      func: Monod
+      K: 1.5e-3
+      S: H2(aq)
+      ref: Dale2006
+    F_A:
+      F_ID: Acceptor
+      func: Monod
+      K: 1.e-3
+      S: SO4-2
+      ref: Dale2006
+
+
+SulfateReduction_H2_Dale06:
+  Reactants:
+    H2(aq): 0.25
+    SO4-2: 0.125
+    H+: 0.125
+  Products:
+    HS-: 0.125
+    H2O(aq): 0.5
+  Acceptor: SO4-2
+  Donor: H2(aq)
+  Bioenergetics:
+    k_max: 6.09e-6
+    xi: 1
+    n_ATP: 0.66
+    ref: Dale2006
+  KineticForcing:
+    F_D:
+      F_ID: Donor
+      func: Monod
+      K: 1.e-8
+      S: H2(aq)
+      ref: Dale2006
+    F_A:
+      F_ID: Acceptor
+      func: Monod
+      K: 1.e-3
+      S: SO4-2
+      ref: Dale2006
+
+
+SulfateReduction_Acetate_Dale06:
+  Reactants:
+    Acetate-: 0.125
+    SO4-2: 0.125
+  Products:
+    HS-: 0.125
+    HCO3-: 0.125
+  Acceptor: SO4-2
+  Donor: Acetate-
+  Bioenergetics:
+    k_max: 1.98e-7
+    xi: 1
+    n_ATP: 0.66
+    ref: Dale2006
+  KineticForcing:
+    F_D:
+      F_ID: Donor
+      func: Monod
+      K: 1.e-4
+      S: H2(aq)
+      ref: Dale2006
+    F_A:
+      F_ID: Acceptor
+      func: Monod
+      K: 1.e-3
+      S: SO4-2
+      ref: Dale2006
+
+Methanogenesis_H2_HCO3_Dale06:
+  Reactants:
+    H2(aq): 0.5
+    HCO3-: 0.125
+    H+: 0.125
+  Products:
+    Methane(aq): 0.125
+    H2O(aq): 0.375
+  Acceptor: HCO3-
+  Donor: H2(aq)
+  Bioenergetics:
+    k_max: 6.053e-6
+    xi: 1
+    n_ATP: 0.66
+    ref: Dale2006
+  KineticForcing:
+    F_D:
+      F_ID: Donor
+      func: Monod
+      K: 1.e-6
+      S: H2(aq)
+      ref: Dale2006
+    F_A:
+      F_ID: Acceptor
+      func: Monod
+      K: 2.e-3
+      S: HCO3-
+      ref: Chen2019Frontiers
+
+
+Methanogenesis_Acetate_Dale06:
+  Reactants:
+    Acetate-: 0.125
+    H2O(aq): 0.125
+  Products:
+    Methane(aq): 0.125
+    HCO3-: 0.375
+  Acceptor: H2O(aq)
+  Donor: Acetate-
+  Bioenergetics:
+    k_max: 1.93e-7
+    xi: 1
+    n_ATP: 0.66
+    ref: Dale2006
+  KineticForcing:
+    F_D:
+      F_ID: Donor
+      func: Monod
+      K: 1.e-3
+      S: Acetate-
+      ref: Dale2006
+
+MethaneOxidation_H2O_Dale06:
+  Reactants:
+    H2O(aq): 0.375
+    Methane(aq): 0.125
+  Products:
+    HCO3-: 0.125
+    H2(aq): 0.5
+    H+: 0.125
+  Acceptor: H2O(aq)
+  Donor: Methane(aq)
+  Bioenergetics:
+    k_max: 8.e-7
+    xi: 1
+    n_ATP: 0.66
+    ref: Dale2006
+  KineticForcing:
+    F_D:
+      F_ID: Donor
+      func: Monod
+      K: 1.5e-3
+      S: Methane(aq)
+      ref: Dale2006
+
+MethaneOxidation_HCO3_Dale06:
+  Reactants:
+    HCO3-: 0.125
+    Methane(aq): 0.125
+  Products:
+    Acetate-: 0.125
+    H2O(aq): 0.125
+  Acceptor: HCO3-
+  Donor: Methane(aq)
+  Bioenergetics:
+    k_max: 8.e-7
+    xi: 1
+    n_ATP: 0.66
+    ref: Dale2006
+  KineticForcing:
+    F_D:
+      F_ID: Donor
+      func: Monod
+      K: 1.5e-3
+      S: Methane(aq)
+      ref: Dale2006
+
+
+Acetogenesis_Dale06:
+  Reactants:
+    HCO3-: 0.25
+    H2(aq): 0.5
+    H+: 0.125
+  Products:
+    Acetate-: 0.125
+    H2O(aq): 0.5
+  Acceptor: HCO3-
+  Donor: H2(aq)
+  Bioenergetics:
+    k_max: 5.99e-6
+    xi: 1
+    n_ATP: 0.66
+    ref: Dale2006
+  KineticForcing:
+    F_D:
+      F_ID: Donor
+      func: Monod
+      K: 1.e-7
+      S: H2(aq)
+      ref: Dale2006
+    F_A:
+      F_ID: Acceptor
+      func: Monod
+      K: 1.e-15
+      S: HCO3-
+
+
+Acetotrophy_Dale06:
+  Reactants:
+    Acetate-: 0.125
+    H2O(aq): 0.5
+  Products:
+    HCO3-: 0.25
+    H2(aq): 0.5
+    H+: 0.125
+  Acceptor: H2O(aq)
+  Donor: Acetate-
+  Bioenergetics:
+    k_max: 1.90e-7
+    xi: 1
+    n_ATP: 0.66
+    ref: Dale2006
+  KineticForcing:
+    F_D:
+      F_ID: Donor
+      func: Monod
+      K: 1.e-3
+      S: Acetate-
+      ref: Dale2006
+
+
+Fermentation_Dale06:
+  Reactants:
+    Glucose(aq): 0.125
+    H2O(aq): 0.5
+  Products:
+    Acetate-: 0.25
+    H2(aq): 0.5
+    H+: 0.5
+    HCO3-: 0.25
+  Acceptor: H2O(aq)
+  Donor: Glucose(aq)
+  Bioenergetics:
+    k_max: 7.35e-8
+    xi: 1
+    n_ATP: 0.66
+    ref: Dale2006
+  KineticForcing:
+    F_D:
+      F_ID: Donor
+      func: Monod
+      K: 1.e-3
+      S: Glucose(aq)
+      ref: Dale2006
