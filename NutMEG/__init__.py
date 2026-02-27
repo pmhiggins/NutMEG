@@ -10,6 +10,7 @@ from .environment import environment
 
 
 #culture stuff
+# from .culture.saved_organisms.KineticallyLimitedOrganisms import KineticallyLimitedOrganism
 from .culture.base_organism.base_organism import base_organism
 from .culture.base_organism.base_organism_dbhelper import bodb_helper
 from .culture.organism.organism import organism
@@ -24,6 +25,7 @@ from .reactor.reactor import reactor
 from .culture.base_organism.synthesis.BioMolecule import BioMolecule
 from .culture.base_organism.adaptations.pHadaptations import pHadaptations as pHadaptations
 
+from .culture.saved_organisms.KineticallyLimitedOrganisms import KineticallyLimitedOrganism as KLO
 
 from .applications.theory_estimates import theory_estimates as apps_theory_estimates
 
@@ -48,4 +50,4 @@ from .applications.theory_estimates import theory_estimates as apps_theory_estim
 # sys.path.append(this_dir+'/organism')
 # sys.path.append(this_dir+'/reactor')
 #from organism.saved_organisms import Methanogen2
-#from reactor.saved_systems import Enceladus
+from .reactor.saved_systems.Enceladus import Enceladus
