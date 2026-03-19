@@ -233,10 +233,12 @@ class reactor:
         # redefine the reagents
         # according to the composition.
         for rrxn in list(rxxn.reactants.keys()):
+            print(rrxn)
             inlist = False
             for c_name, c_rxt in self.composition.copy().items():
-                inlist=True
+
                 if rrxn.name == c_name:
+                    inlist=True
                     # this reagent is in both the passed reaction and
                     # the composition.
                     if overwrite:
@@ -255,8 +257,9 @@ class reactor:
         for rrxn in list(rxxn.products.keys()):
             inlist = False
             for c_name, c_rxt in self.composition.copy().items():
-                inlist=True
+
                 if rrxn.name == c_name:
+                    inlist=True
                     # this reagent is in both the passed reaction and
                     # the composition.
                     if overwrite:
