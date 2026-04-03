@@ -11,6 +11,8 @@ Most recent changes: database fixes May 2020.
 """
 from NutMEG.environment import environment
 from NutMEG import reaction as rxn
+from NutMEG.reaction.thermo.reagent_thermo import reagent_thermo
+
 from itertools import chain
 from copy import copy, deepcopy
 import sqlite3
@@ -143,6 +145,47 @@ class reactor:
 
                 R.composition[species.name()] = _s
         return R
+
+
+    def update_from_rto_state(self, state, props, TPchange=False):
+        """
+        Update species in the reactor based on a reaktoro ChemicalState and its
+        ChemicalProps attribute. This method only updates existing species
+        and won't add new ones or edit their thermodynamic properties.
+        """
+
+        if TPchange:
+            # set reactor physcial env to match the rto state.
+            self.env.T, self.env.P = float(state.temperature()), float(state.pressure())
+
+        # The reaktoro ChemicalSystem.
+        # This manages the phases, which in turn manage the species.
+        system = state.system()
+
+        rto_nm_phases = {'AqueousPhase': 'aq',
+          'GaseousPhase': 'g'}
+        # mineralphases go by the name of the mineral in rkt,
+        # so we need to rethink how to include 's'
+
+        # populate the reactor with reagents read from the reaktoro system
+        for phase in system.phases():
+            for species in phase.species():
+                _n = species.name()
+                if _n in self.composition:
+                    self.composition[_n].activity = float(props.speciesActivity(_n))
+                    self.composition[_n].gamma = float(props.speciesActivityCoefficient(_n))
+                    self.composition[_n].conc = float(props.speciesConcentration(_n))
+
+                    if TPchange:
+                        rktprops = species.props(self.env.T, 'K', self.env.P, 'Pa')
+                        _n.std_formation_gibbs_env = rktprops.G0
+                        _n.std_formation_enthalpy_env = rktprops.H0
+                        _n.std_formation_entropy_env = rktprops.S0
+                        _n.Cp_env = rktprops.Cp0
+
+
+
+
 
 
     def rlist_from_ReactIDs(self, ReactIDs):
