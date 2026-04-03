@@ -124,14 +124,22 @@ class reactor:
         # populate the reactor with reagents read from the reaktoro system
         for phase in system.phases():
             for species in phase.species():
-
                 _s = rxn.reagent(species.name(),
                   R.env, phase=rto_nm_phases[phase.name()],
                   activity=float(props.speciesActivity(species.name())),
                   gamma=float(props.speciesActivityCoefficient(species.name())),
                   conc=float(props.speciesConcentration(species.name())),
-                  charge=float(species.charge())
+                  charge=float(species.charge()),
+                  thermo=False
                 )
+                rktprops = species.props(R.env.T, 'K', R.env.P, 'Pa')
+                _s.std_formation_gibbs_env = rktprops.G0
+                _s.std_formation_enthalpy_env = rktprops.H0
+                _s.std_formation_entropy_env = rktprops.S0
+                _s.Cp_env = rktprops.Cp0
+                _s.thermo = True
+                _s.rto_thermo = reagent_thermo(_s)
+
 
                 R.composition[species.name()] = _s
         return R
