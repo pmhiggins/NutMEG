@@ -54,6 +54,9 @@ class KineticallyLimitedOrganism(NutMEG.horde):
         else:
             horde_kwargs['CHNOPS_kwargs'] = CHNOPS_kwargs
 
+        if 'workoutID' not in horde_kwargs:
+            horde_kwargs['workoutID'] = False
+
         super().__init__(
           name, R,
           rxn,
