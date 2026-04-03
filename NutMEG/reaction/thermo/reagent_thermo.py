@@ -19,8 +19,8 @@ class reagent_thermo:
         self.host=host
         self.dbname=db
 
-        self.T, self.P = None, None
-        self.get_thermo_params() # calculates dG and lnK in current rtr.env.
+        self.roundedT, self.roundedP = None, None
+        #self.get_thermo_params() # in current rtr.env.
 
 
     def get_db(self):
@@ -33,35 +33,31 @@ class reagent_thermo:
         return _db
 
 
-    def get_thermo_params(self, T=None, P=None):
+    def get_thermo_params(self, T=None, P=None, RTP=False):
         """ Use reaktoro to extract thermodynamic parameters for the host
         reagent.
         """
-        T, P = self.TPcheck(T, P)
+        _T, _P = self.TPcheck(T, P)
 
-        if self.T == T and self.P == P:
+        if self.roundedT == _T and self.roundedP == _P:
             # T and P have not changed, no need to recalculate
             return self.G, self.Hz, self.H, self.S, self.Cp, self.Cv
         else:
-            # they have changed, recalculate.
+            # they have changed or are not yet set, recalculate.
 
-            # creating a reaktoro reaction is simpler than building a ChemicalSystem
-            # and yield the same result.
-            rkt_rxn = self.get_db().reaction(self.host.name)
-            rprops = rkt_rxn.props(T, 'K', P, 'Pa')
+            # create a reaktoro species to extract the thermo information
+            rkt_rxn = self.get_db().species(self.host.name)
+            rprops = rkt_rxn.props(_T, 'K', _P, 'Pa')
 
-            # We have to take the -ve value of thermo properties,
-            # because reaktoro builds the reaction with our species as the 'product'.
+            self.G = rprops.G0
+            self.Hz= rprops.A0
+            self.H = rprops.H0
+            self.S = rprops.S0
+            self.Cp= rprops.Cp0
+            self.Cv= rprops.Cv0
 
-            self.G = - rprops.dG0
-            self.Hz= - rprops.dA0
-            self.H = - rprops.dH0
-            self.S = - rprops.dS0
-            self.Cp= - rprops.dCp0
-            self.Cv= - rprops.dCv0
-
-            self.T = T
-            self.P = P
+            self.roundedT = _T
+            self.roundedP = _P
             return self.G, self.Hz, self.H, self.S, self.Cp, self.Cv
 
     def get_RTP_params(self):
