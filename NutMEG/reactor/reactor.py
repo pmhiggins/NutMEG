@@ -102,7 +102,7 @@ class reactor:
         return R
 
     @classmethod
-    def from_rto_state(cls, state, props, name='rto'):
+    def from_rto_state(cls, state, props, name='rto', kgH2O=None):
         """
         Build a reactor object from a reaktoro ChemicalState and its
         ChemicalProps attribute. This method populates a reactor with
@@ -126,11 +126,17 @@ class reactor:
         # populate the reactor with reagents read from the reaktoro system
         for phase in system.phases():
             for species in phase.species():
-                _s = rxn.reagent(species.name(),
+                _n = species.name()
+                molal = None
+                if kgH2O:
+                    molal = float(props.speciesAmount(_n)/kgH2O)
+
+                _s = rxn.reagent(_n,
                   R.env, phase=rto_nm_phases[phase.name()],
-                  activity=float(props.speciesActivity(species.name())),
-                  gamma=float(props.speciesActivityCoefficient(species.name())),
-                  conc=float(props.speciesConcentration(species.name())),
+                  activity=float(props.speciesActivity(_n)),
+                  gamma=float(props.speciesActivityCoefficient(_n)),
+                  conc=float(props.speciesConcentration(_n)),
+                  molal=molal,
                   charge=float(species.charge()),
                   thermo=False
                 )
@@ -143,11 +149,11 @@ class reactor:
                 _s.rto_thermo = reagent_thermo(_s)
 
 
-                R.composition[species.name()] = _s
+                R.composition[_n] = _s
         return R
 
 
-    def update_from_rto_state(self, state, props, TPchange=False):
+    def update_from_rto_state(self, state, props, TPchange=False, kgH2O=None):
         """
         Update species in the reactor based on a reaktoro ChemicalState and its
         ChemicalProps attribute. This method only updates existing species
@@ -175,6 +181,8 @@ class reactor:
                     self.composition[_n].activity = float(props.speciesActivity(_n))
                     self.composition[_n].gamma = float(props.speciesActivityCoefficient(_n))
                     self.composition[_n].conc = float(props.speciesConcentration(_n))
+                    if kgH2O:
+                        self.composition[_n].molal = float(props.speciesAmount(_n)/kgH2O)
 
                     if TPchange:
                         rktprops = species.props(self.env.T, 'K', self.env.P, 'Pa')
