@@ -26,37 +26,22 @@ class respirator:
         reaction like object (reaction or redox) which will then be unified
         with ``host.locale``. If a string is passed, look in ``host.locale``
         for the reaction and set that as the pathway.
-    n_ATP : float
-        Number of moles of ATP yielded per mole of ``net_pathway``.
+
     name : str, optional
         Name of the pathway. Default is 'pathway', used for selecting the
         reaction from ``host.locale`` if ``net_pathway`` is passed as a str.
-    xi : float, optional
-        Stoichiometric coefficient. The averge no of times the rate-determining-
-        step has taken place. Default 1.
+
     ATP_production : ```reaction`` like
         reaction from the porduction of ATP.
     G_A : float
         total free energy of the overall catabolic pathway (per molar overall
         reaction)
-    G_P : float
-        total free energy of each ATP producion (per mol of ATP produced)
-    G_C : float
-        total free energy to be conserved by catbolism per molar overall
-        reaction
     F_T : float
         Scaling factor due to thermodynamic effects.
     rate : float
         the actual reaction rate, corrected for other limiters in
         the organism.
-    n_P : float, kwarg
-        relative total number of ATP formed per pathway Default 0.0
-    n_HR : float, kwarg
-        realative total number of +ve ions transferred across membrane
-        per pathway. Default 0.0
-    n_HP : float, kwarg
-        relative total number of H+ ions translocated per
-        ATP synthesis Default 3.0.
+
 
     """
     # net_pathway = None # reaction describing the net catabolic reaction
@@ -141,32 +126,6 @@ class respirator:
             self.G_A = self.net_pathway.molar_gibbs
 
 
-        #### set up ATP production (conservable energy)
-
-        # self.G_P = 50000
-        if G_ATP is None:
-            self.build_ATP_reaction(celldata) # also sets G_P
-        elif G_ATP == 'default':
-            self.G_P = 59623.7 # ATP production at RTP, default celldata
-        elif type(G_ATP) == type(0.) or type(G_ATP) == type(0):
-            self.G_P = float(G_ATP)
-        else:
-            raise TypeError('Unknown type of G_ATP passed: '+str(type(G_ATP)))
-
-        if n_ATP is None:
-            if n_P and n_HP and n_HR:
-                self.n_ATP = self.get_nATP_from_protons(n_P,n_HP,n_HR)
-            elif G_C:
-                # conservable gibbs has been passed directly.
-                # use this to set a proxy n_ATP
-                self.n_ATP = G_C / self.G_P
-            else:
-                warnings.warn('No n_ATP or G_C calculable in ',self.host.name,' respirator.')
-        else:
-            self.n_ATP = n_ATP
-
-        self.G_C = self.n_ATP*self.G_P
-
 
         #### set up metabolic rates
 
@@ -225,26 +184,9 @@ class respirator:
 
 
 
-    @staticmethod
-    def get_nATP_from_protons(n_P, n_HR, n_HP):
-        return n_P + (n_HR/n_HP)
 
 
-    def _set_default_forcing(self):
-        """ set up the default list of forcing functions.
-        Currently only contains thermodynamic forcing.
-        """
-        self.forcing_parameters["thermodynamic"] = (lambda resp, xi: max(0., 1-math.exp(-(resp.f_T())/(xi*8.314472*resp.locale.env.T))), ['xi'])
 
-
-    def f_T(self):
-        """ get the thermodynamicforcing of free energy """
-
-        _f = -self.G_A-self.G_C
-        if _f>0:
-            return _f
-        else:
-            return -1.
 
 
     def set_forcing_parameter(self, name, func, arg_keys):
@@ -262,30 +204,6 @@ class respirator:
         self.forcing_parameters[name] = (func, arg_keys)
 
 
-    def build_ATP_reaction(self, celldata):
-        """Create a reaction object describing the formation of ATP using
-        cell parameters.
-
-        celldata is in the form [activity ADP, activity P, activity ATP, pH]
-        """
-        ADP = rxn.reagent('+H3(ADP)(aq)', self.locale.env, activity=celldata[0],
-          phase='aq')
-        P = rxn.reagent('H3PO4(aq)', self.locale.env, activity=celldata[1],
-          phase='aq')
-        ATP = rxn.reagent('+H4(ATP)(aq)', self.locale.env, activity=celldata[2],
-          phase='aq')
-        #H = reaction.reagent('H+', self.env, activity=(10**-celldata[3]),
-        #  phase='aq', molar_ratio=2.)
-        H2O = rxn.reagent('H2O(aq)', self.locale.env, phase='l',
-          conc=55.5, phase_ss=True, activity=1.0)
-
-        self.ATP_production = rxn.reaction({ADP:1, P:1},
-          {ATP:1, H2O:1}, self.locale.env)
-        self.ATP_production.rto_current_env()
-
-        self.ATP_production.update_molar_gibbs_from_quotient(
-          updatestdGibbs=False)
-        self.G_P = self.ATP_production.molar_gibbs
 
 
     def get_forcing_fraction(self, F_ID):
