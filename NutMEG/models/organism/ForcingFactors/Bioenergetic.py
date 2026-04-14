@@ -63,7 +63,7 @@ class Bioenergetic(ForcingFactor):
         """
 
 
-        super().__init__()
+        super().__init__(host)
         self.xi = xi
 
         # set the free energy of the ATP synthesis reaction

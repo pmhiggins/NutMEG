@@ -27,7 +27,7 @@ class Monod(ForcingFactor):
         K_s : float
             Half-saturation constant with respect to substrate.
         """
-        super().__init__()
+        super().__init__(host)
         self.substrate = substrate
         self.K_s = K_s
 
