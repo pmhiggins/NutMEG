@@ -26,7 +26,7 @@ class BaseRateModel:
 
     def compute(self, host):
         """ Calculate and return the base rate for this process."""
-        return 0.
+        return NotImplementedError
 
     def outputs(self):
         """
