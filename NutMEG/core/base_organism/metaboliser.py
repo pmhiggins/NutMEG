@@ -219,7 +219,15 @@ class metaboliser:
         #
         # self.get_rate()
 
-
+    def set_max_rate(self, host, locale, _rate):
+        if _rate == 'default':
+            self.base_rate = BaseRateModel(host, locale)
+        elif type(_rate) is float:
+            self.base_rate = Constant(host, locale, _rate)
+        elif isinstance(_rate, BaseRateModel):
+            self.base_rate = _rate
+        else:
+            raise ValueError('Unknown metabolic rate update passed')
 
     def compute_rate(self, host, locale):
         # calulate the current maximum rate.
