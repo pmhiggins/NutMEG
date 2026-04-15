@@ -10,8 +10,8 @@ Most recent changes: Thermodynamics management December 2019
 @version 0.1.0
 
 """
-import sys
-sys.path.append('../../..')
+# import sys
+# sys.path.append('../../..')
 from NutMEG.environment import environment
 from NutMEG.reaction.thermo.reaction_thermo import reaction_thermo
 

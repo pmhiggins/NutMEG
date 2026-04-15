@@ -9,8 +9,8 @@ Most recent changes: database fixes May 2020.
 
 @author P M Higgins
 """
-import sys
-sys.path.append('../../..')
+# import sys
+# sys.path.append('../../..')
 from NutMEG.environment import environment
 from .reaction import reaction as rxn
 from .reagent import reagent as rgt
@@ -296,7 +296,6 @@ class reactor:
         # redefine the reagents
         # according to the composition.
         for rrxn in list(rxxn.reactants.keys()):
-            print(rrxn)
             inlist = False
             for c_name, c_rxt in self.composition.copy().items():
 
@@ -313,8 +312,8 @@ class reactor:
                     rxxn.reactants[c_rxt] = rxxn.reactants.pop(rrxn)
             if not inlist:
                 # it wasn't found in the composition, add it.
-                logger.info('Adding '+rrxn.name+' to '+self.name+\
-                  "'s composition.'")
+                # logger.info('Adding '+rrxn.name+' to '+self.name+\
+                #   "'s composition.'")
                 self.composition[rrxn.name] = rrxn
 
         for rrxn in list(rxxn.products.keys()):
@@ -335,8 +334,8 @@ class reactor:
 
             if not inlist:
                 # it wasn't found in the composition, add it.
-                logger.info('Adding '+rrxn.name+' to '+self.name+\
-                  "'s composition.'")
+                # logger.info('Adding '+rrxn.name+' to '+self.name+\
+                #   "'s composition.'")
                 self.composition[rrxn.name] = rrxn
         # return rxxn
 

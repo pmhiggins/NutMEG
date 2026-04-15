@@ -1,8 +1,11 @@
 
 import sys, warnings
-sys.path.append("../..")
+# sys.path.append("..")
+from NutMEG.core.reactor.reaction import reaction
+from NutMEG.core.reactor.reagent import reagent
+
 import math
-from NutMEG import reaction as rxn
+# from NutMEG import reaction as rxn
 # from NutMEG.environment import environment
 # from NutMEG.reactor import reactor
 
