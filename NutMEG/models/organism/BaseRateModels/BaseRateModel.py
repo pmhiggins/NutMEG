@@ -26,7 +26,7 @@ class BaseRateModel:
 
     def compute(self, host, locale):
         """ Calculate and return the base rate for this process."""
-        return NotImplementedError
+        raise NotImplementedError("A max rate likely hasn't been defined.")
 
     def outputs(self):
         """

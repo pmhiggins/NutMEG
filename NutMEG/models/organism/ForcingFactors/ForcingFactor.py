@@ -25,7 +25,7 @@ class ForcingFactor:
 
     def compute(self, host, locale):
         """ Calculate and return the ForcingFactor for this process."""
-        return NotImplementedError
+        raise NotImplementedError
 
     def outputs(self):
         """

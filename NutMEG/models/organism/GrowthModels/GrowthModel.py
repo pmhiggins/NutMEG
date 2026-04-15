@@ -27,7 +27,7 @@ class GrowthModel:
 
     def compute(self, host, locale):
         """ Calculate and return the growth rate according to this model."""
-        return NotImplementedError
+        raise NotImplementedError
 
     def outputs(self):
         """
