@@ -1,6 +1,7 @@
 import math
-from ForcingFactor import ForcingFactor
-from NutMEG import reaction as rxn
+import warnings
+from .ForcingFactor import ForcingFactor
+from NutMEG.core.reactor.reaction import reaction as rxn
 
 class Bioenergetic(ForcingFactor):
     """

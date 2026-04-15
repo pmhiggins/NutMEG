@@ -1,4 +1,4 @@
-from ForcingFactor import ForcingFactor
+from .ForcingFactor import ForcingFactor
 
 class Monod(ForcingFactor):
     """

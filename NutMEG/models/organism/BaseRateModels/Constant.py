@@ -1,6 +1,6 @@
-from BaseRateModel import BaseRateModel
+from .BaseRateModel import BaseRateModel
 
-class Constant:
+class Constant(BaseRateModel):
     """
     A fixed maximum rate.
 

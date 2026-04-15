@@ -1,4 +1,4 @@
-from RateAggregator import RateAggregator
+from .RateAggregator import RateAggregator
 
 class LeibigMinimum(RateAggregator):
     def combine(self, base_rate, factors):
