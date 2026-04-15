@@ -81,7 +81,7 @@ class respirator:
 
 
 
-    def __init__(self, host, net_pathway,
+    def __init__(self, host, locale, net_pathway,
       base_rate,
       forcing_factors,
       aggregator,
@@ -117,33 +117,33 @@ class respirator:
         overwrite_net_pathway : bool, optional
             Pass if net_pathway has been created but not yet unified with
             the host's locale.
-        G_net_pathway : NoneType or float
-            If you want to pass the gibbs gree energy of the metabolic reaction
-            use this, if not leave as None. Default ``None``.
+        # G_net_pathway : NoneType or float
+        #     If you want to pass the gibbs gree energy of the metabolic reaction
+        #     use this, if not leave as None. Default ``None``.
         """
-        self.host = host
+        # self.host = host
 
 
         #### unify the pathway with the local environment
         if overwrite_net_pathway:
             if type(net_pathway) is str:
                 if pathwaytype == None:
-                    pathwaytype = type(rxn.reaction({},{}, self.locale.env))
-                self.net_pathway = self.locale.reactionlist[net_pathway][pathwaytype]
-            elif type(net_pathway) is rxn.reaction or rxn.redox:
+                    pathwaytype = type(reaction)#type(reaction({},{}, self.locale.env))
+                self.net_pathway = locale.reactionlist[net_pathway][pathwaytype]
+            elif type(net_pathway) is reaction:# or rxn.redox:
                 # add reaction direct to the reactor, if it isn't there already
-                self.locale.add_reaction(net_pathway, overwrite=overwrite_net_pathway)
+                locale.add_reaction(net_pathway, overwrite=overwrite_net_pathway)
                 #set self.net_pathway now it has been unified
-                self.net_pathway = self.locale.reactionlist[net_pathway.equation][type(net_pathway)]
+                self.net_pathway = locale.reactionlist[net_pathway.equation][type(net_pathway)]
             else:
-                raise ValueError('Reactor of ',self.host.name, 'is unable to process net_pathway type')
+                raise ValueError('Reactor is unable to process net_pathway type')
         else:
-            self.net_pathway = self.locale.reactionlist[net_pathway.equation][type(net_pathway)]
+            self.net_pathway = locale.reactionlist[net_pathway.equation][type(net_pathway)]
 
 
         #### adjust overall free energy of metabolic reaction if requested
-        if G_net_pathway:
-            self.net_pathway.molar_gibbs = self.G_A
+        # if G_net_pathway:
+        #     self.net_pathway.molar_gibbs = self.G_A
         # else:
             # get the molar gibbs from the net pathway reaction ourselves
             # self.net_pathway.rto_current_env()
