@@ -11,32 +11,18 @@ class maintainer:
     This class is for computing and calculating the maintenance
     requirements in the form of powers for a given organism.
 
-    All values are PER CELL, so for a Horde, when you use these
-    attributes you will likely need to scale them up.
+    All values are per cell.
 
     Attributes
     ----------
-    host : ``base_organism`` like
-        host organism. Ensure that the host organism's locale object is the
-        reactor you want.
-    net_dict : dict, optional
-        dictionary of the net contributions to maintenance in W per cell. By
-        default will include contributions of temperature and pH, according to
-        Tdef or pHdef. You could also include a 'Basal' maintenance power.
-    frac_dict : dict
-        dictionary of the contributions to maintenance as a fraction of power
-        supply. Shares keys with ``net_dict``.
-    Tdef : str, optional
-        Which temperature defences to use. Current options are are those from
-        Tijhuis (1993), and Lever (2015). See function ``get_P_T`` for options
-        which work. For more info, check out the documentation, and if it isn't
-        there yet contact me!
-    pHdef : str, optional
-        Which pH defences to use. See function ``get_P_pH`` for options
-        which work. For more info, check out the documentation, and if it isn't
-        there yet contact me!
-    P_loss : float
-        Instantaneous fractional power loss due to all maintenance in W/organism
+    mechanisms : list[MaintenanceModel]
+        List of MaintenanceModel object representing the different maintenance
+        stresses the cell faces.
+    total_maintenance_power : float
+        Aggregate sum of all maintennce power requirements for host cell.
+    MP_list : list
+        List same length as ``mechanisms`` detailing the indidual contributions
+        to total maintenance of each mechanism modelled.
     rebuild : list, optional
         Which maintenance processes required biomass replacement. List should
         contain string keys corresponding to the maintenance processes that
@@ -54,15 +40,28 @@ class maintainer:
 
 
     def __init__(self, host, locale,
-      mechanisms):
+      mechanisms=[]):
       # net_dict={},
       # supply=1.0,
       # Tdef='None',
       # pHdef='None',
       # rebuild=[]):
+        """
+        Parameters
+        ----------
+        host : ``base_organism`` like
+            host organism.
+        locale : ``reactor`` like
+            The chemical reactor the organism exists inside.
+        mechanisms : list[MaintenanceModel]
+            List of MaintenanceModel object representing the different maintenance
+            stresses the cell faces.
+        """
         self.mechanisms = mechanisms
 
         self.total_maintenance_power = 0.
+        self.total_rebuild_power = 0.
+
         self.MP_list = [0,]*len(mechanisms)
         # self.host = host # this is a reference to the host organism for
           # e.g. if the environment changes.

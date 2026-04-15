@@ -4,6 +4,14 @@ import sys, warnings
 from NutMEG.core.reactor.reaction import reaction
 from NutMEG.core.reactor.reagent import reagent
 
+from NutMEG.models.organism.BaseRateModels.Constant import Constant
+from NutMEG.models.organism.BaseRateModels.BaseRateModel import BaseRateModel
+from NutMEG.models.organism.ForcingFactors.Bioenergetic import Bioenergetic
+from NutMEG.models.aggregators.Multiplicative import Multiplicative
+
+
+
+
 import math
 # from NutMEG import reaction as rxn
 # from NutMEG.environment import environment
@@ -15,32 +23,23 @@ import math
 
 class metaboliser:
     """
-    Class for implementing respiration in an organism. Uses Jin and Bethke
-    (2007)'s procedure for estimating the rate of nutrient and energy uptake.
-    Can be extended for specific circumstances e.g. methanogenesis.
+    Class for handling kinetics of a net metabolic reaction in an organism.
 
     Attributes
     ----------
-    host : ``base_organism`` like
-        host organism. Ensure that the host organism's locale object is the
-        reactor you want.
-    net_pathway : ``reaction`` like or str
-        The overall metabolism to use. In any case it is best to pass a
-        reaction like object (reaction or redox) which will then be unified
-        with ``host.locale``. If a string is passed, look in ``host.locale``
-        for the reaction and set that as the pathway.
-
-    name : str, optional
-        Name of the pathway. Default is 'pathway', used for selecting the
-        reaction from ``host.locale`` if ``net_pathway`` is passed as a str.
-
-    ATP_production : ```reaction`` like
-        reaction from the porduction of ATP.
-    G_A : float
-        total free energy of the overall catabolic pathway (per molar overall
-        reaction)
-    F_T : float
-        Scaling factor due to thermodynamic effects.
+    net_pathway : ``reaction`` like
+        The overall metabolic reaction to use.
+    base_rate : ``BaseRateModel''
+        Model to be used for calculating the maximum metabolic rate
+        in environmental conditions (i.e., before forcing, if present)
+    forcing_factors : list[ForcingFactor]
+        List of ForcingFactor models to use to estimate the actual metabolic
+        rate.
+    aggregator : ``RateAggregator''
+        method to use to select the actual rate from the forcing factors
+        (e.g., Multiplicative, LeibigMinimum, etc.)
+    max_rate : float
+        the maximum possible reaction rate for the overal metabolic reaction.
     rate : float
         the actual reaction rate, corrected for other limiters in
         the organism.
@@ -82,9 +81,9 @@ class metaboliser:
 
 
     def __init__(self, host, locale, net_pathway,
-      base_rate,
-      forcing_factors,
-      aggregator,
+      base_rate = 'default',
+      forcing_factors = 'default',
+      aggregator = 'default',
       overwrite_net_pathway=False):
 
       # n_ATP=1., max_metabolic_rate=None,
@@ -98,8 +97,9 @@ class metaboliser:
         Parameters
         ----------
         host : ``base_organism`` like
-            host organism. Ensure that the host organism's locale object is the
-            reactor you want.
+            host organism.
+        locale : ``reactor`` like
+            The chemical reactor the organism exists inside.
         net_pathway : ``reaction`` like or str
             The overall metabolism to use. In any case it is best to pass a
             reaction like object (reaction or redox) which will then be unified
@@ -156,6 +156,18 @@ class metaboliser:
         self.base_rate = base_rate
         self.forcing_factors = forcing_factors
         self.aggregator = aggregator
+
+        if self.base_rate == 'default':
+            self.base_rate = BaseRateModel(host, locale)
+        elif self.base_rate is float:
+            self.base_rate = Constant(host, locale, self.base_rate)
+        if self.forcing_factors == 'default':
+            self.forcing_factors = [Bioenergetic(host, locale)]
+        if self.aggregator == 'default':
+            self.aggregator = Multiplicative()
+
+        self.rate = None
+        self.max_rate = None
 
         # if a rate constant is passed, the net_pathway's rate constant will be
         # overwritten. If not, it will be left untouched.
