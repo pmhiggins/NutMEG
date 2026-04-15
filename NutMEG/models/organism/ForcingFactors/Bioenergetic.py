@@ -131,8 +131,8 @@ class Bioenergetic(ForcingFactor):
             return max(0., 1-math.exp(-(_f)/(self.xi*8.314472*locale.env.T)))
 
 
-    def outputs(self, host):
-        return {'G_C':G_C}
+    def outputs(self):
+        return {'G_C':self.G_C}
 
 
     @staticmethod
