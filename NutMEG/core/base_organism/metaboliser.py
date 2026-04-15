@@ -13,7 +13,7 @@ import math
 # from NutMEG.util.loggersetup import loggersetup as logset
 # logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.printlevel)
 
-class respirator:
+class metaboliser:
     """
     Class for implementing respiration in an organism. Uses Jin and Bethke
     (2007)'s procedure for estimating the rate of nutrient and energy uptake.

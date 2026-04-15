@@ -43,8 +43,8 @@ class FirstOrderChemical:
         Arrhenius law. This is the default rate calculation in nutmeg.reaction.
         """
 
-        host.net_pathway.frequency_factor = self.A
-        host.net_pathway.molar_activation_E = self.E_a
-        host.net_pathway.calculate_rate()
-        _r = host.net_pathway.rate_const_env
+        host.metabolism.net_pathway.frequency_factor = self.A
+        host.metabolism.net_pathway.molar_activation_E = self.E_a
+        host.metabolism.net_pathway.calculate_rate()
+        _r = host.metabolism.net_pathway.rate_const_env
         return _r
