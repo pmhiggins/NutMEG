@@ -9,9 +9,13 @@ Most recent changes: database fixes May 2020.
 
 @author P M Higgins
 """
+import sys
+sys.path.append('../../..')
 from NutMEG.environment import environment
-from NutMEG import reaction as rxn
-from NutMEG.reaction.thermo.reagent_thermo import reagent_thermo
+from .reaction import reaction as rxn
+from .reagent import reagent as rgt
+
+# from NutMEG.reaction.thermo.reagent_thermo import reagent_thermo
 
 from itertools import chain
 from copy import copy, deepcopy
@@ -19,11 +23,11 @@ import sqlite3
 import sys, os, ast
 from datetime import date
 import time as timer
-from .reactor_dbhelper import rdb_helper
+# from .reactor_dbhelper import rdb_helper
 
-import NutMEG.util.NutMEGparams as nmp
-from NutMEG.util.loggersetup import loggersetup as logset
-logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.printlevel)
+# import NutMEG.util.NutMEGparams as nmp
+# from NutMEG.util.loggersetup import loggersetup as logset
+# logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.printlevel)
 
 class reactor:
     """Class for storing reagents and reactions, and able to perform them.
@@ -69,37 +73,37 @@ class reactor:
         self.composition_inputs = kwargs.pop('composition_inputs', {})
         self.ReactIDs = tuple()
 
-        self.dbh= rdb_helper(self, dbpath=kwargs.pop('dbpath', nmp.std_dbpath))
+        # self.dbh= rdb_helper(self, dbpath=kwargs.pop('dbpath', nmp.std_dbpath))
         if workoutID:
             self.dbh.workoutID()
 
-    @classmethod
-    def r_from_db(cls, name, LocID, dbpath=nmp.std_dbpath):
-        """Extract a reactor from the SQL database at dbpath.
-
-        Returns the saved reactor object
-
-        Parameters
-        ----------
-        name : str
-            name of the reactor. Required for table name.
-        LocID : str
-            LocID of the reaactor to extract.
-        dbpath : str, optional
-            location of the database file. Default is NutMEG_db outside the
-            module directory.
-        """
-
-        dbdict = rdb_helper.from_db(name, LocID, dbpath=dbpath)
-        R = cls(name, env=environment(T = dbdict['Temperature'][1],
-          P=dbdict['Pressure'][1], V=dbdict['Volume'][1]), pH=dbdict['pH'][1],
-          workoutID=False, composition_inputs=ast.literal_eval(dbdict['composition_inputs'][1]), dbpath=dbpath)
-
-        R.dbh.extract_from_Composition(dbdict['CompID'][1])
-        R.rlist_from_ReactIDs(ast.literal_eval(dbdict['reactions'][1]))
-        R.CompID = dbdict['CompID'][1]
-        R.LocID = LocID
-        return R
+    # @classmethod
+    # def r_from_db(cls, name, LocID, dbpath=nmp.std_dbpath):
+    #     """Extract a reactor from the SQL database at dbpath.
+    #
+    #     Returns the saved reactor object
+    #
+    #     Parameters
+    #     ----------
+    #     name : str
+    #         name of the reactor. Required for table name.
+    #     LocID : str
+    #         LocID of the reaactor to extract.
+    #     dbpath : str, optional
+    #         location of the database file. Default is NutMEG_db outside the
+    #         module directory.
+    #     """
+    #
+    #     dbdict = rdb_helper.from_db(name, LocID, dbpath=dbpath)
+    #     R = cls(name, env=environment(T = dbdict['Temperature'][1],
+    #       P=dbdict['Pressure'][1], V=dbdict['Volume'][1]), pH=dbdict['pH'][1],
+    #       workoutID=False, composition_inputs=ast.literal_eval(dbdict['composition_inputs'][1]), dbpath=dbpath)
+    #
+    #     R.dbh.extract_from_Composition(dbdict['CompID'][1])
+    #     R.rlist_from_ReactIDs(ast.literal_eval(dbdict['reactions'][1]))
+    #     R.CompID = dbdict['CompID'][1]
+    #     R.LocID = LocID
+    #     return R
 
     @classmethod
     def from_rto_state(cls, state, props, name='rto', kgH2O=None):
@@ -131,7 +135,7 @@ class reactor:
                 if kgH2O:
                     molal = float(props.speciesAmount(_n)/kgH2O)
 
-                _s = rxn.reagent(_n,
+                _s = rgt(_n,
                   R.env, phase=rto_nm_phases[phase.name()],
                   activity=float(props.speciesActivity(_n)),
                   gamma=float(props.speciesActivityCoefficient(_n)),
@@ -338,7 +342,7 @@ class reactor:
 
 
 
-    def perform_reaction(self, re_eq, n, re_type=rxn.reaction):
+    def perform_reaction(self, re_eq, n, re_type=rxn):
         """Perform the reaction n molar times.
 
         Parameters

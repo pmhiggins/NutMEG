@@ -10,7 +10,8 @@ Most recent changes: Thermodynamics management December 2019
 @version 0.1.0
 
 """
-
+import sys
+sys.path.append('../../..')
 from NutMEG.environment import environment
 from NutMEG.reaction.thermo.reaction_thermo import reaction_thermo
 
@@ -26,9 +27,9 @@ from uncertainties import ufloat, umath
 
 R = 8.314472  # J/mol.K
 
-import NutMEG.util.NutMEGparams as nmp
-from NutMEG.util.loggersetup import loggersetup as logset
-logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.printlevel)
+# import NutMEG.util.NutMEGparams as nmp
+# from NutMEG.util.loggersetup import loggersetup as logset
+# logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.printlevel)
 
 class reaction:
 
