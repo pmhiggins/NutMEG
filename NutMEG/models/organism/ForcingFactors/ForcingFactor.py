@@ -12,7 +12,7 @@ class ForcingFactor:
         this ForcingFactor.
     """
 
-    def __init__(self, host):
+    def __init__(self, host, locale):
         """
         Parameters
         ----------
@@ -23,7 +23,7 @@ class ForcingFactor:
 
         self.requires = None
 
-    def compute(self, host):
+    def compute(self, host, locale):
         """ Calculate and return the ForcingFactor for this process."""
         return NotImplementedError
 

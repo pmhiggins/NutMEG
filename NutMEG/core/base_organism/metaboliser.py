@@ -206,13 +206,13 @@ class respirator:
 
 
 
-    def compute_rate(self):
+    def compute_rate(self, host, locale):
         # calulate the current maximum rate.
         # This needs to be computed every time because some max rate methods
         # depend on the current environmental conditions
-        self.max_rate = self.base_rate.compute(self)
+        self.max_rate = self.base_rate.compute(host, locale)
 
-        values = [f.compute(self) for f in self.factors]
+        values = [f.compute(host, locale) for f in self.forcing_factors]
         self.rate =  self.aggregator.combine(self.max_rate, values)
         return self.rate
 

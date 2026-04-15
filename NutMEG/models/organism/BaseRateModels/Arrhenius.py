@@ -16,7 +16,7 @@ class FirstOrderChemical:
         Activation energy
     """
 
-    def __init__(self, host, A, Ea):
+    def __init__(self, host, locale, A, Ea):
         """
         extends BaseRateModel.__init__()
 
@@ -32,12 +32,12 @@ class FirstOrderChemical:
             Activation energy
         """
 
-        super().__init__(host)
+        super().__init__(host, locale)
         self.A = A
         self.E_a = E_a
 
 
-    def compute(self, host):
+    def compute(self, host, locale):
         """
         Calculate and return the base rate for this process, following an
         Arrhenius law. This is the default rate calculation in nutmeg.reaction.

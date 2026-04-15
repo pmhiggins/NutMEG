@@ -13,7 +13,7 @@ class BaseRateModel:
         this ForcingFactor.
     """
 
-    def __init__(self, host):
+    def __init__(self, host, locale):
         """
         Parameters
         ----------
@@ -24,7 +24,7 @@ class BaseRateModel:
 
         self.requires = None
 
-    def compute(self, host):
+    def compute(self, host, locale):
         """ Calculate and return the base rate for this process."""
         return NotImplementedError
 

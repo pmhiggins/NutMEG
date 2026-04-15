@@ -13,7 +13,7 @@ class Monod(ForcingFactor):
         Half-saturation constant with respect to substrate.
     """
 
-    def __init__(self, host, substrate, K_s, conctype='molal'):
+    def __init__(self, host, locale, substrate, K_s, conctype='molal'):
         """
         Extends ForcingFactor.__init__()
 
@@ -27,19 +27,19 @@ class Monod(ForcingFactor):
         K_s : float
             Half-saturation constant with respect to substrate.
         """
-        super().__init__(host)
+        super().__init__(host, locale)
         self.substrate = substrate
         self.K_s = K_s
         self.conctype = conctype
 
-    def compute(self, host):
+    def compute(self, host, locale):
         S = None
         if self.conctype == 'molal':
-            S = host.locale.composition[substrate].molal
+            S = locale.composition[self.substrate].molal
         elif self.conctype == 'conc':
-            S = host.locale.composition[substrate].conc
+            S = locale.composition[self.substrate].conc
         elif self.conctype == 'activity':
-            S = host.locale.composition[substrate].activity
+            S = locale.composition[self.substrate].activity
         else:
             raise ValueError('Unknown conctype passed to Monod model')
         return S / (S + self.K_s)

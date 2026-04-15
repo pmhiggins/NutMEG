@@ -14,7 +14,7 @@ class FirstOrderChemical:
         First-order rate constant in current environment condition
     """
 
-    def __init__(self, host, k_env):
+    def __init__(self, host, locale, k_env):
         """
         extends BaseRateModel.__init__()
 
@@ -28,11 +28,11 @@ class FirstOrderChemical:
             First-order rate constant in current environment condition
         """
 
-        super().__init__(host)
+        super().__init__(host, locale)
         self.k_env = k_env
 
 
-    def compute(self, host):
+    def compute(self, host, locale):
         """
         Calculate and return the base rate for this process, following a
         generic first order rate law.

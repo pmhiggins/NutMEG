@@ -11,7 +11,7 @@ class Constant(BaseRateModel):
         this ForcingFactor.
     """
 
-    def __init__(self, host, val):
+    def __init__(self, host, locale, val):
         """
         extends BaseRateModel.__init__()
 
@@ -23,9 +23,9 @@ class Constant(BaseRateModel):
             Value of maximum rate
         """
 
-        super().__init__()
+        super().__init__(host, locale)
         self.val = val
 
-    def compute(self, host):
+    def compute(self, host, locale):
         """ Calculate and return the base rate for this process."""
         return self.val
