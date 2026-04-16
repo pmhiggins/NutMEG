@@ -39,7 +39,7 @@ class maintainer:
     # but I'll reintroduce it if bugs appear.
 
 
-    def __init__(self, host, locale,
+    def __init__(self,
       mechanisms=[]):
       # net_dict={},
       # supply=1.0,
@@ -49,9 +49,9 @@ class maintainer:
         """
         Parameters
         ----------
-        host : ``base_organism`` like
+        host : base_organism
             host organism.
-        locale : ``reactor`` like
+        locale : reactor
             The chemical reactor the organism exists inside.
         mechanisms : list[MaintenanceModel]
             List of MaintenanceModel object representing the different maintenance

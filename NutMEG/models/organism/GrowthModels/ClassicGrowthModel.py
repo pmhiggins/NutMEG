@@ -12,22 +12,24 @@ class ClassicGrowthModel(GrowthModel):
         this GrowthModel.
     """
 
-    def __init__(self, host, locale):
-        """
-        Parameters
-        ----------
-        host : ``base_organism'' like
-            Host organism. Some GrowthModels will need this to initialise and
-            some won't. It is best to assume they will (else they may throw an error)
-        locale : ``reactor'' like
-            Host chemical reactor. Some GrowthModels will need this to initialise and
-            some won't. It is best to assume they will (else they may throw an error)
-        """
-        super().__init__(host,locale)
+    def __init__(self):
+        super().__init__()
 
 
     def compute(self, host, locale):
-        """ Calculate and return the growth rate according to this model."""
+        """
+        Calculate and return the growth rate according to this classic model.
+        Does not intrinsically depend on metabolic rate or maintenance, only
+        the max growth rate and growth forcing factors.
+
+        Parameters
+        ----------
+        host : ``base_organism'' like
+            Host organism. must be capable of computing a max_growth_rate.
+        locale : ``reactor'' like
+            Host chemical reactor. Some ForcingFactors will need this to initialise and
+            some won't. It is best to assume they will (else they may throw an error)
+        """
         host.growth.max_growth_rate = host.growth.base_rate.compute(host, locale)
 
         values = [f.compute(host, locale) for f in host.growth.forcing_factors]

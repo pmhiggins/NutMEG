@@ -7,19 +7,13 @@ class ForcingFactor:
 
     Attributes
     ----------
-    requires : list
-        List of additional required host properties to calucate
-        this ForcingFactor.
+    requires : dict or Nonetype
+        Dictionary of additional required host properties to run
+        this GrowthModel. Keys are property identifiers, and values are the
+        object in a NutMEG.core class to look in.
     """
 
-    def __init__(self, host, locale):
-        """
-        Parameters
-        ----------
-        host : ``base_organism'' like
-            Host organism. Some Forcing Factors will need this to initialise and
-            some won't. It is best to assume they will (else they may throw an error)
-        """
+    def __init__(self):
 
         self.requires = None
 

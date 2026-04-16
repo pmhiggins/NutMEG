@@ -9,27 +9,22 @@ class Lever2015(MaintenanceModel):
 
     Attributes
     ----------
-    requires : list
-        List of additional required host properties to run
-        this MaintenanceModel.
+    requires : dict or Nonetype
+        Dictionary of additional required host properties to run
+        this GrowthModel. Keys are property identifiers, and values are the
+        object in a NutMEG.core class to look in.
     cutoff_pc : float
         The % racemization of AA in proteins at which it must be replaced.
     """
 
-    def __init__(self, host, locale, cutoff_pc=10):
+    def __init__(self, cutoff_pc=10):
         """
         Parameters
         ----------
-        host : ``base_organism'' like
-            Host organism. Some MaintenanceModels will need this to initialise and
-            some won't. It is best to assume they will (else they may throw an error)
-        locale : ``reactor'' like
-            Host chemical reactor. Some Forcing Factors will need this to initialise and
-            some won't. It is best to assume they will (else they may throw an error)
         cutoff_pc : float
             The % racemization of AA in proteins at which it must be replaced.
         """
-        super().__init__(host, locale)
+        super().__init__()
         self.cutoff_pc = cutoff_pc
 
 
@@ -37,20 +32,20 @@ class Lever2015(MaintenanceModel):
         """
         Calculate and return the ower cost due to temperature following
         Lever et al., 2015, for protein racemization.
+
+        Parameters
+        ----------
+        host : base_organism
+            Host organism. Must have a correct dry_mass attribute for this
+            calculation to be accurate.
+        locale : reactor
+            Host chemical reactor. Must have the correct temperature for
+            this calculation to be accurate.
         """
         if not host.E_synth:
             raise ValueError("Unable to calculate Lever 2015 maintenance power as host's E_synth is not defined")
 
-        """Power cost due to temperature according to Lever et al 2015
-        """
 
         k_yr = 0.00012*math.exp(0.10174*(locale.env.T-273.15))
         k_s = k_yr/(365*24*3600)
         return (100*host.E_synth*k_s)/self.cutoff_pc
-
-
-    def outputs(self):
-        """
-        Return a dict of the key outputs for host properties this calculation generated.
-        """
-        return {}

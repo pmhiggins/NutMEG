@@ -6,22 +6,13 @@ class MaintenanceModel:
 
     Attributes
     ----------
-    requires : list
-        List of additional required host properties to run
-        this MaintenanceModel.
+    requires : dict or Nonetype
+        Dictionary of additional required host properties to run
+        this GrowthModel. Keys are property identifiers, and values are the
+        object in a NutMEG.core class to look in.
     """
 
-    def __init__(self, host, locale):
-        """
-        Parameters
-        ----------
-        host : ``base_organism'' like
-            Host organism. Some MaintenanceModels will need this to initialise and
-            some won't. It is best to assume they will (else they may throw an error)
-        locale : ``reactor'' like
-            Host chemical reactor. Some MaintenanceModels will need this to initialise and
-            some won't. It is best to assume they will (else they may throw an error)
-        """
+    def __init__(self):
 
         self.requires = None
 
@@ -31,6 +22,7 @@ class MaintenanceModel:
 
     def outputs(self):
         """
-        Return a dict of the key outputs for host properties this calculation generated.
+        Return a dict of the key outputs for host properties this calculation
+        generated.
         """
         return {}

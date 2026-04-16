@@ -70,7 +70,7 @@ class base_organism:
     """
 
 
-    def __init__(self, name, locale, metabolism,
+    def __init__(self, name, metabolism,
       growth=None,
       maintenance=None,
       mass=1.e-15,
@@ -129,22 +129,22 @@ class base_organism:
         if not self.surfacearea:
             self.surfacearea = SAget(self.volume)
 
-        if type(metabolism) is metaboliser:
+        if isinstance(metabolism, metaboliser):
             self.metabolism = metabolism
-        elif type(metabolism) is reaction:
-            self.metabolism = metaboliser(self, locale, metabolism)
+        elif isinstance(metabolism, reaction):
+            self.metabolism = metaboliser(metabolism)
         else:
             raise ValueError("base_organism cannot be initialised without a net metabolic reaction")
 
         if not maintenance:
-            self.maintenance = maintainer(self, locale, [])
+            self.maintenance = maintainer([])
         elif type(maintenance) is maintainer:
             self.maintenance = maintenance
         else:
             warnings.warn('base_organism: '+name+' has been initalised without a maintainer')
 
         if not growth:
-            self.growth = grower(self, locale)
+            self.growth = grower()
         elif type(growth) is grower:
             self.growth = growth
         else:

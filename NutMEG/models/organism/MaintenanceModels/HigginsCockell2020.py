@@ -9,9 +9,10 @@ class HigginsCockell2020(MaintenanceModel):
 
     Attributes
     ----------
-    requires : list
-        List of additional required host properties to run
-        this MaintenanceModel.
+    requires : dict or Nonetype
+        Dictionary of additional required host properties to run
+        this GrowthModel. Keys are property identifiers, and values are the
+        object in a NutMEG.core class to look in.
     """
 
     # polyfitting parameters from Higgins and Cockell 2020 at different ATP yields.
@@ -22,22 +23,16 @@ class HigginsCockell2020(MaintenanceModel):
     TOM_15 = [ 1.40807504e-10, -2.37559221e-07,  1.60324386e-04,
       -5.41193986e-02, 9.19861608e+00, -6.48600497e+02]
 
-    def __init__(self, host, locale, n_ATP=None):
+    def __init__(self, n_ATP=None):
         """
         Parameters
         ----------
-        host : ``base_organism'' like
-            Host organism. Some Forcing Factors will need this to initialise and
-            some won't. It is best to assume they will (else they may throw an error)
-        locale : ``reactor'' like
-            Host chemical reactor. Some Forcing Factors will need this to initialise and
-            some won't. It is best to assume they will (else they may throw an error)
         n_ATP : float
             ATP yield of the overall metabolism.
             Below or above 0.5 or 1.5, the fit is assigned to use them respectively.
             If None, then use the value fitted at n_ATP = 1. Default None.
         """
-        super().__init__(host, locale)
+        super().__init__()
         self.n_ATP = n_ATP
         if n_ATP == None:
             self.n_ATP = 1.
@@ -46,6 +41,15 @@ class HigginsCockell2020(MaintenanceModel):
         """
         Calculate and return the power cost due to temperature following
         Higgins and Cockell 2020
+
+        Parameters
+        ----------
+        host : base_organism
+            Host organism. Must have a correct dry_mass attribute for this
+            calculation to be accurate.
+        locale : reactor
+            Host chemical reactor. Must have the correct temperature for
+            this calculation to be accurate.
         """
         if not host.dry_mass:
             raise ValueError("Unable to calculate HigginsCockell maintenance power as host's dry_mass is not defined")
@@ -61,11 +65,3 @@ class HigginsCockell2020(MaintenanceModel):
 
         MP = 10**sum([x*(locale.env.T**(5-i)) for i, x in enumerate(HCpolyfit)])
         return MP * host.dry_mass / (300*3.4412868852915668e-18 )
-
-
-
-    def outputs(self):
-        """
-        Return a dict of the key outputs for host properties this calculation generated.
-        """
-        return {}

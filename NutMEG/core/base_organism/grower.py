@@ -62,7 +62,7 @@ class grower:
 
 
 
-    def __init__(self, host, locale,
+    def __init__(self,
       base_rate = 'default',
       forcing_factors = 'default',
       aggregator = 'default',
@@ -78,16 +78,16 @@ class grower:
         self.growth_model = growth_model
 
         if self.base_rate == 'default':
-            self.base_rate = BaseRateModel(host, locale)
+            self.base_rate = BaseRateModel()
         elif self.base_rate is float:
-            self.base_rate = Constant(host, locale, self.base_rate)
+            self.base_rate = Constant(self.base_rate)
 
         if self.forcing_factors == 'default':
             self.forcing_factors = []
         if self.aggregator == 'default':
             self.aggregator = Multiplicative()
         if self.growth_model == 'default':
-            self.growth_model = BioenergeticGrowthModel(host, locale)
+            self.growth_model = BioenergeticGrowthModel()
 
 
         self.growth_rate = None
@@ -115,11 +115,11 @@ class grower:
         # self.find_nutrients(init=True)
 
 
-    def set_max_rate(self, host, locale, _rate):
+    def set_max_rate(self, _rate):
         if _rate == 'default':
-            self.base_rate = BaseRateModel(host, locale)
+            self.base_rate = BaseRateModel()
         elif type(_rate) is float:
-            self.base_rate = Constant(host, locale, _rate)
+            self.base_rate = Constant(_rate)
         elif isinstance(_rate, BaseRateModel):
             self.base_rate = _rate
         else:

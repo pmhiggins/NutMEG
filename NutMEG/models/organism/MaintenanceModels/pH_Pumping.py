@@ -9,9 +9,10 @@ class pH_Pumping(MaintenanceModel):
 
     Attributes
     ----------
-    requires : list
-        List of additional required host properties to run
-        this MaintenanceModel.
+    requires : dict or Nonetype
+        Dictionary of additional required host properties to run
+        this GrowthModel. Keys are property identifiers, and values are the
+        object in a NutMEG.core class to look in.
     pH_interior : float, optional
         pH inside the cell. Default 7.
     memb_pot : float, optional
@@ -22,7 +23,7 @@ class pH_Pumping(MaintenanceModel):
         Permeability of the cell wall to Hydroxide in m^-1. Default 1e-10
     """
 
-    def __init__(self, host, locale,
+    def __init__(self,
       membrane_potential=1e-5,
       pH_interior=7.,
       membrane_permH=1e-10,
@@ -30,12 +31,6 @@ class pH_Pumping(MaintenanceModel):
         """
         Parameters
         ----------
-        host : ``base_organism'' like
-            Host organism. Some MaintenanceModels will need this to initialise and
-            some won't. It is best to assume they will (else they may throw an error)
-        locale : ``reactor'' like
-            Host chemical reactor. Some Forcing Factors will need this to initialise and
-            some won't. It is best to assume they will (else they may throw an error)
         pH_interior : float, optional
             pH inside the cell. Default 7.
         memb_pot : float, optional
@@ -45,7 +40,7 @@ class pH_Pumping(MaintenanceModel):
         PermOH : float, optional
             Permeability of the cell wall to Hydroxide in m^-1. Default 1e-10
         """
-        super().__init__(host, locale)
+        super().__init__()
         self.membrane_potential = membrane_potential
         self.pH_interior = pH_interior
         self.membrane_permH = membrane_permH
@@ -55,8 +50,17 @@ class pH_Pumping(MaintenanceModel):
 
     def compute(self, host, locale):
         """
-        Calculate and return the ower cost due to temperature following
-        Lever et al., 2015, for protein racemization.
+        Calculate and return the power cost due to pH following
+        the proton pumping calculation described in Higgins (2022) U. Edinburgh.
+
+        Parameters
+        ----------
+        host : base_organism
+            Host organism. Must have a correct surfacearea attribute for this
+            calculation to be accurate.
+        locale : reactor like
+            Host chemical reactor. Must have the correct temperature and pH or
+            [H+] for this calculation to be accurate.
         """
         if not host.surfacearea:
             raise ValueError("Unable to calculate pH_Pumping maintenance power as host's surfacearea is not defined")
@@ -71,12 +75,6 @@ class pH_Pumping(MaintenanceModel):
         E = self._getEnergyPump(host, locale)
         return (abs(fluxOH)+abs(fluxH))*E
 
-
-    def outputs(self):
-        """
-        Return a dict of the key outputs for host properties this calculation generated.
-        """
-        return {}
 
 
     @staticmethod

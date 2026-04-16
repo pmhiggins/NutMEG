@@ -7,29 +7,24 @@ class Tijhuis1993(MaintenanceModel):
 
     Attributes
     ----------
-    requires : list
-        List of additional required host properties to run
-        this MaintenanceModel.
+    requires : dict or Nonetype
+        Dictionary of additional required host properties to run
+        this GrowthModel. Keys are property identifiers, and values are the
+        object in a NutMEG.core class to look in.
     fit : str
         Which type of organism fit from Tijhuis 1993 to use.
     """
 
-    def __init__(self, host, locale, fit='average'):
+    def __init__(self, fit='average'):
         """
         Parameters
         ----------
-        host : ``base_organism'' like
-            Host organism. Some Forcing Factors will need this to initialise and
-            some won't. It is best to assume they will (else they may throw an error)
-        locale : ``reactor'' like
-            Host chemical reactor. Some Forcing Factors will need this to initialise and
-            some won't. It is best to assume they will (else they may throw an error)
         fit : str
             Which fit to use: 'average' will use the fit for an average cell,
             'anerobe' will use the fit for anaerobes, and 'aerobe' will use the
             fit for aerobes. See the Tijhuis 1993 article for details.
         """
-        super().__init__(host, locale)
+        super().__init__()
         self.fit = fit
 
 
@@ -37,6 +32,13 @@ class Tijhuis1993(MaintenanceModel):
         """
         Calculate and return the ower cost due to temperature following
         Tijhuis 1993
+
+        host : base_organism
+            Host organism. Must have a correct dry_mass attribute for this
+            calculation to be accurate.
+        locale : reactor
+            Host chemical reactor. Must have the correct temperature for
+            this calculation to be accurate.
         """
         if not host.dry_mass:
             raise ValueError("Unable to calculate Tijhuis 1993 maintenance power as host's dry_mass is not defined")
@@ -52,10 +54,3 @@ class Tijhuis1993(MaintenanceModel):
             return ValueError('Unknown Tijhuis et al 1993 fit')
 
         return (1000/3600)*(host.dry_mass/0.026)*drym_ME
-
-
-    def outputs(self):
-        """
-        Return a dict of the key outputs for host properties this calculation generated.
-        """
-        return {}

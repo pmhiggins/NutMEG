@@ -80,7 +80,7 @@ class metaboliser:
 
 
 
-    def __init__(self, host, locale, net_pathway,
+    def __init__(self, net_pathway,
       base_rate = 'default',
       forcing_factors = 'default',
       aggregator = 'default',
@@ -125,22 +125,22 @@ class metaboliser:
 
 
         #### unify the pathway with the local environment
-        if overwrite_net_pathway:
-            if type(net_pathway) is str:
-                if pathwaytype == None:
-                    pathwaytype = type(reaction)#type(reaction({},{}, self.locale.env))
-                self.net_pathway = locale.reactionlist[net_pathway][pathwaytype]
-            elif type(net_pathway) is reaction:# or rxn.redox:
-                # add reaction direct to the reactor, if it isn't there already
-                locale.add_reaction(net_pathway, overwrite=overwrite_net_pathway)
-                #set self.net_pathway now it has been unified
-                self.net_pathway = locale.reactionlist[net_pathway.equation][type(net_pathway)]
-            else:
-                raise ValueError('Reactor is unable to process net_pathway type')
-        else:
-            self.net_pathway = locale.reactionlist[net_pathway.equation][type(net_pathway)]
+        # if overwrite_net_pathway:
+        #     if type(net_pathway) is str:
+        #         if pathwaytype == None:
+        #             pathwaytype = type(reaction)#type(reaction({},{}, self.locale.env))
+        #         self.net_pathway = locale.reactionlist[net_pathway][pathwaytype]
+        #     elif type(net_pathway) is reaction:# or rxn.redox:
+        #         # add reaction direct to the reactor, if it isn't there already
+        #         locale.add_reaction(net_pathway, overwrite=overwrite_net_pathway)
+        #         #set self.net_pathway now it has been unified
+        #         self.net_pathway = locale.reactionlist[net_pathway.equation][type(net_pathway)]
+        #     else:
+        #         raise ValueError('Reactor is unable to process net_pathway type')
+        # else:
+        #     self.net_pathway = locale.reactionlist[net_pathway.equation][type(net_pathway)]
 
-
+        self.net_pathway = net_pathway
         #### adjust overall free energy of metabolic reaction if requested
         # if G_net_pathway:
         #     self.net_pathway.molar_gibbs = self.G_A
@@ -158,11 +158,11 @@ class metaboliser:
         self.aggregator = aggregator
 
         if self.base_rate == 'default':
-            self.base_rate = BaseRateModel(host, locale)
+            self.base_rate = BaseRateModel()
         elif self.base_rate is float:
-            self.base_rate = Constant(host, locale, self.base_rate)
+            self.base_rate = Constant(self.base_rate)
         if self.forcing_factors == 'default':
-            self.forcing_factors = [Bioenergetic(host, locale)]
+            self.forcing_factors = [Bioenergetic()]
         if self.aggregator == 'default':
             self.aggregator = Multiplicative()
 
@@ -219,11 +219,11 @@ class metaboliser:
         #
         # self.get_rate()
 
-    def set_max_rate(self, host, locale, _rate):
+    def set_max_rate(self, _rate):
         if _rate == 'default':
-            self.base_rate = BaseRateModel(host, locale)
+            self.base_rate = BaseRateModel()
         elif type(_rate) is float:
-            self.base_rate = Constant(host, locale, _rate)
+            self.base_rate = Constant(_rate)
         elif isinstance(_rate, BaseRateModel):
             self.base_rate = _rate
         else:

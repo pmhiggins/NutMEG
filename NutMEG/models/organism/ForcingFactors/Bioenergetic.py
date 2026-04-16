@@ -21,21 +21,27 @@ class Bioenergetic(ForcingFactor):
         reaction
     n_ATP : float, optional
         Number of moles of ATP yielded per mole of ``net_pathway``. Default 1.
+    requires : dict or Nonetype
+        Dictionary of additional required host properties to run
+        this GrowthModel. Keys are property identifiers, and values are the
+        object in a NutMEG.core class to look in.
     """
 
-    def __init__(self, host, locale,
+    def __init__(self, locale=None,
       xi=1.,
       n_ATP=None,
       G_ATP='default',
       G_C='default',
       celldata=[0.0001, 0.004, 0.005, 7.], **kwargs):
         """
-        Note: At least two of n_ATP, G_ATP, and G_C must be passed for
+        Note
+        ----
+        At least two of n_ATP, G_ATP, and G_C must be passed for
         successful initialisation.
 
         Parameters
         ----------
-        host : ``base_organism`` like
+        locale : reactor
             host organism. Only required for this ForcingFactor if requesting
             to build the ATP reaction, otherwise can be passed as None.
         xi : float, optional
@@ -67,7 +73,7 @@ class Bioenergetic(ForcingFactor):
         """
 
 
-        super().__init__(host, locale)
+        super().__init__()
         self.xi = xi
 
         # set the free energy of the ATP synthesis reaction
@@ -117,6 +123,15 @@ class Bioenergetic(ForcingFactor):
         """
         Overrides ForcingFactor.compute(). Returns the fractional reduction
         in metabolic rate owing to thermodynamic forcing.
+
+        Parameters
+        ----------
+        host : base_organism
+            Host organism. Must have a correct net_pathway.molar_gibbs attribute for this
+            calculation to be accurate.
+        locale : reactor
+            Host chemical reactor. Must have the correct temperature for
+            this calculation to be accurate.
         """
         if self.default_GC_init:
             # it was not possible to initialise default G_C in __init__, try now

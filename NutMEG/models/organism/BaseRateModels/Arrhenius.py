@@ -14,9 +14,13 @@ class FirstOrderChemical:
         Pre-exponential Arrhenius factor
     E_a : float
         Activation energy
+    requires : dict or Nonetype
+        Dictionary of additional required host properties to run
+        this GrowthModel. Keys are property identifiers, and values are the
+        object in a NutMEG.core class to look in.
     """
 
-    def __init__(self, host, locale, A, Ea):
+    def __init__(self, A, Ea):
         """
         extends BaseRateModel.__init__()
 
@@ -24,15 +28,13 @@ class FirstOrderChemical:
 
         Parameters
         ----------
-        host : ``base_organism'' like
-            Host organism. Can be passed as None for this initialisation.
         A : float
             Pre-exponential Arrhenius factor
         E_a : float
             Activation energy
         """
 
-        super().__init__(host, locale)
+        super().__init__()
         self.A = A
         self.E_a = E_a
 
@@ -40,7 +42,19 @@ class FirstOrderChemical:
     def compute(self, host, locale):
         """
         Calculate and return the base rate for this process, following an
-        Arrhenius law. This is the default rate calculation in nutmeg.reaction.
+        Arrhenius law. This is the default rate calculation in NutMEG.reaction.
+
+        The passed host.metabolism.net_pathway will have its rate constants,
+        activation energies and pre-exponential factors updated based on the
+        attributes of this object.
+
+        Parameters
+        ----------
+        host : base_organism
+            Host organism.
+        locale : reactor
+            Host chemical reactor. Must have the correct temperature for
+            this calculation to be accurate.
         """
 
         host.metabolism.net_pathway.frequency_factor = self.A

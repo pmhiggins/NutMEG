@@ -2,34 +2,50 @@ from .GrowthModel import GrowthModel
 
 class BioenergeticGrowthModel(GrowthModel):
     """
-    Superclass for all growth rate calculations.
+    Class for growth rate calculations using a bioenergetic growth model
+    (e.g., Higgins and Cockell 2020). Requires that a bioenergetic microbial
+    kinetic model was used, which can provide the available Gibbs free energy
+    for maintenance and growth.
 
     Attributes
     ----------
-    requires : list
-        List of additional required host properties to run
-        this GrowthModel.
+    requires : dict or Nonetype
+        Dictionary of additional required host properties to run
+        this GrowthModel. Keys are property identifiers, and values are the
+        object in a NutMEG.core class to look in. For BioenergeticGrowthModel,
+        this is initialised upon running the compute() method.
+    cs_powers : dict
+        Dictionary of useful outputs from this growth model, structured as:
+        {'P_s':Power Supply, 'P_m': Maintenance Power,
+        'P_g_gross': gross growth power, 'P_g_net' : net growth power}. All
+        powers are cell-specific.
     """
 
-    def __init__(self, host, locale):
-        """
-        Parameters
-        ----------
-        host : ``base_organism'' like
-            Host organism. Some GrowthModels will need this to initialise and
-            some won't. It is best to assume they will (else they may throw an error)
-        locale : ``reactor'' like
-            Host chemical reactor. Some GrowthModels will need this to initialise and
-            some won't. It is best to assume they will (else they may throw an error)
-        """
-        super().__init__(host,locale)
-        self.requires = {'G_C':host.metabolism.forcing_factors}
+    def __init__(self):
+        super().__init__()
         self.cs_powers = {'P_s': None, 'P_m':None, 'P_g_gross':None, 'P_g_net':None}
 
 
-    def compute(self, host, locale):
-        """ Calculate and return the growth rate according to this model."""
+    def compute(self, host, locale, adjust_metabolic_rate=True):
+        """ Calculate and return the growth rate according to this model. If
+        growth is not energetically limited, the model will also reduce
+        the host's metabolic rate accordingly by default.
 
+        Parameters
+        ----------
+        host : ``base_organism'' like
+            Host organism. Must have a correct E_synth attribute, metabolic rate
+            and maintenance power for this calculation to be accurate.
+        locale : ``reactor'' like
+            Host chemical reactor. Some GrowthModels will need this to initialise and
+            some won't. It is best to assume they will (else they may throw an error)
+        adjust_metabolic_rate : bool, optional
+            if True, adjust the host's metabolim.rate when not all metabolic power
+            supply will go to use (e.g., nutrient limitation). If False, do not
+            change the metabolic rate even if growth is not optimal.
+        """
+
+        self.requires = {'G_C':host.metabolism.forcing_factors}
         G_C = self.find_subparams()['G_C']
         try:
             host.growth.max_growth_rate = host.growth.base_rate.compute(host, locale)
@@ -66,7 +82,8 @@ class BioenergeticGrowthModel(GrowthModel):
 
             # reduce the metabolic rate to accord to the actual
             # power supply that is useable.
-            host.metabolism.rate -= (P_growth - expected_P_growth)/G_C
+            if adjust_metabolic_rate:
+                host.metabolism.rate -= (P_growth - expected_P_growth)/G_C
 
         host.growth.growth_rate = net_growth_P / host.E_synth
         host.growth.gross_growth_rate = gross_growth_P / host.E_synth

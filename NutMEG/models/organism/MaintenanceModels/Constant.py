@@ -6,26 +6,25 @@ class Constant(MaintenanceModel):
 
     Attributes
     ----------
-    requires : list
-        List of additional required host properties to calucate
-        this Maintenance Power.
+    requires : dict or Nonetype
+        Dictionary of additional required host properties to run
+        this GrowthModel. Keys are property identifiers, and values are the
+        object in a NutMEG.core class to look in.
     """
 
-    def __init__(self, host, locale, val):
+    def __init__(self, val):
         """
         extends MaintenancePower.__init__()
 
         Parameters
         ----------
-        host : ``base_organism'' like
-            Host organism. Can be passed as None for this calculation.
         val : float
             Value of maximum rate
         """
 
-        super().__init__(host, locale)
+        super().__init__()
         self.val = val
 
-    def compute(self, host, locale):
+    def compute(self, host=None, locale=None):
         """ return the maintnenace power."""
         return self.val
