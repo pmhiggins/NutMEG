@@ -50,26 +50,26 @@ class reagent:
         ----------
         name : str
             name of the reagent
-        conc : float
+        conc : float, optional
             molarity in mol/L. If gaseous, conc describes pressure in bar.
             Can be None if molal or activity are known
-        gamma : float
+        gamma : float, optional
             activity coefficient
-        activity : float
+        activity : float, optional
             Activity. If None, estimate using gamma and conc.
-        molal : float
+        molal : float, optional
             molality in mol/kg.
             Can be None is conc or activity are known
-        charge : float
+        charge : float, optional
             Charge of reagent. Default 0.
-        thermo : bool
+        thermo : bool, optional
             Determines whether or not to compute thermodynamic parameters
             with the host reactor's database.
-        phase : str
+        phase : str, optional
             identifier for phase of the reagent. Must be one of 'aq','g','s','l'.
-        phase_ss : bool
+        phase_ss : bool, optional
             Identifies whether or not the reagent is in it's standard state.
-        add_to_locale : bool
+        add_to_locale : bool, optional
             Identifies if upon initialisation the reagent should be added to
             the locale's composition. Default True.
 

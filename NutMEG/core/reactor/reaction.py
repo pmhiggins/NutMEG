@@ -1,14 +1,7 @@
 """
-
-This is the reaction module. First initialise reagents and then initialise
-a basic reaction. If further specialties are required such as redox,
-import one of those submodules (if included).
-
-Most recent changes: Thermodynamics management December 2019
+Most recent changes: v2 overhaul 2026
 
 @author P M Higgins
-@version 0.1.0
-
 """
 # import sys
 # sys.path.append('../../..')
@@ -43,7 +36,6 @@ class reaction:
 
     Attributes
     ----------
-
     reactants : dict
         Participating reactants in the form {name:molar ratio}
     products : dict
@@ -83,6 +75,25 @@ class reaction:
       frequency_factor=None,
       molar_activation_E=None,
       add_to_locale = True):
+        """
+        Parameters
+        ----------
+        locale : reactor
+            Host reactor.
+        reactants : dict
+            Participating reactants in the form {name:molar ratio}
+        products : dict
+            Participating products in the form {name:molar ratio}
+        frequency_factor : float, optional
+            the pre-exponential factor in an arrhenius equation. Default None
+        molar_activation_E : float
+            Molar activation energy for an arrhenius equation. Unit J/K mol.
+            Default None.
+        add_to_locale : bool, optional
+            Identifies if upon initialisation the reagent should be added to
+            the locale's composition. Default True.
+        """
+
 
         self.reactants = reactants
         self.products = products
