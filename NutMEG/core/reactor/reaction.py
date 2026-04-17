@@ -12,8 +12,8 @@ Most recent changes: Thermodynamics management December 2019
 """
 # import sys
 # sys.path.append('../../..')
-from NutMEG.environment import environment
-from NutMEG.reaction.thermo.reaction_thermo import reaction_thermo
+# from NutMEG.environment import environment
+# from NutMEG.reaction.thermo.reaction_thermo import reaction_thermo
 
 import sys
 import math
@@ -22,10 +22,10 @@ import numpy as np
 import warnings
 from os import system
 import os.path
-import sqlite3
+# import sqlite3
 from uncertainties import ufloat, umath
 
-R = 8.314472  # J/mol.K
+gas_const = 8.314472  # J/mol.K
 
 # import NutMEG.util.NutMEGparams as nmp
 # from NutMEG.util.loggersetup import loggersetup as logset
@@ -41,67 +41,81 @@ class reaction:
     If reagents are in the SUPCRT07 database, then free energies can be
     calculated if the reaction proceeds purely thermochemically.
 
+    Attributes
+    ----------
+
+    reactants : dict
+        Participating reactants in the form {name:molar ratio}
+    products : dict
+        Participating products in the form {name:molar ratio}
+    equation : str
+        str of the equation in a readable form.
+    frequency_factor : float
+        the pre-exponential factor in an arrhenius equation. For rate calculation.
+    molar_activation_E : float
+        Molar activation energy for an arrhenius equation. For rate calculation.
+        Unit J/K mol
+    mass_activation_E : float
+        Mass activation energy for an arrhenius equation. For rate calculation.
+        Unit J/kg
+    std_molar_gibbs : float
+        Standard Gibbs free energy of reaction in J/mol
+    molar_gibbs :
+        Molar Gibbs free energy of reaction in J/mol
+    mass_gibbs : float
+        Gibbs free energy of reaction in J/kg. Sometimes also referred to as
+        Gibbs free energy density.
+    std_molar_enthalpy :float
+        Standard enthalpy of reaction in J/mol
+    std_molar_entropy : float
+        Standard entropy of reaction in J/mol
+    lnK : float
+        Natural logarithm of the equilibrium constant. T and P sensitive.
+    quotient : float
+        Reaction quotient [prod]/[react]
+    thermo : bool
+        Determines whether or not to compute thermodynamic parameters
+        with the host reactor's database.
     """
 
-    reactants = None  # dict of reagents in the form {reactant:molar ratio}
-    products = None  # as above, for products
-    equation = ""  #  str of the equation in a readable form.
 
-    # rate parameters
-    rate_constant_RTP = None  # units will vary, at RTP
-    rate_constant_env = None # value in the local environment
-    frequency_factor = None  # the A term in an arrhenius equation
-    molar_activation_E = None  # activation energy in J/K mol
-    mass_activation_E = None  # activation energy in J/kg
+    def __init__(self, locale, reactants, products,
+      frequency_factor=None,
+      molar_activation_E=None,
+      add_to_locale = True):
 
-    # energetic parameters
-    std_molar_gibbs = None	 # Standard Gibbs free energy of reaction in J/mol
-    molar_gibbs = None  # molar Gibbs free energy of reaction in J/mol
-    mass_gibbs = None  # Gibbs free energy of reaction in J/kg
-    std_molar_enthalpy = None  # Standard enthalpy of reaction in J/mol
-    std_molar_entropy = None  # Standard entropy of reaction in J/mol
-    lnK = None  # Natural logarithm of the equilibrium constant
-    quotient = None  # Reaction quotient [prod]/[react]
-
-    # booleans for the state of the reaction
-    equilibrium = False	 # Whether the reaction is at equilibrium or not.
-    all_activities = False  # Whether we have activities for all the reagents.
-
-    env = None # The environment.
-
-    """
-
-    INITIALISATION
-
-    """
-
-    def __init__(self, reactants, products, env, frequency_factor=0.,
-    molar_activation_E=0., equilibrium=False):
         self.reactants = reactants
         self.products = products
-        self.env = env
+        self.quotient = None
         self.frequency_factor = frequency_factor
         self.molar_activation_E = molar_activation_E
-        self.equilibrium=equilibrium
-        self.all_activities = self.activity_finder()
+        self.rate_constant_RTP = None
+        self.rate_constant_env = None
+
+        self.all_activities = self.activity_finder(locale)
         self.equation = self.get_equation()
-        self.thermo = self.thermo_finder()
+        self.thermo = self.thermo_finder(locale)
+        self.rkt_twin = None
+        self.lnK = None
+        self.stdG = None
+        if self.thermo:
+            self.rkt_twin = locale.thermodb.reaction(self.equation)
+            self.update_thermo(locale)
 
-    # def __str__(self):
-    #     return self.equation
+        if add_to_locale:
+            locale.add_reaction(self)
 
-    def activity_finder(self):
-        """Return True if we have the activities for all of the reagents."""
+
+    def __str__(self):
+        return self.equation
+
+
+    def activity_finder(self, locale):
+        """Return True if the activities of all of the reagents is known."""
         for r in chain(list(self.products), list(self.reactants)):
-            if r.phase == 's' or r.phase == 'l' or r.name == 'e-':
-                # set that activity to 1 if we haven't done so already
-                if r.activity == None:
-                    r.activity = 1.
-                continue
-            elif r.activity is None:
-                # we clearly don't have all the activities
-                return False
-
+            _r = locale.composition[r]
+            if _r.activity is None:
+                return False # we don't have all the activities
         return True
 
 
@@ -128,51 +142,35 @@ class reaction:
 
         Parameters
         ----------
-        r : NutMEG.reaction.reagent
-            reactant to show
+        r : str
+            reactant identifier (e.g. 'H2O(l)')
         mr : float
-            molar ratio in the reaction"""
+            molar ratio in the reaction
+        """
         result = ""
         if mr != 1:
-            result += str(mr) + "*" + str(r.name) + " "
+            result += str(mr) + "*" + str(r) + " "
         else:
-            result += str(r.name) + " "
+            result += str(r) + " "
         return result
 
 
-    def reagents_name(self):
-        """Get the reactants and products dictionaries with the names
-        as keys rather than the reagent object. """
-        reac, prod = {}, {}
-        for k, v in self.reactants.items():
-            reac[k.name] = v
-        for k, v in self.products.items():
-            prod[k.name] = v
-        return reac, prod
 
-
-    def thermo_finder(self):
-        """Return True if data is available for all reagents in the
-        SUPCRT07 Database.
+    def thermo_finder(self, locale):
+        """
+        Return True if thermodynamic data is available and calculable
+        for all reagents.
         """
         for re in chain(list(self.reactants), list(self.products)):
-            if re.name !='e-' and not re.thermo:
+            _re = locale.composition[re]
+            if _re.name !='e-' and not _re.thermo:
                 return False # At least one does not have the data
-        # we must have everything and can use reaktoro's thermo databases.
-        self.rto_thermo = reaction_thermo(self)
+        # we must have everything
         return True
 
 
 
     ####### SETS FOR UPDATING PARAMETERS  ######
-
-
-    def update_reagents(self):
-        """Update the parameters of the reagents e.g. when the environ-
-        ment has changed, new conc. etc.
-        """
-        for r in chain(list(self.reactants), list(self.products)):
-            r.update_reagent()
 
 
     def set_reactants(self, re):
@@ -206,7 +204,7 @@ class reaction:
               "Arrhenius calculation cannot be performed.")
         else:
             self.rate_constant_env = (self.frequency_factor *
-              math.exp(-self.molar_activation_E/(R*self.env.T)))
+              math.exp(-self.molar_activation_E/(gas_const*self.env.T)))
 
 
 
@@ -214,7 +212,7 @@ class reaction:
     ####### GENERIC CALCULATIONS: THERMODYNAMICS
 
 
-    def quotient_calculator(self, attr):
+    def quotient_calculator(self, locale, attr):
         """Return the reaction quotient based on the reactant attribute
         passed.
 
@@ -231,30 +229,32 @@ class reaction:
         A = 1.
         a = 1.
         for p, mr in self.products.items():
-            if p.phase_ss == False:
+            _p = locale.composition[p]
+            if _p.phase_ss == False:
                 try:
-                    A = float(getattr(p, attr))
+                    A = float(getattr(_p, attr))
                     if A != 0.:
                         a = float(mr)
                         multiplier = multiplier * math.pow(A, a)
                 except:
                     if attr=='activity':
-                        A=p.activity.n
+                        A=_p.activity.n
                         # print(p, A)
                     if A != 0.:
                         a = float(mr)
                         multiplier = multiplier * umath.pow(A, a)
 
         for r, mr in self.reactants.items():
-            if r.phase_ss == False:
+            _r = locale.composition[r]
+            if _r.phase_ss == False:
                 try:
-                    A = float(getattr(r, attr))
+                    A = float(getattr(_r, attr))
                     if A != 0.:
                         a = float(mr)
                         multiplier = multiplier / math.pow(A, a)
                 except:
                     if attr=='activity':
-                        A=r.activity.n
+                        A=_r.activity.n
                         # print(r, A)
                     if A != 0.:
                         a = float(mr)
@@ -264,7 +264,7 @@ class reaction:
 
 
 
-    def update_quotient(self, qconc=False, qmolal=False):
+    def update_quotient(self, locale, qconc=False, qmolal=False):
         """Update the reaction quotient for this reaction.
 
         Parameters
@@ -288,47 +288,21 @@ class reaction:
 
         if qconc==True:
             # Calculate using concentrations
-            multiplier = (self.quotient_calculator("conc")
-              * self.quotient_calculator("gamma"))
+            multiplier = (self.quotient_calculator(locale, "conc")
+              * self.quotient_calculator(locale, "gamma"))
         elif qmolal==True:
             # Calculate using molality
-            multiplier = (self.quotient_calculator("molal")
-              * self.quotient_calculator("gamma"))
+            multiplier = (self.quotient_calculator(locale, "molal")
+              * self.quotient_calculator(locale, "gamma"))
         else:
             # The default is to use ativities
-            multiplier = self.quotient_calculator("activity")
+            multiplier = self.quotient_calculator(locale, "activity")
         self.quotient = multiplier
 
 
-    def update_std_molar_gibbs_from_quotient(self,
-      Q_qconc=False, Q_qmolal=False):
-        """Calculate the standard molar gibbs free energy of reaction.
 
 
-        Parameters
-        ----------
-        Q_qconc : bool, optional
-            If True, calculate the quotient using molarity (default is False).
-        Q_qmolal : bool, optional
-            If True, calculate the quotient using molality (default is False).
-
-        Notes
-        ------
-        Uses the expression:
-        :math:`\Delta G_{T}^{0} = -RT\ln{K}`
-
-        This can only be done at equilibrium.
-        """
-        if self.equilibrium == False:
-            raise ValueError("This reaction is not at equilibrium, "
-            "we cannot use the expression \Delta G0 = -RTln K")
-        # Update the equilibrium quotient
-        self.update_quotient(qconc=Q_qconc, qmolal=Q_qmolal)
-        self.lnK = math.log(self.quotient)
-        self.std_molar_gibbs = -(R)*self.env.T*self.lnK
-
-
-    def update_std_molar_enthalpy_of_reaction(self):
+    def update_std_molar_enthalpy_of_reaction(self, locale):
         """Update the standard molar enthalpy of reaction from the
         enthalpies of formation of the reagents in the current
         environment.
@@ -336,122 +310,119 @@ class reaction:
 
         HoR = 0.
         for p, mr in self.products.items():
-            HoR += (p.std_formation_enthalpy_env * mr)
+            _p = locale.composition[p]
+            HoR += (_p.std_formation_enthalpy_env * mr)
         for r, mr in self.reactants.items():
-            HoR -= (r.std_formation_enthalpy_env * mr)
+            _r = locale.composition[r]
+            HoR -= (_r.std_formation_enthalpy_env * mr)
         self.std_molar_enthalpy = HoR
 
 
 
-    def update_std_molar_entropy_of_reaction(self):
+    def update_std_molar_entropy_of_reaction(self, locale):
         """Update the standard molar entropy of reaction from the
         entropies of formation of the reagents in the current
         environment.
         """
         SoR = 0.
         for p, mr in self.products.items():
-            SoR += (p.std_formation_entropy_env * mr)
+            _p = locale.composition[p]
+            SoR += (_p.std_formation_entropy_env * mr)
         for r, mr in self.reactants.items():
-            SoR -= (r.std_formation_entropy_env * mr)
+            _r = locale.composition[r]
+            SoR -= (_r.std_formation_entropy_env * mr)
         self.std_molar_entropy = SoR
 
 
 
 
-    def update_std_molar_gibbs_G(self):
-        """Update the standard molar gibbs free energy of reaction
+    def update_std_molar_gibbs_from_reagents(self, locale):
+        """
+        Update the standard molar gibbs free energy of reaction
         using the Gibbs free energy of formation of the reagents in
         the current environment, if available.
 
-        It is preferable to do this using reaktoro, (rto_current_env)
+        It is preferable to do this using reaktoro (update_thermo())
         if the thermodynamic data is available in the standard databases.
         """
         GoR = 0.
         for p, mr in self.products.items():
-            GoR += (p.std_formation_gibbs_env * mr)
-            print(p.name, mr, p.std_formation_gibbs_env)
+            _p = locale.composition[p]
+            GoR += (_p.std_formation_gibbs_env * mr)
         for r, mr in self.reactants.items():
-            GoR -= (r.std_formation_gibbs_env * mr)
-            print(r.name, mr, p.std_formation_gibbs_env)
+            _r = locale.composition[r]
+            GoR -= (_r.std_formation_gibbs_env * mr)
+
         self.std_molar_gibbs = GoR
 
 
 
-    def update_std_molar_gibbs_HS(self):
-        """Update the standard molar gibbs free energy of reaction using
-        the standard enthalpies and entropies of formation of the reagents,
-        if available.
 
-        H has a weak dependence on T, so large extremes will be inresaingly
-        poorly represented. S also has a dependence on T, changing with
-        heat capacity, latent heat of fusion etc.
-
-        If you do not have the non-RTP values of H or S --- or they are not,
-        avaliable in the SUPCRT07 database --- consider using the
-        Tdep reaction type (special/Tdep)
+    def update_molar_gibbs_from_quotient(self, locale,
+      Q_qconc=False,
+      Q_qmolal=False):
         """
-        # failsafe in case we have forgotten to calculate the enthalpies
-          # and entropies
-        if self.std_molar_enthalpy == None:
-            self.update_std_molar_enthalpy_of_reaction()
-        if self.std_molar_entropy == None:
-            self.update_std_molar_entropy_of_reaction()
-        GoR = self.std_molar_enthalpy - (self.env.T*self.std_molar_entropy)
-        self.std_molar_gibbs = GoR
-
-
-    def update_molar_gibbs_from_quotient(self, Q_qconc=False,
-      Q_qmolal=False, updatestdGibbs=True):
-        """Update Gibbs free energy of reaction at temperature T,
+        Update Gibbs free energy of reaction at temperature T,
         using the expression:
         :math:`\Delta G_{T} = \Delta G_{T}^{0} + RT\ln{Q}`
 
-        Should demonstrate dG=0 at equilibrium. Again, be cautious
-        of dG0's dependence on T.
+        #TODO: improve error handling.
         """
 
         # update Q and proceed
-        self.update_quotient(qconc=Q_qconc, qmolal=Q_qmolal)
-        if updatestdGibbs: # update the standard Gibbs free energy
-            if not self.thermo:
-                self.update_std_molar_gibbs_HS()
-            else:
-                try:
-                    self.rto_current_env()
-                except:
-                    # insufficient info on reactants for reaktoro
-                    self.update_std_molar_gibbs_G()
+        self.update_quotient(locale, qconc=Q_qconc, qmolal=Q_qmolal)
+
         try:
             self.molar_gibbs = (self.std_molar_gibbs
-              + (R * self.env.T * math.log(self.quotient)))
+              + (gas_const * locale.T * math.log(self.quotient)))
         except:
-            self.molar_gibbs = 0
+            self.molar_gibbs = None
 
-    def react(self, n):
+
+
+    def react(self, n, locale):
         """Perform a reaction, consuming unit n moles of reactants.
+
+        Parameters
+        ----------
+        n : float
+            Total number of moles to react throughout the reactor
+        locale : reactor
+            The reactor containing this reaction's reagents.
 
         Notes
         -----
         n is the number of moles of the reaction occuring, so if both
         reactants had a molar ratio of 4, and n=1 was passed, 4 moles
         of each reactant would be consumed.
+
+        # TODO: would it be better to focus on total moles, so V and kgH2O
+        are less prominent?
         """
         for r, mr in self.reactants.items():
+            _r = locale.composition[r]
             # Find total number of moles in system, then remove the amount
             # that has been reacted away or formed.
-            r.conc = (((r.conc*1000.0*self.env.V)
-              - (mr*n))/(1000.0*self.env.V))
-            if r.conc<0:
-                r.conc=0
-            if r.name != 'H2O(l)':
-                r.activity = r.conc * r.gamma
+            _r.conc = (((_r.conc*1000.0*locale.V)
+              - (mr*n))/(1000.0*locale.V))
+            _r.molal = (((_r.molal*locale.kgH2O)
+              - (mr*n))/(locale.kgH2O))
+            if _r.conc<0:
+                _r.conc=0
+            if _r.molal<0:
+                _r.molal=0
+            if _r.name != 'H2O(l)':
+                _r.activity = _r.conc * _r.gamma
         for p, mr in self.products.items():
+            _p = locale.composition[p]
             # Find total number of moles in system, then remove the amount
             # that has been reacted away or formed.
-            p.conc = (((p.conc*1000.0*self.env.V)
-              + (mr*n))/(1000.0*self.env.V))
-            if p.name != 'H2O(l)':
-                p.activity = p.conc * p.gamma
+            _p.conc = (((_p.conc*1000.0*locale.V)
+              + (mr*n))/(1000.0*locale.V))
+            _p.molal = (((_p.molal*locale.kgH2O)
+              + (mr*n))/(locale.kgH2O))
+            if _p.name != 'H2O(l)':
+                _p.activity = _p.conc * _p.gamma
 
 
 
@@ -460,20 +431,22 @@ class reaction:
     ###### Use the reaktoro package to perform thermodynamic calculations
 
 
-    def rto_reagents(self):
+    def update_thermo_reagents(self, locale):
         """Update the energetic parameters of the reagents using reaktoro.
         """
         for r in chain(list(self.reactants), list(self.products)):
+            _r = locale.composition[r]
             if r.name != 'e-' and r.name != 'H+':
-                r.import_params_db()
+                r.update_thermo(locale)
 
-    def rto_current_env(self):
+    def update_thermo(self, locale):
         """Get useful energetic parameters (standard molar Gibbs and lnK)
         for the current state of this reaction.
         """
 
-        stdG, lnK = self.rto_thermo.get_stdG_lnK()
+        self.rkt_twin = locale.thermodb.reaction(self.equation)
+        rprops = self.rkt_twin.props(locale.T, 'K', locale.P, 'Pa')
 
         # update reaction parameters
-        self.std_molar_gibbs = float(stdG)
-        self.lnK = float(lnK)
+        self.std_molar_gibbs = rprops.dG0
+        self.lnK = rprops.lgK * math.log(10)

@@ -1,29 +1,14 @@
 """
-
-This is the reagent submodule. reagent stores parameters of
-individual molecules in a given environment, to be used in the rector and
-reaction modules. Thermodynamic properties are calculated using reaktoro
-if available.
-
-Most recent changes: Thermodynamics management December 2019
+Most recent changes: v2 overhaul 2026
 
 @author P M Higgins
 @version 0.0.3
 
 """
-# import sys
-# sys.path.append('../../..')
-from NutMEG.environment import environment
-from NutMEG.reaction.thermo.reagent_thermo import reagent_thermo
 
-import numpy as np
-from os import system
-import os.path
-import sqlite3
-
-import NutMEG.util.NutMEGparams as nmp
-from NutMEG.util.loggersetup import loggersetup as logset
-logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.printlevel)
+# import NutMEG.util.NutMEGparams as nmp
+# from NutMEG.util.loggersetup import loggersetup as logset
+# logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.printlevel)
 
 
 class reagent:
@@ -47,66 +32,84 @@ class reagent:
         Can be None is conc or activity are known
     charge : float
         Charge of reagent. Default 0.
-
+    thermo : bool
+        Determines whether or not to compute thermodynamic parameters
+        with the host reactor's database.
+    phase : str
+        identifier for phase of the reagent. Must be one of 'aq','g','s','l'.
+    phase_ss : bool
+        Identifies whether or not the reagent is in it's standard state.
     """
-    #name = '' #: name of the reagent
-    conc = None # mol/l
-      # for a gaseous reagent in gaseous reactions, conc describes
-      # pressure (in bar).
-    gamma = 1. # activity coefficient
-    activity = None
-    molal = None # molality in mol/kg
-
-    charge = 0
-
-    radius = None #ionic radius used for electrolytes
-
-    phase = None # must be one of 'aq', 'g', 'l', or 's' when initialised
-    phase_ss = False # is the reactant in its standard state?
-
-    Cp_RTP = None # specific heat capacity at 298.15 K 100000 Pa
-    Cp_env = None
-    Cp_T_poly = None # specific heat capacity as a polynomial of temperature
-     # type(np.poly1d)
-
-    std_formation_enthalpy_RTP = None # J/mol
-    std_formation_entropy_RTP = None # J/mol K
-    std_formation_gibbs_RTP = 0. # J/mol
-
-    # thermodynamic quantities at the current evironment
-    env = environment(T=298.15, P=101325.0) # use RTP as the default
-    std_formation_gibbs_env = None
-    std_formation_entropy_env = None
-    std_formation_enthalpy_env = None
 
 
-    # booleans of state
-    thermo = True # whether we have the thermodynamic data available
+    def __init__(self, name, locale, conc=None, activity=None,
+      molal=None, charge=None, gamma=1., phase='aq', phase_ss=False,
+      thermo=True, add_to_locale=True):
+        """
+        Parameters
+        ----------
+        name : str
+            name of the reagent
+        conc : float
+            molarity in mol/L. If gaseous, conc describes pressure in bar.
+            Can be None if molal or activity are known
+        gamma : float
+            activity coefficient
+        activity : float
+            Activity. If None, estimate using gamma and conc.
+        molal : float
+            molality in mol/kg.
+            Can be None is conc or activity are known
+        charge : float
+            Charge of reagent. Default 0.
+        thermo : bool
+            Determines whether or not to compute thermodynamic parameters
+            with the host reactor's database.
+        phase : str
+            identifier for phase of the reagent. Must be one of 'aq','g','s','l'.
+        phase_ss : bool
+            Identifies whether or not the reagent is in it's standard state.
+        add_to_locale : bool
+            Identifies if upon initialisation the reagent should be added to
+            the locale's composition. Default True.
 
-
-    ####   INITIALISATION METHODS
-
-
-    def __init__(self, name, env, thermo=True, conc=None, activity=None,
-      molal=None, charge=0, gamma=1., radius=None, phase='aq', phase_ss=False,
-      Cp_T_poly=None, new=True):
-        if new:
-            logger.info('Initialising ' + name)
+        """
         self.name = name
-        self.env = env
+
         if phase != 'aq' and phase != 's' and phase != 'g' and phase != 'l':
             raise ValueError("Incorrectly defined phase for reagent "
               + str(name) + ", must be one of 's', 'l', 'g', or 'aq'.")
-        # pass Thermo as False to update thermochemical parameters yourself
-        if name != 'e-' and name != 'H+' and thermo:
-            self.GetThermoParams()
-        elif name == 'e-' or name== 'H+':
+
+        # thermodynamic quantities at RTP
+        self.std_formation_enthalpy_RTP = None # J/mol
+        self.std_formation_entropy_RTP = None # J/mol K
+        self.std_formation_gibbs_RTP = None # J/mol
+        self.Cp_RTP = None # specific heat capacity
+
+        # thermodynamic quantities at the current evironment
+        self.std_formation_gibbs_env = None
+        self.std_formation_entropy_env = None
+        self.std_formation_enthalpy_env = None
+        self.Cp_env = None
+
+        self.thermo = thermo
+        self.rkt_twin = None
+
+        # pass Thermo as False to manually update thermochemical parameters.
+        # otherwise, set up a reaktoro 'twin'
+        if name != 'e-' and self.thermo:
+            self.rkt_twin = locale.thermodb.species(self.name)
+            self.update_thermo_RTP()
+            self.update_thermo(locale)
+
+        elif name == 'e-':
             self.std_formation_enthalpy_RTP = 0.    # J/mol
             self.std_formation_entropy_RTP = 0.    # J/mol K
+            self.std_formation_gibbs_RTP = 0.
             self.std_formation_gibbs_env = 0.
             self.std_formation_entropy_env = 0.
             self.std_formation_enthalpy_env = 0.
-        self.thermo = thermo
+
         self.conc = conc
         self.activity = activity
         self.charge = charge
@@ -114,8 +117,9 @@ class reagent:
         self.gamma = gamma
         self.phase = phase
         self.phase_ss = phase_ss
-        self.Cp_T_poly = Cp_T_poly
-        self.radius = radius
+
+        if add_to_locale:
+            locale.add_reagent(self)
 
 
     def __str__(self):
@@ -133,51 +137,22 @@ class reagent:
             return 'aq'
 
 
-    def redefine(self, re):
-        """re-initialisethis reagent as a new or updated reagent"""
-        logger.debug('Redefining '+ self.name)
-        self.name = re.name
-        self.env = re.env
-        self.std_formation_gibbs_RTP = re.std_formation_gibbs_RTP
-        self.std_formation_enthalpy_RTP = re.std_formation_enthalpy_RTP
-        self.std_formation_entropy_RTP = re.std_formation_entropy_RTP
-        self.std_formation_gibbs_env = re.std_formation_gibbs_env
-        self.std_formation_entropy_env = re.std_formation_entropy_env
-        self.std_formation_enthalpy_env = re.std_formation_enthalpy_env
-        self.Cp_env = re.Cp_env
-        self.Cp_RTP = re.Cp_RTP
-        self.thermo = re.thermo
-        self.conc = re.conc
-        self.activity = re.activity
-        self.charge = re.charge
-        self.molal = re.molal
-        self.gamma = re.gamma
-        self.phase = re.phase
-        self.phase_ss = re.phase_ss
-        self.Cp_T_poly = re.Cp_T_poly
-        self.radius = re.radius
+    """
 
-        # self = re
+        THERMODYNAMIC CALCULATIONS
 
-    def GetThermoParams(self):
-        """Import the reagent's thermal parameters at both RTP and in
-        the current environment.
+    """
+
+    def update_thermo(self, locale):
         """
-        self.rto_thermo = reagent_thermo(self)
-
-        if self.std_formation_entropy_RTP is None:
-            G, _, H, S, Cp, _ = self.rto_thermo.get_RTP_params()
-            self.std_formation_gibbs_RTP = G
-            self.std_formation_enthalpy_RTP = H
-            self.std_formation_entropy_RTP = S
-            self.Cp_RTP = Cp
-
-        if self.env.T != 298.15 or self.env.P != 101325.0:
-            G, _, H, S, Cp, _ = self.rto_thermo.get_thermo_params()
-            self.std_formation_gibbs_env = G
-            self.std_formation_enthalpy_env = H
-            self.std_formation_entropy_env = S
-            self.Cp_env = Cp
+        Import the reagent's thermal parameters in the current environment.
+        """
+        if locale.T != 298.15 or locale.P != 101325.0:
+            rprops = self.rkt_twin.props(locale.T, 'K', locale.P, 'Pa')
+            self.std_formation_gibbs_env = rprops.G0
+            self.std_formation_enthalpy_env = rprops.H0
+            self.std_formation_entropy_env = rprops.S0
+            self.Cp_env = rprops.Cp0
         else:
             # we're in RTP so no need to look up the data again
             self.std_formation_enthalpy_env = self.std_formation_enthalpy_RTP
@@ -186,21 +161,20 @@ class reagent:
             self.Cp_env = self.Cp_RTP
 
 
+    def update_thermo_RTP(self):
+        """Import the reagent's thermal parameters at RTP."""
+        rprops = self.rkt_twin.props(298.15, 'K', 101325.0, 'Pa')
+        self.std_formation_gibbs_RTP = rprops.G0
+        self.std_formation_enthalpy_RTP = rprops.H0
+        self.std_formation_entropy_RTP = rprops.S0
+        self.Cp_RTP = rprops.Cp0
+
+
     """
 
         SETS FOR UPDATING PARAMETERS
 
     """
-
-    def update_reagent(self): # more to come I'm sure
-        """Update the reagent's parameters based on a changing environment.
-
-        For now, it just updates the thermodynamic data.
-        """
-        if name != 'e-' and thermo:
-            self.GetThermoParams()
-
-
 
     def set_concentration(self, newconc):
         """Update reagent concentration to be newconc in mol/L.
@@ -234,8 +208,9 @@ class reagent:
         self.gamma = newg
 
 
-    def set_phase(self, newphase):
-        """Change the reagent's phase, and update thermodynamic parameters
+    def set_phase(self, locale, newphase):
+        """
+        Change the reagent's phase, and update thermodynamic parameters
         accordingly.
 
 
@@ -248,5 +223,5 @@ class reagent:
             raise ValueError("Incorrectly defined phase for reagent "
               + str(name) + ", must be one of 's', 'l', 'g', or 'aq'.")
         self.phase = newphase
-        if name != 'e-' and thermo:
-            self.GetThermoParams()
+        if name != 'e-' and self.thermo:
+            self.GetThermoParams(locale)
