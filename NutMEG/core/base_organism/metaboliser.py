@@ -296,21 +296,3 @@ class metaboliser:
     #     if self.max_metabolic_rate:
     #         if self.rate > self.max_metabolic_rate:
     #             self.rate = self.max_metabolic_rate
-
-
-
-    def metabolic_energy_density(self):
-        """
-        Return an approximation of the energy density [J/kg H2O] for the
-        net_pathway.
-
-        Calculates the smallest energy yield from 'using up' the metabolic
-        reagents. In reality, the free energy would change as the concentration
-        decreases, so this is only a measure of the energy density available
-        for this metabolism at this moment in time.
-        """
-        ED = []
-        for r, mr in self.net_pathway.reactants.items():
-            if r.name != 'H2O(aq)' and r.name != 'H+' and r.name != 'OH-':
-                ED.append(r.conc*-self.G_A/mr)
-        return min(ED)

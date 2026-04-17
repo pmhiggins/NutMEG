@@ -379,6 +379,23 @@ class reaction:
             self.molar_gibbs = None
 
 
+    def update_mass_gibbs(self, locale):
+        """
+        Return an approximation of the energy density [J/kg H2O] for the
+        reaction
+
+        Calculates the smallest energy yield from 'using up' the
+        reagents. In reality, the free energy would change as the concentration
+        decreases, so this is only a measure of the energy density available
+        for this reaction at this moment in time.
+        """
+        ED = []
+        for r, mr in self.reactants.items():
+            _r = locale.composition[r]
+            if _r.name != 'H2O(aq)' and _r.name != 'H+' and _r.name != 'OH-':
+                ED.append(_r.molal*-self.molar_gibbs/mr)
+        self.mass_gibbs = min(ED)
+
 
     def react(self, n, locale):
         """Perform a reaction, consuming unit n moles of reactants.
