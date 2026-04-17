@@ -6,7 +6,7 @@
 # from NutMEG.util.loggersetup import loggersetup as logset
 # logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.printlevel)
 
-class maintainer:
+class Maintainer:
     """
     This class is for computing and calculating the maintenance
     requirements in the form of powers for a given organism.

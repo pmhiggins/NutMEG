@@ -1,7 +1,7 @@
 import math
 import warnings
-from .ForcingFactor import ForcingFactor
-from NutMEG.core.reactor.reaction import reaction as rxn
+from .forcing_factor import ForcingFactor
+from NutMEG.core.reactor.reaction import Reaction as rxn
 
 class Bioenergetic(ForcingFactor):
     """
@@ -143,7 +143,7 @@ class Bioenergetic(ForcingFactor):
         if _f <=0.:
             return 0.
         else:
-            return max(0., 1-math.exp(-(_f)/(self.xi*8.314472*locale.env.T)))
+            return max(0., 1-math.exp(-(_f)/(self.xi*8.314472*locale.T)))
 
 
     def outputs(self):

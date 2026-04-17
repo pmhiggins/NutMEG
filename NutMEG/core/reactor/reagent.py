@@ -11,7 +11,7 @@ Most recent changes: v2 overhaul 2026
 # logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.printlevel)
 
 
-class reagent:
+class Reagent:
     """
     Class for storing and calculating individual reagent properties such
     as concentrations, activities, etc.

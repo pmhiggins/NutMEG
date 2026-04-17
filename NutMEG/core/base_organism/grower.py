@@ -4,14 +4,14 @@
 # import NutMEG.util.NutMEGparams as nmp
 # from NutMEG.util.loggersetup import loggersetup as logset
 # logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.printlevel)
-from NutMEG.models.organism.BaseRateModels.Constant import Constant
-from NutMEG.models.organism.BaseRateModels.BaseRateModel import BaseRateModel
-from NutMEG.models.organism.GrowthModels.BioenergeticGrowthModel import BioenergeticGrowthModel
-from NutMEG.models.aggregators.Multiplicative import Multiplicative
+from NutMEG.models.organism.base_rate_models.constant import Constant
+from NutMEG.models.organism.base_rate_models.base_rate_model import BaseRateModel
+from NutMEG.models.organism.growth_models.bioenergetic_growth_model import BioenergeticGrowthModel
+from NutMEG.models.aggregators.multiplicative import Multiplicative
 
 
 
-class grower:
+class Grower:
     """Class for managing CHNOPS exchange between an organism and a reactor.
 
     Attributes

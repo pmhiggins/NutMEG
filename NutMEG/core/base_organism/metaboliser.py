@@ -1,13 +1,13 @@
 
 import sys, warnings
 # sys.path.append("..")
-from NutMEG.core.reactor.reaction import reaction
-from NutMEG.core.reactor.reagent import reagent
+from NutMEG.core.reactor.reaction import Reaction
+from NutMEG.core.reactor.reagent import Reagent
 
-from NutMEG.models.organism.BaseRateModels.Constant import Constant
-from NutMEG.models.organism.BaseRateModels.BaseRateModel import BaseRateModel
-from NutMEG.models.organism.ForcingFactors.Bioenergetic import Bioenergetic
-from NutMEG.models.aggregators.Multiplicative import Multiplicative
+from NutMEG.models.organism.base_rate_models.constant import Constant
+from NutMEG.models.organism.base_rate_models.base_rate_model import BaseRateModel
+from NutMEG.models.organism.forcing_factors.bioenergetic import Bioenergetic
+from NutMEG.models.aggregators.multiplicative import Multiplicative
 
 
 
@@ -21,7 +21,7 @@ import math
 # from NutMEG.util.loggersetup import loggersetup as logset
 # logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.printlevel)
 
-class metaboliser:
+class Metaboliser:
     """
     Class for handling kinetics of a net metabolic reaction in an organism.
 

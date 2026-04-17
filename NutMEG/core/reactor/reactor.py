@@ -6,8 +6,8 @@ Most recent changes: v2 overhaul 2026.
 # import sys
 # sys.path.append('../../..')
 
-from .reaction import reaction as rxn
-from .reagent import reagent as rgt
+from .reaction import Reaction as rxn
+from .reagent import Reagent as rgt
 
 import warnings
 from itertools import chain
@@ -21,7 +21,7 @@ import sys, os, ast
 # from NutMEG.util.loggersetup import loggersetup as logset
 # logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.printlevel)
 
-class reactor:
+class Reactor:
     """
     Class for storing physicochemical backdrop of a chemcial environment.
     Contains reagents and reactions, and is able to perform them.

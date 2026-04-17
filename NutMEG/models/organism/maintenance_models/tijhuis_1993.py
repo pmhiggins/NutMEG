@@ -1,5 +1,5 @@
 import math
-from .MaintenanceModel import MaintenanceModel
+from .maintenance_model import MaintenanceModel
 
 class Tijhuis1993(MaintenanceModel):
     """

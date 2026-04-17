@@ -10,10 +10,10 @@
 # from .base_organism_dbhelper import bodb_helper
 # from .synthesis.cell_synthesis import cell_synthesis as synth
 import math
-from .grower import grower
-from .maintainer import maintainer
-from .metaboliser import metaboliser
-from NutMEG.core.reactor.reaction import reaction
+from .grower import Grower
+from .maintainer import Maintainer
+from .metaboliser import Metaboliser
+from NutMEG.core.reactor.reaction import Reaction
 
 
 # import NutMEG.util.NutMEGparams as nmp
@@ -23,7 +23,7 @@ from NutMEG.core.reactor.reaction import reaction
 def SAget(v):
     return (4*math.pi*((v*3)**2))**(1/3)
 
-class base_organism:
+class BaseOrganism:
     """
     This is a parent class for a model organism, to be used as the base
     reference point for organismic behaviour. It has a large number of attributes,
@@ -129,23 +129,23 @@ class base_organism:
         if not self.surfacearea:
             self.surfacearea = SAget(self.volume)
 
-        if isinstance(metabolism, metaboliser):
+        if isinstance(metabolism, Metaboliser):
             self.metabolism = metabolism
-        elif isinstance(metabolism, reaction):
-            self.metabolism = metaboliser(metabolism)
+        elif isinstance(metabolism, Reaction):
+            self.metabolism = Metaboliser(metabolism)
         else:
             raise ValueError("base_organism cannot be initialised without a net metabolic reaction")
 
         if not maintenance:
-            self.maintenance = maintainer([])
-        elif type(maintenance) is maintainer:
+            self.maintenance = Maintainer([])
+        elif type(maintenance) is Maintainer:
             self.maintenance = maintenance
         else:
             warnings.warn('base_organism: '+name+' has been initalised without a maintainer')
 
         if not growth:
-            self.growth = grower()
-        elif type(growth) is grower:
+            self.growth = Grower()
+        elif type(growth) is Grower:
             self.growth = growth
         else:
             warnings.warn('base_organism: '+name+' has been initalised without a grower')

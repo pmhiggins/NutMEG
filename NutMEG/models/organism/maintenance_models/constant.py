@@ -1,8 +1,8 @@
-from .BaseRateModel import BaseRateModel
+from .maintenance_model import MaintenanceModel
 
-class Constant(BaseRateModel):
+class Constant(MaintenanceModel):
     """
-    A fixed maximum rate.
+    A fixed maintneance power
 
     Attributes
     ----------
@@ -14,7 +14,7 @@ class Constant(BaseRateModel):
 
     def __init__(self, val):
         """
-        extends BaseRateModel.__init__()
+        extends MaintenancePower.__init__()
 
         Parameters
         ----------
@@ -26,5 +26,5 @@ class Constant(BaseRateModel):
         self.val = val
 
     def compute(self, host=None, locale=None):
-        """ Calculate and return the base rate for this process."""
+        """ return the maintnenace power."""
         return self.val

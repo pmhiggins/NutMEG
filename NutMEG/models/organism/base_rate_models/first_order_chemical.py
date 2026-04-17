@@ -1,4 +1,4 @@
-from .BaseRateModel import BaseRateModel
+from .base_rate_model import BaseRateModel
 
 class FirstOrderChemical:
     """

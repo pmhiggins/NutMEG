@@ -1,4 +1,4 @@
-from .GrowthModel import GrowthModel
+from .growth_model import GrowthModel
 
 class BioenergeticGrowthModel(GrowthModel):
     """

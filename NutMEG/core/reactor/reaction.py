@@ -24,7 +24,7 @@ gas_const = 8.314472  # J/mol.K
 # from NutMEG.util.loggersetup import loggersetup as logset
 # logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.printlevel)
 
-class reaction:
+class Reaction:
 
     """Generalised reaction class for unclassified chemical interactions.
 
