@@ -215,6 +215,16 @@ class BaseOrganism:
         self.growth.compute_rate(self, locale)
 
 
+
+    def get_metabolic_rate(self):
+        return self.metabolism.rate
+
+    def get_metabolic_equation(self):
+        return self.metabolism.net_pathway.equation
+
+    def get_growth_rate(self):
+        return self.growth.growth_rate
+
     # commented out functions below need to be updated with the new
     # attributes for base_organism. But do not need to be reviewed until we
     # review the whole database system.
