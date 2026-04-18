@@ -49,7 +49,7 @@ class Reactor:
         pH of the reactor, important for some interactions. Default is None
     composition_inputs : dict, kwarg
         If there is a net flow of reagents in/out of the reactor, add them
-        to this dictionary with their name as the key, and rate in M/s as the
+        to this dictionary with their name as the key, and rate in mol/s as the
         value.
     thermodb : reaktoro database
         Thermodynamic database to be used for all thermodynamic calculations.
@@ -166,18 +166,18 @@ class Reactor:
         for phase in system.phases():
             for species in phase.species():
                 _n = species.name()
-                molal = None
-                if kgH2O:
-                    molal = float(props.speciesAmount(_n)/kgH2O)
 
                 _s = rgt(_n,
-                  R, phase=rto_nm_phases[phase.name()],
-                  activity=float(props.speciesActivity(_n)),
-                  gamma=float(props.speciesActivityCoefficient(_n)),
-                  conc=float(props.speciesConcentration(_n)),
-                  molal=molal,
+                  R,
+                  amount = (float(props.speciesAmount(_n)), 'mol'),
+                  activity = float(props.speciesActivity(_n)),
+                  phase=rto_nm_phases[phase.name()],
+                  gamma_molal=float(props.speciesActivityCoefficient(_n)),
                   charge=float(species.charge())
                 )
+
+                if _n == 'H2O(aq)' or _n == 'H2O(l)':
+                    self.composition[_n].phase_ss = True
 
         return R
 
@@ -218,14 +218,14 @@ class Reactor:
             for species in phase.species():
                 _n = species.name()
                 if _n in self.composition:
-                    self.composition[_n].activity = float(props.speciesActivity(_n))
-                    self.composition[_n].gamma = float(props.speciesActivityCoefficient(_n))
-                    self.composition[_n].conc = float(props.speciesConcentration(_n))
-                    if kgH2O:
-                        self.composition[_n].molal = float(props.speciesAmount(_n)/kgH2O)
-
-                    if TPchange:
-                        self.change_TP(T=T, P=P)
+                    self.composition[_n].update_amount(
+                      mol = float(props.speciesAmount(_n)),
+                      gamma_molal = float(props.speciesActivityCoefficient(_n)),
+                      activity = float(props.speciesActivity(_n)))
+                if _n == 'H2O(aq)' or _n == 'H2O(l)':
+                    self.composition[_n].phase_ss = True
+        if TPchange:
+            self.change_TP(T=T, P=P)
 
 
 
@@ -314,8 +314,9 @@ class Reactor:
         """ If there are inflows into the composition, make the changes there
         would be in time t [s]"""
         for c, r in self.composition_inputs.items():
-            self.composition[c].activity += r*t
-            self.composition[c].conc += r*t
+            _new = r + self.composition[c].mol
+            self.composition[c].update_amount(self, mol=_new)
+
 
 
     def take_step(self, t):
@@ -543,8 +544,7 @@ class Reactor:
             pH = - math.log10(concH)
         else:
             raise ValueError('Unclear what you are updating the pH with!')
-        self.composition['H+'].conc = concH
-        self.composition['H+'].activity = concH
+        self.composition['H+'].update_amount(activity=concH)
         self.pH = pH
 
 

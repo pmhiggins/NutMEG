@@ -1,6 +1,8 @@
 """
 Most recent changes: v2 overhaul 2026
 
+TODO: better handling of phase_ss
+
 @author P M Higgins
 @version 0.0.3
 
@@ -20,16 +22,18 @@ class Reagent:
     ------------
     name : str
         name of the reagent
-    conc : float
-        molarity in mol/L. If gaseous, conc describes pressure in bar.
-        Can be None if molal or activity are known
-    gamma : float
-        activity coefficient
-    activity : float
-        Activity. If None, estimate using gamma and conc.
-    molal : float
+    mol : float
+        Total amount of moles present.
+    molarity : float
+        molarity in mol/L. If gaseous, describes partial pressure in bar.
+    molality : float
         molality in mol/kg.
-        Can be None is conc or activity are known
+    gamma_molal : float
+        Molal activity coefficient
+    gamma_molar : float
+        Molar activirty coefficient
+    activity : float
+        Activity
     charge : float
         Charge of reagent. Default 0.
     thermo : bool
@@ -39,27 +43,31 @@ class Reagent:
         identifier for phase of the reagent. Must be one of 'aq','g','s','l'.
     phase_ss : bool
         Identifies whether or not the reagent is in it's standard state.
+        Primarily used to know whether to exclude species like H2O from
+        quotient calculations.
     """
 
 
-    def __init__(self, name, locale, conc=None, activity=None,
-      molal=None, charge=None, gamma=1., phase='aq', phase_ss=False,
+    def __init__(self, name, locale, amount=None, activity=None,
+      gamma_molal=None, gamma_molar = None,
+      charge=None, phase='aq', phase_ss=False,
       thermo=True, add_to_locale=True):
         """
         Parameters
         ----------
         name : str
             name of the reagent
-        conc : float, optional
-            molarity in mol/L. If gaseous, conc describes pressure in bar.
-            Can be None if molal or activity are known
-        gamma : float, optional
-            activity coefficient
+        locale : reactor
+            Reactor to initialise this reagent in.
+        amount : tuple, optional
+            Tuple in form (float, str), where the str is an identifier, such as
+            'mol', 'molar', 'molal', and the float is the amount value.
         activity : float, optional
-            Activity. If None, estimate using gamma and conc.
-        molal : float, optional
-            molality in mol/kg.
-            Can be None is conc or activity are known
+            Activity of the species.
+        gamma_molal : float, optional
+            Molal activity coefficient
+        gamma_molar : float, optional
+            Molar activirty coefficient
         charge : float, optional
             Charge of reagent. Default 0.
         thermo : bool, optional
@@ -69,6 +77,8 @@ class Reagent:
             identifier for phase of the reagent. Must be one of 'aq','g','s','l'.
         phase_ss : bool, optional
             Identifies whether or not the reagent is in it's standard state.
+            Primarily used to know whether to exclude species like H2O from
+            quotient calculations.
         add_to_locale : bool, optional
             Identifies if upon initialisation the reagent should be added to
             the locale's composition. Default True.
@@ -110,11 +120,14 @@ class Reagent:
             self.std_formation_entropy_env = 0.
             self.std_formation_enthalpy_env = 0.
 
-        self.conc = conc
-        self.activity = activity
+
+        self.gamma_molal = gamma_molal
+        self.gamma_molar = gamma_molar
+
+        self.amount_handler(amount, locale) # sets self.mol, if amount is passed
+        self.update_amount(locale, self.mol, activity=activity, zero_warn=False)
+
         self.charge = charge
-        self.molal = molal
-        self.gamma = gamma
         self.phase = phase
         self.phase_ss = phase_ss
 
@@ -176,36 +189,97 @@ class Reagent:
 
     """
 
-    def set_concentration(self, newconc):
-        """Update reagent concentration to be newconc in mol/L.
-
-        Parameters
-        ----------
-        newconc : float
-            New molarity to set in mol/L
+    def amount_handler(self, amount, locale):
         """
-        self.conc = newconc
-
-    def set_molality(self, newmolal):
-        """Update molality in mol/kg solvent.
-
-        Parameters
-        ----------
-        newmolal : float
-            New molality to set.
+        Parse initialised amount tuple to assign molar amount of species.
         """
-        self.molal = newmolal
+        if not amount:
+            self.mol = None
+            return
 
-    def set_activitycoefficient(self, newg):
-        """Update the activity coefficients.
+        val = amount[0]
+        key = amount[1]
+        key_lc = amount[1].lower()
+
+        if key_lc =='mole' or key_lc =='mol' or key_lc == 'moles':
+            self.mol = val
+        elif key == 'm' or key_lc == 'molality' or key_lc == 'molal':
+            self.mol = val * locale.kgH2O
+        elif key == 'M' or key_lc == 'molarity' or key_lc == 'molar':
+            self.mol = val * locale.V_L
+        else:
+            raise ValueError('Unknown species amount identifier: '+key)
 
 
-        Parameters
-        ----------
-        newg : float
-            New activity coefficient to set.
+    def update_amount(self, locale,
+      mol=None, gamma_molar=None, gamma_molal=None, activity=None,
+      zero_warn=True):
         """
-        self.gamma = newg
+        Updates the molar amount of species, including molality and molarity
+        if possible. Pass all up-to-date quantities for the best translation.
+        """
+
+        if self.name == 'H2O(aq)':
+            if activity:
+                self.activity = activity
+            return self.mol, self.activity
+
+        # update activity coefficeints if they have been passed.
+        if gamma_molar:
+            self.gamma_molar = gamma_molar
+        if gamma_molal:
+            self.gamma_molal = gamma_molal
+
+        if not mol and activity:
+            self.activity = activity
+
+            if self.gamma_molal:
+                self.molality = activity / self.gamma_molal
+                self.mol = self.molality * locale.kgH2O
+                if self.gamma_molar:
+                    self.molarity = activity / self.gamma_molar
+                else:
+                    self.molarity = self.mol / locale.V_L
+
+            elif self.gamma_molar:
+                self.molarity = activity / self.gamma_molar
+                self.mol = self.molarity * locale.V_L
+                self.molality = self.mol / locale.kgH2O
+            else:
+                # neither gammas are known, so functionally assume they are 1.
+                # to get an estimated molar quantity.
+                self.mol = self.activity * locale.kgH2O
+
+        elif not activity and mol:
+            self.mol = mol
+
+            self.molality = self.mol / locale.kgH2O
+            self.molarity = self.mol / locale.V_L
+
+            if self.gamma_molal:
+                self.activity = self.gamma_molal * self.molality
+            elif self. gamma_molar:
+                self.activity = self.gamma_molar * self.molality
+            else:
+                # should we keep this, or refrain from setting activity altogether?
+                self.activity = 1. * self.molarity
+
+        elif activity and mol:
+            self.mol = mol
+            self.activity = activity
+            self.molality = self.mol / locale.kgH2O
+            self.molarity = self.mol / locale.V_L
+
+        else:
+            if zero_warn:
+                warnings.warn('no amounts passed to update '+self.name+' with. Setting amounts to zero.')
+            self.mol = 1e-16
+            self.activity=1e-16
+
+        return self.mol, self.activity
+
+
+
 
 
     def set_phase(self, locale, newphase):

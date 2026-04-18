@@ -223,91 +223,33 @@ class Reaction:
     ####### GENERIC CALCULATIONS: THERMODYNAMICS
 
 
-    def quotient_calculator(self, locale, attr):
-        """Return the reaction quotient based on the reactant attribute
-        passed.
+    def update_quotient(self, locale):
+        """Update the reaction quotient for this reaction.
 
         Parameters
         ----------
-        attr : str
-            activity-like attribute of reagent
+
 
         Notes
         ----------
-        Recognised attrs include: "conc", "molal", "activity".
+        Valid for gaseous and aqueous
+        reagents as conc is defined as equivalent to gas pressure
+        in the reagent object.
         """
+
         multiplier =1.
         A = 1.
         a = 1.
         for p, mr in self.products.items():
             _p = locale.composition[p]
             if _p.phase_ss == False:
-                try:
-                    A = float(getattr(_p, attr))
-                    if A != 0.:
-                        a = float(mr)
-                        multiplier = multiplier * math.pow(A, a)
-                except:
-                    if attr=='activity':
-                        A=_p.activity.n
-                        # print(p, A)
-                    if A != 0.:
-                        a = float(mr)
-                        multiplier = multiplier * umath.pow(A, a)
+                multiplier = multiplier * umath.pow(_p.activity, mr)
 
         for r, mr in self.reactants.items():
             _r = locale.composition[r]
             if _r.phase_ss == False:
-                try:
-                    A = float(getattr(_r, attr))
-                    if A != 0.:
-                        a = float(mr)
-                        multiplier = multiplier / math.pow(A, a)
-                except:
-                    if attr=='activity':
-                        A=_r.activity.n
-                        # print(r, A)
-                    if A != 0.:
-                        a = float(mr)
-                        multiplier = multiplier * umath.pow(A, a)
-        return multiplier
+                multiplier = multiplier * umath.pow(_r.activity, mr)
 
-
-
-
-    def update_quotient(self, locale, qconc=False, qmolal=False):
-        """Update the reaction quotient for this reaction.
-
-        Parameters
-        ----------
-        qconc : bool, optional
-            If True, calculate using molarity (default is False).
-        qmolal : bool, optional
-            If True, calculate using molality (default is False).
-
-        Notes
-        ----------
-        The default is to use activities, but if needed the optional
-        arguments may be switched for using concentrations or molalities
-        with activity coefficients.  Valid for gaseous and aqueous
-        reagents as conc is defined as equivalent to gas pressure
-        in the reagent object.
-        Molarity takes precedence over molality.
-        """
-
-        multiplier = 1.
-
-        if qconc==True:
-            # Calculate using concentrations
-            multiplier = (self.quotient_calculator(locale, "conc")
-              * self.quotient_calculator(locale, "gamma"))
-        elif qmolal==True:
-            # Calculate using molality
-            multiplier = (self.quotient_calculator(locale, "molal")
-              * self.quotient_calculator(locale, "gamma"))
-        else:
-            # The default is to use ativities
-            multiplier = self.quotient_calculator(locale, "activity")
         self.quotient = multiplier
 
 
@@ -369,9 +311,7 @@ class Reaction:
 
 
 
-    def update_molar_gibbs_from_quotient(self, locale,
-      Q_qconc=False,
-      Q_qmolal=False):
+    def update_molar_gibbs_from_quotient(self, locale):
         """
         Update Gibbs free energy of reaction at temperature T,
         using the expression:
@@ -381,12 +321,13 @@ class Reaction:
         """
 
         # update Q and proceed
-        self.update_quotient(locale, qconc=Q_qconc, qmolal=Q_qmolal)
+        self.update_quotient(locale)
 
         try:
             self.molar_gibbs = (self.std_molar_gibbs
               + (gas_const * locale.T * math.log(self.quotient)))
         except:
+            raise
             self.molar_gibbs = None
 
 
@@ -404,7 +345,7 @@ class Reaction:
         for r, mr in self.reactants.items():
             _r = locale.composition[r]
             if _r.name != 'H2O(aq)' and _r.name != 'H+' and _r.name != 'OH-':
-                ED.append(_r.molal*-self.molar_gibbs/mr)
+                ED.append(_r.molality*-self.molar_gibbs/mr)
         self.mass_gibbs = min(ED)
 
 
@@ -428,35 +369,26 @@ class Reaction:
         are less prominent?
         """
         for r, mr in self.reactants.items():
-            _r = locale.composition[r]
             # Find total number of moles in system, then remove the amount
             # that has been reacted away or formed.
-            _r.conc = (((_r.conc*1000.0*locale.V)
-              - (mr*n))/(1000.0*locale.V))
-            _r.molal = (((_r.molal*locale.kgH2O)
-              - (mr*n))/(locale.kgH2O))
-            if _r.conc<0:
-                _r.conc=0
-            if _r.molal<0:
-                _r.molal=0
-            if _r.name != 'H2O(l)':
-                _r.activity = _r.conc * _r.gamma
+            _r = locale.composition[r]
+            if not _r.phase_ss:
+                _new = _r.mol - (mr * n)
+                if _new < 0.:
+                    _new = 0.
+                locale.composition[r].update_amount(locale, mol=_new)
+
         for p, mr in self.products.items():
             _p = locale.composition[p]
-            # Find total number of moles in system, then remove the amount
-            # that has been reacted away or formed.
-            _p.conc = (((_p.conc*1000.0*locale.V)
-              + (mr*n))/(1000.0*locale.V))
-            _p.molal = (((_p.molal*locale.kgH2O)
-              + (mr*n))/(locale.kgH2O))
-            if _p.name != 'H2O(l)':
-                _p.activity = _p.conc * _p.gamma
+            if not _p.phase_ss:
+                _new = _p.mol + (mr * n)
+                locale.composition[p].update_amount(locale, mol=_new)
 
 
 
-    ####### UPDATING USING REAKTORO
+    ###### UPDATING USING REAKTORO
 
-    ###### Use the reaktoro package to perform thermodynamic calculations
+    ##### Use the reaktoro package to perform thermodynamic calculations
 
 
     def update_thermo_reagents(self, locale):
