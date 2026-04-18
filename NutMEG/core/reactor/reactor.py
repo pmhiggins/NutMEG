@@ -1,6 +1,9 @@
 """
 Most recent changes: v2 overhaul 2026.
 
+TODO: better handling of V and kgH2O on import. Should be computed w/ T, P, rho.
+
+
 @author P M Higgins
 """
 # import sys
@@ -59,8 +62,8 @@ class Reactor:
     def __init__(self, T=298.15, P=101325.0, thermodb='supcrt07-organics', dbtype=None,
       species = [],
       pH = None,
-      V = 0.001,
-      kgH2O = 1.,
+      V = None,
+      kgH2O = None,
       **kwargs):
         """
         Parameters
@@ -102,7 +105,23 @@ class Reactor:
             else:
                 raise ValueError('unknown species object initialised with reactor')
 
-        self.V = V
+
+
+        if not V and not kgH2O:
+            #default to 1 kg / 1 L at RTP
+            self.kgH2O = 1.
+            self.V = 0.001
+            self.V_L = 1.
+        elif kgH2O:
+            self.kgH2O = kgH2O
+            self.V = kgH2O * 0.001
+            self.V_L = 1.
+        else:
+            self.V = V
+            self.V_L = V /0.001
+            self.kgH2O = self.V_L
+
+
         self.pH = pH
         self.reactionlist = {}
 
@@ -412,7 +431,7 @@ class Reactor:
         n : float
             number of moles of reaction to perform.
         """
-        self.reactionlist[re_eq].react(n)
+        self.reactionlist[re_eq].react(n, self)
 
 
     def change_TP(self, T=None, P=None, update_thermo=True):
