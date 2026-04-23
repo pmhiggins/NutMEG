@@ -1,6 +1,6 @@
 from .base_rate_model import BaseRateModel
 
-class FirstOrderChemical:
+class Arrhenius(BaseRateModel):
     """
     A maximum rate calculated using a first-order chemical calculation
     with the net metabolic pathway.
