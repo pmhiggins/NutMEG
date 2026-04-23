@@ -34,27 +34,32 @@ class OrganismPopulation(Resident):
 
 
 
-    def take_step(self, dt, locale):
+    def take_step(self, dt, ES):
         """
-        Advance the population forward in time by dt seconds in the locale reactor.
-        Grows/shinks the population, and performs the metabolic reaction in
+        Advance the population forward in time by dt seconds in the local
+        ecosystem ES. Grows/shinks the population, and performs the metabolic reaction in
         the reactor.
+
+        Notes
+        -----
+        This default stepper only interacts with the
+        ES.locale, but custom implementations could interact with other ES.residents
+
 
         Parameters
         ----------
         dt : float
             Time to advance the community in seconds.
-        locale : reactor
-            Locale physicochemical environment.
-
+        ES : Ecosystem
+            Environmental context.
         """
 
         self.age += dt
-        self.base.update(locale) # updates metabolic rate, maintenance + growth rate
+        self.base.update(ES.locale) # updates metabolic rate, maintenance + growth rate
 
         # perform the catabolic reaction with the locale
         moles_consumed = self.num*self.base.get_metabolic_rate()*dt
-        locale.perform_reaction(self.base.get_metabolic_equation(), moles_consumed)
+        ES.locale.perform_reaction(self.base.get_metabolic_equation(), moles_consumed)
 
         # update num based on growth
         net_gr = max(-1., self.base.get_growth_rate() - self.death_rate)
