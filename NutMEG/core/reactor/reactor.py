@@ -286,7 +286,7 @@ class Reactor:
 
         Parameters
         ----------
-        rxxn : reaction
+        rxxn : Reaction
             Reaction object to be added
         """
         if rxxn.equation in list(self.reactionlist.keys()):
