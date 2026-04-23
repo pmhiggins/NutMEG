@@ -33,10 +33,10 @@ class BioenergeticGrowthModel(GrowthModel):
 
         Parameters
         ----------
-        host : ``base_organism'' like
+        host : BaseOrganism
             Host organism. Must have a correct E_synth attribute, metabolic rate
             and maintenance power for this calculation to be accurate.
-        locale : ``reactor'' like
+        locale : Reactor
             Host chemical reactor. Some GrowthModels will need this to initialise and
             some won't. It is best to assume they will (else they may throw an error)
         adjust_metabolic_rate : bool, optional
@@ -46,7 +46,7 @@ class BioenergeticGrowthModel(GrowthModel):
         """
 
         self.requires = {'G_C':host.metabolism.forcing_factors}
-        G_C = self.find_subparams()['G_C']
+        G_C = float(self.find_subparams()['G_C'])
         try:
             host.growth.max_growth_rate = host.growth.base_rate.compute(host, locale)
         except NotImplementedError:

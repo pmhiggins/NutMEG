@@ -24,9 +24,9 @@ class ClassicGrowthModel(GrowthModel):
 
         Parameters
         ----------
-        host : ``base_organism'' like
+        host : BaseOrganism
             Host organism. must be capable of computing a max_growth_rate.
-        locale : ``reactor'' like
+        locale : Reactor
             Host chemical reactor. Some ForcingFactors will need this to initialise and
             some won't. It is best to assume they will (else they may throw an error)
         """
