@@ -45,11 +45,11 @@ class Tijhuis1993(MaintenanceModel):
 
         drym_ME = None
         if self.fit == 'average':
-            drym_ME = 4.5*math.exp((locale.env.T**(-1)-298**(-1))*((-6.94*10000)/8.31))
+            drym_ME = 4.5*math.exp((locale.T**(-1)-298**(-1))*((-6.94*10000)/8.31))
         elif self.fit == 'aerobe':
             5.7*math.exp((locale.env.T**(-1)-298**(-1))*((-6.94*10000)/8.31))
         elif self.fit == 'anaerobe':
-            drym_ME = 3.3*math.exp((locale.env.T**(-1)-298**(-1))*((-6.94*10000)/8.31))
+            drym_ME = 3.3*math.exp((locale.T**(-1)-298**(-1))*((-6.94*10000)/8.31))
         else:
             return ValueError('Unknown Tijhuis et al 1993 fit')
 

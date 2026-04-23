@@ -63,5 +63,5 @@ class HigginsCockell2020(MaintenanceModel):
         else:
             HCpolyfit = self.TOM_1
 
-        MP = 10**sum([x*(locale.env.T**(5-i)) for i, x in enumerate(HCpolyfit)])
+        MP = 10**sum([x*(locale.T**(5-i)) for i, x in enumerate(HCpolyfit)])
         return MP * host.dry_mass / (300*3.4412868852915668e-18 )

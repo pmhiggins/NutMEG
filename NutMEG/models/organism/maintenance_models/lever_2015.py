@@ -46,6 +46,6 @@ class Lever2015(MaintenanceModel):
             raise ValueError("Unable to calculate Lever 2015 maintenance power as host's E_synth is not defined")
 
 
-        k_yr = 0.00012*math.exp(0.10174*(locale.env.T-273.15))
+        k_yr = 0.00012*math.exp(0.10174*(locale.T-273.15))
         k_s = k_yr/(365*24*3600)
         return (100*host.E_synth*k_s)/self.cutoff_pc
