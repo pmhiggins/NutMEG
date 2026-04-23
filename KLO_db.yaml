@@ -1,0 +1,171 @@
+Methanogenesis_H2_HCO3:
+  ReactantNames: ('H2(aq)', 'HCO3-', 'H+')
+  ReactantStoichiometry: (1.,0.25,0.25)
+  ProductNames: ('Methane(aq)', 'H2O(aq)')
+  ProductStoichiometry: (0.25,0.75)
+  k_max: 1.0e-06
+  k_max ref: .nan
+  xi: 0.25
+  xi ref: .nan
+  n_ATP: 0.125
+  n_ATP ref: .nan
+  Acceptor: HCO3-
+  Donor: H2(aq)
+  K_A: 0.0
+  F_A_ID: default
+  K_A ref: .nan
+  K_D: 4.7e-06
+  K_D ref: .nan
+  F_D_ID: default
+Methanogenesis_Acetate:
+  ReactantNames: ('Acetate-', 'H2O(aq)')
+  ReactantStoichiometry: (1.,1.)
+  ProductNames: ('HCO3-', 'Methane(aq)')
+  ProductStoichiometry: (1.,1.)
+  k_max: 1.0e-06
+  k_max ref: .nan
+  xi: 1.0
+  xi ref: .nan
+  n_ATP: 0.5
+  n_ATP ref: .nan
+  Acceptor: HCO3-
+  Donor: Acetate-
+  K_A: 0.0
+  F_A_ID: default
+  K_A ref: .nan
+  K_D: 2.3e-05
+  K_D ref: .nan
+  F_D_ID: default
+NitrateReduction_Acetate_NO3:
+  ReactantNames: ('Acetate-', 'NO3-', 'H+')
+  ReactantStoichiometry: (1., 1.6, 0.6)
+  ProductNames: ('HCO3-', 'H2O(aq)', 'N2(aq)')
+  ProductStoichiometry: (2., 0.8, 0.8)
+  k_max: 1.0e-06
+  k_max ref: .nan
+  xi: 3.2
+  xi ref: .nan
+  n_ATP: 5.2
+  n_ATP ref: .nan
+  Acceptor: NO3-
+  Donor: Acetate-
+  K_A: 2.3e-06
+  F_A_ID: default
+  K_A ref: .nan
+  K_D: 0.0
+  K_D ref: .nan
+  F_D_ID: default
+NitrateReduction_H2_NO3:
+  ReactantNames: ('H2(aq)', 'NO3-', 'H+')
+  ReactantStoichiometry: (1.,0.4,0.4)
+  ProductNames: ('H2O(aq)', 'N2(aq)')
+  ProductStoichiometry: (1.2, 0.2)
+  k_max: 1.0e-06
+  k_max ref: .nan
+  xi: 0.8
+  xi ref: .nan
+  n_ATP: 1.3
+  n_ATP ref: .nan
+  Acceptor: NO3-
+  Donor: H2(aq)
+  K_A: 2.3e-06
+  F_A_ID: default
+  K_A ref: .nan
+  K_D: 9.9e-07
+  K_D ref: .nan
+  F_D_ID: default
+FeReduction_H2_FeOOH:
+  ReactantNames: ('H2(aq)', 'Goethite', 'H+')
+  ReactantStoichiometry: (1.,2.,4.)
+  ProductNames: ('H2O(aq)', 'Fe+2')
+  ProductStoichiometry: (4.,2.)
+  k_max: 1.5e-05
+  k_max ref: .nan
+  xi: 2.0
+  xi ref: .nan
+  n_ATP: 0.5
+  n_ATP ref: .nan
+  Acceptor: Goethite
+  Donor: H2(aq)
+  K_A: 7.0
+  F_A_ID: MineralGoethite
+  K_A ref: .nan
+  K_D: 1.0e-06
+  K_D ref: .nan
+  F_D_ID: default
+FeReduction_Acetate_FeOOH:
+  ReactantNames: ('Acetate-', 'Goethite', 'H+')
+  ReactantStoichiometry: (1., 8., 15.)
+  ProductNames: ('HCO3-', 'Fe+2', 'H2O(aq)')
+  ProductStoichiometry: (2., 0.8, 0.8)
+  k_max: 1.5e-05
+  k_max ref: .nan
+  xi: 8.0
+  xi ref: .nan
+  n_ATP: 1.3
+  n_ATP ref: .nan
+  Acceptor: Goethite
+  Donor: Acetate-
+  K_A: 7.0
+  F_A_ID: MineralGoethite
+  K_A ref: .nan
+  K_D: 1.2e-05
+  K_D ref: .nan
+  F_D_ID: default
+FeReduction_Acetate_Fe3:
+  ReactantNames: ('Acetate-', 'Fe+3', 'H2O(aq)')
+  ReactantStoichiometry: (1.,4.,4.,)
+  ProductNames: ('HCO3-', 'Fe+2', 'H+')
+  ProductStoichiometry: (2.,8.,9.)
+  k_max: 6.0e-06
+  k_max ref: Roden (2006); assuming dry mass of 1e-13 g
+  xi: 8.0
+  xi ref: Estmate using Mineral-catalyzed
+  n_ATP: 1.3
+  n_ATP ref: Estimate using mineral-catalyzed
+  Acceptor: Fe+3
+  Donor: H2(aq)
+  K_A: 0.00025
+  F_A_ID: default
+  K_A ref: .nan
+  K_D: 1.25e-05
+  K_D ref: .nan
+  F_D_ID: default
+SulfateReduction_Acetate_SO4:
+  ReactantNames: ('Acetate-','SO4-2')
+  ReactantStoichiometry: (1.,1.,)
+  ProductNames: ('HCO3-', 'HS-')
+  ProductStoichiometry: (2.,1.)
+  k_max: 1.0e-06
+  k_max ref: .nan
+  xi: 6.0
+  xi ref: .nan
+  n_ATP: 0.75
+  n_ATP ref: .nan
+  Acceptor: SO4-2
+  Donor: Acetate-
+  K_A: 3.9e-05
+  F_A_ID: default
+  K_A ref: .nan
+  K_D: 5.0e-06
+  K_D ref: .nan
+  F_D_ID: default
+SulfateReduction_H2_SO4:
+  ReactantNames: ('H2(aq)','SO4-2', 'H+')
+  ReactantStoichiometry: (1.,0.25,0.25)
+  ProductNames: ('H+', 'HS-', 'H2O(aq)')
+  ProductStoichiometry: (0.25,0.25,1.)
+  k_max: 1.0e-06
+  k_max ref: .nan
+  xi: 1.5
+  xi ref: .nan
+  n_ATP: 0.25
+  n_ATP ref: .nan
+  Acceptor: SO4-2
+  Donor: H2(aq)
+  K_A: 3.9e-05
+  F_A_ID: default
+  K_A ref: .nan
+  K_D: 1.1e-06
+  K_D ref: .nan
+  F_D_ID: default
