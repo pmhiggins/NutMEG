@@ -115,7 +115,7 @@ class BaseOrganism:
             self.base_life_span = base_life_span
 
         if not self.surfacearea:
-            self.surfacearea = SAget(self.volume)
+            self.surfacearea = BaseOrganism.SAget(self.volume)
 
         if isinstance(metabolism, Metaboliser):
             self.metabolism = metabolism
@@ -139,7 +139,7 @@ class BaseOrganism:
             warnings.warn('base_organism: '+name+' has been initalised without a grower')
 
     @classmethod
-    def SAget(v):
+    def SAget(cls, v):
         """ estimate surface area from volume """
         return (4*math.pi*((v*3)**2))**(1/3)
 
