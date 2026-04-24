@@ -24,7 +24,7 @@ class OrganismPopulation(Resident):
         the base attribute.
     """
 
-    def __init__(self, name, base, num=1e3, death_rate=0.):
+    def __init__(self, base, num=1e3, death_rate=0.):
         self.age = 0.
         self.base = base
         self.num = num
@@ -55,11 +55,11 @@ class OrganismPopulation(Resident):
         """
 
         self.age += dt
-        self.base.update(ES.locale) # updates metabolic rate, maintenance + growth rate
+        self.base.update(ES.reactor) # updates metabolic rate, maintenance + growth rate
 
         # perform the catabolic reaction with the locale
         moles_consumed = self.num*self.base.get_metabolic_rate()*dt
-        ES.locale.perform_reaction(self.base.get_metabolic_equation(), moles_consumed)
+        ES.reactor.perform_reaction(self.base.get_metabolic_equation(), moles_consumed)
 
         # update num based on growth
         net_gr = max(-1., self.base.get_growth_rate() - self.death_rate)
@@ -72,3 +72,6 @@ class OrganismPopulation(Resident):
         """ Update mass and dry_mass using cell-specific data in ``base``."""
         self.mass = self.num * self.base.mass
         self.dry_mass = self.num * self.base.dry_mass
+
+    def get_num(self):
+        return self.num

@@ -7,7 +7,7 @@ TODO: better handling of phase_ss
 @version 0.0.3
 
 """
-
+import warnings
 # import NutMEG.util.NutMEGparams as nmp
 # from NutMEG.util.loggersetup import loggersetup as logset
 # logger = logset.get_logger(__name__, filelevel=nmp.filelevel, printlevel=nmp.printlevel)
@@ -149,6 +149,21 @@ class Reagent:
             # phase unknown, assume it is aqueous
             return 'aq'
 
+    def get_amount(self):
+        """Return amount in moles"""
+        return self.mol
+
+    def get_molality(self):
+        """Return molality in mol/kg"""
+        return self.molality
+
+    def get_molarity(self):
+        """Return molarity in mol/L"""
+        return self.molarity
+
+    def get_activity(self):
+        """Return activity"""
+        return self.activity
 
     """
 
@@ -222,6 +237,7 @@ class Reagent:
         if self.name == 'H2O(aq)':
             if activity:
                 self.activity = activity
+                self.mol = 55.5*locale.kgH2O
             return self.mol, self.activity
 
         # update activity coefficeints if they have been passed.
