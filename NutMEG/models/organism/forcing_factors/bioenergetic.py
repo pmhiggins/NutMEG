@@ -133,6 +133,8 @@ class Bioenergetic(ForcingFactor):
             Host chemical reactor. Must have the correct temperature for
             this calculation to be accurate.
         """
+        host.metabolism.net_pathway.update_molar_gibbs_from_quotient(locale)
+
         if self.default_GC_init:
             # it was not possible to initialise default G_C in __init__, try now
             self.G_C = -0.95*host.metabolism.net_pathway.molar_gibbs
