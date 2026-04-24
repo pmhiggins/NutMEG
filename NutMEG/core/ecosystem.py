@@ -22,4 +22,5 @@ class Ecosystem:
     def take_step(self, dt):
         """ Advance the ecosystem, its reactor and inhabitants by time dt in s. """
         for res in self.residents:
-            agent.take_step(dt, self.reactor)
+            res.take_step(dt, self)
+        self.reactor.take_step(dt)
