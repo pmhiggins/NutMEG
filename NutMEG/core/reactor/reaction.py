@@ -194,6 +194,16 @@ class Reaction:
         self.products = pr
 
 
+    ######## GETS FOR RETRIEVING PARAMETERS ######
+
+    def get_molar_gibbs(self):
+        """Return gibbs free energy per mol of reaction"""
+        return self.molar_gibbs
+
+    def get_mass_gibbs(self):
+        """Return Gibbs free energy per kg of water"""
+        return self.mass_gibbs
+
 
     ########  GENERIC CALCULATIONS: RATES
 
@@ -248,7 +258,7 @@ class Reaction:
         for r, mr in self.reactants.items():
             _r = locale.composition[r]
             if _r.phase_ss == False:
-                multiplier = multiplier * umath.pow(_r.activity, mr)
+                multiplier = multiplier / umath.pow(_r.activity, mr)
 
         self.quotient = multiplier
 
