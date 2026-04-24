@@ -31,7 +31,7 @@ class FirstOrderChemical(BaseRateModel):
         self.k_env = k_env
 
 
-    def compute(self, host, locale=None):
+    def compute(self, host, locale):
         """
         Calculate and return the base rate for this process, following a
         generic first order rate law.
@@ -41,10 +41,10 @@ class FirstOrderChemical(BaseRateModel):
         host : base_organism
             Host organism. Can be passed as None for this calculation.
         locale : reactor, optional
-            Local reactor. Not currently implemented in this method.
+            Local reactor.
         """
         conc_multiplier = 1.0
         for r, mr in host.metabolism.net_pathway.reactants.items():
-            conc_multiplier = conc_multiplier*(r.activity**mr)
+            conc_multiplier = conc_multiplier*(locale.composition[r].activity**mr)
 
         return self.k_env * conc_multiplier

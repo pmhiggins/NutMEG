@@ -20,7 +20,7 @@ class Monod(ForcingFactor):
         object in a NutMEG.core class to look in.
     """
 
-    def __init__(self, substrate, K_s, conctype='molal'):
+    def __init__(self, substrate, K_s, conctype='molality'):
         """
         Extends ForcingFactor.__init__()
 
@@ -52,10 +52,10 @@ class Monod(ForcingFactor):
             ``substrate``.
         """
         S = None
-        if self.conctype == 'molal':
-            S = locale.composition[self.substrate].molal
-        elif self.conctype == 'conc':
-            S = locale.composition[self.substrate].conc
+        if self.conctype == 'molality':
+            S = locale.composition[self.substrate].molality
+        elif self.conctype == 'molarity':
+            S = locale.composition[self.substrate].molarity
         elif self.conctype == 'activity':
             S = locale.composition[self.substrate].activity
         else:
