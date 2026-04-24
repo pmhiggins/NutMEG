@@ -1,3 +1,4 @@
 sphinx>=7
 sphinx-autoapi
 sphinx-copybutton
+sphinx-rtd-theme
