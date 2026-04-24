@@ -123,6 +123,10 @@ class Reactor:
 
 
         self.pH = pH
+        if pH:
+            # if pH was passed, set [H+]
+            self.update_pH(pH, _from='pH')
+
         self.reactionlist = {}
 
         self.composition_inputs = kwargs.pop('composition_inputs', {})
@@ -544,7 +548,11 @@ class Reactor:
             pH = - math.log10(concH)
         else:
             raise ValueError('Unclear what you are updating the pH with!')
-        self.composition['H+'].update_amount(activity=concH)
+
+        if self.contains_reagent('H+'):
+            self.composition['H+'].update_amount(activity=concH)
+        else:
+            rgt('H+', self, phase='aq', activity=concH)
         self.pH = pH
 
 
