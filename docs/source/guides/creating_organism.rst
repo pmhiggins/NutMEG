@@ -5,14 +5,14 @@ The :any:`BaseOrganism` class represents a model organism and collects its organ
 
 A minimal initialisation requires the overall metabolic reaction the organism performs, and it's maximum metabolic rate and growth rate and could take the form:
 
-..code::
+.. code::
   base_MG = nmc.BaseOrganism('Methanogen', thermalMG)
   base_MG.metabolism.set_max_rate(1e-17) # mol/s/cell
   base_MG.growth.set_max_rate(float('inf')) #/s
 
 This would allow the organism to grow as fast as it can practically access energy via its metabolic reaction. :any:`BaseOrganism` computes its bioenergetic and biokinetic parameters using three helper classes: :any:`Metaboliser`, :any:`Maintainer`, and :any:`Grower`. A more involved organism initialisation can directly create this attributes for more control. Let's make a sulfate reducer to compare:
 
-..code::
+.. code::
 
   import NutMEG.models as nmm
 
@@ -32,5 +32,3 @@ This would allow the organism to grow as fast as it can practically access energ
   )
 
 Here, the sulfate reducers rate can be controlled by both the available [H2] (via a Monod expression), Bioenergetics and its ATP energy yield, and the available [PO4] (via a seperate Monod expression). Check out the :any:``NutMEG.models.organism`` subpackage for a variety of rate-limiting models to try!
-
-  

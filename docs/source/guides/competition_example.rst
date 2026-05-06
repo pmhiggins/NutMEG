@@ -5,7 +5,7 @@ Below is an example code that will perform a simple time-integrated calculation
 of microbial growth for a methanogen and sulfate reducer population initialised
 in a similiar way as described on the last two pages.
 
-..code::
+.. code::
 
   import NutMEG.core as nmc
   import NutMEG.models as nmm

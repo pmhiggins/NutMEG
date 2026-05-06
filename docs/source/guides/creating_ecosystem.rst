@@ -3,7 +3,7 @@ Creating an ecosystem
 
 NutMEG is designed for solving problems involving multiple organisms. To simulate this, we collect them together in a shared Reactor in an Ecosystem. First, a community of similar organisms can be defined in an :any:`OrganismPopulation` then any number of OrganismPopulations can be initialised inside an :any:`Ecosystem`. Continuing with the Reactor and BaseOrganism's created on previous pages:
 
-..code::
+.. code::
 
   import NutMEG.core as nmc
 
