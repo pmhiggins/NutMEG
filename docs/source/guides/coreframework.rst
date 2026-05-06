@@ -32,21 +32,22 @@ The ``NutMEG.core.reactor`` submodule
 
 The ``NutMEG.core.base_organism`` submodule
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This submodule is for building model organisms.
+This submodule is for building model organisms which act as the foundation for the behaviour of an :any:`OrganismPopulation`.
 
-* :any:`BaseOrganism`
+* :any:`BaseOrganism` objects hold contextual cell-specific information about the model organism, such as its mass, energy requirements for biomass building.
 
-* :any:`Metaboliser`
+* :any:`Metaboliser` objects handle the kinetics and energetics of the net metabolism. Each organism has one Metaboliser: ``BaseOrganism.metabolism``. Metabolisers can handle any number of rate-limiting mechansims for the eventual metabolic rate.
 
-* :any:`Maintainer`
+* :any:`Maintainer` objects handle mirobial maintenance processes (specifically, the energetic cost of them). This can be compared against the energy yield from the Metabolisers to assess habitability and the energy available for biomass growth. Each organism has one Maintainer: ``BaseOrganism.maintenance``.
 
-* :any:`Grower`
+* :any:`Grower` objects handle the growth behavior of the organism, and can interface with the Metaboliser. Each organism has one Grower: ``BaseOrganism.growth``. Growers can also handle any number of rate-limiting mechansims specific to growth.
 
 
 The ``NutMEG.core.resident`` submodule
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This submodule is for dynamic inhabitants of an ecosystem. Usually these will be organisms, but any evolving phase that interacts with the reactor (e.g., a dissolving solid phase) is possible.
 
-* :any:`OrganismPopulation`
+* :any:`OrganismPopulation` objects represent a population of a specific microbial strain whose constituents act like a common ``BaseOrganism``. A seperate ``OrganismPopulation`` is needed for each different model organism present (e.g., for different metabolisms, growth behaviours etc)
 
 
 
