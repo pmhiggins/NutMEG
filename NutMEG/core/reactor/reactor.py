@@ -15,7 +15,7 @@ from .reagent import Reagent as rgt
 import warnings
 from itertools import chain
 from copy import copy
-# import sqlite3
+import math
 import sys, os, ast
 # from datetime import date
 # from .reactor_dbhelper import rdb_helper
@@ -255,7 +255,7 @@ class Reactor:
             if self.thermodb_name.startswith('supcrt') or dbtype == 'supcrt':
                 from reaktoro import SupcrtDatabase
                 return SupcrtDatabase(self.thermodb_name)
-            elif dbtype.lower() == 'phreeqc':
+            elif self.thermodb_name.lower().startswith('phreeqc') or dbtype=='phreeqc':
                 from reaktoro import PhreeqcDatabase
                 return PhreeqcDatabase(self.thermodb_name)
             else:
@@ -529,7 +529,7 @@ class Reactor:
         compdictstr+='}'
         return compdictstr
 
-    def update_pH(self, update, _from='pH'):
+    def update_pH(self, update=None, _from='pH'):
         """ Update the pH and [H+] of the reactor.
 
         Parameters
@@ -541,16 +541,22 @@ class Reactor:
         """
         concH, pH = 0.,0.
         if _from=='pH':
-            pH = update
+            if not udpate:
+                pH = self.pH
+            else:
+                pH = update
             concH = 10**(-pH)
         elif _from=='H+':
-            concH = update
+            if not update:
+                concH = self.composition['H+'].get_activity()
+            else:
+                concH = update
             pH = - math.log10(concH)
         else:
             raise ValueError('Unclear what you are updating the pH with!')
 
         if self.contains_reagent('H+'):
-            self.composition['H+'].update_amount(activity=concH)
+            self.composition['H+'].update_amount(self, activity=concH)
         else:
             rgt('H+', self, phase='aq', activity=concH)
         self.pH = pH
