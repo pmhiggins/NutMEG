@@ -165,6 +165,9 @@ class BaseOrganism:
         """Return current metabolic overall reaction equation."""
         return self.metabolism.net_pathway.equation
 
+    def get_DeltaG(self):
+        return self.metabolism.net_pathway.molar_gibbs
+
     def get_growth_rate(self):
         """Return current growth rate (does not update it)."""
         return self.growth.growth_rate
