@@ -3,3 +3,11 @@ from .forcing_factor import ForcingFactor
 from .monod import Monod
 
 __all__ = ['ForcingFactor', 'Bioenergetic', 'Monod']
+
+def find_ff(key):
+    if key == 'ForcingFactor':
+        return ForcingFactor
+    if key == 'Bioenergetic':
+        return Bioenergetic
+    if key == 'Monod':
+        return Monod
