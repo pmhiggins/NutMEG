@@ -37,6 +37,7 @@ class Metaboliser:
       base_rate = 'default',
       forcing_factors = 'default',
       aggregator = 'default',
+      forcing_factor_labels = None,
       overwrite_net_pathway=False):
         """
         Parameters
@@ -59,6 +60,8 @@ class Metaboliser:
         aggregator : RateAggregator
             method to use to select the actual rate from the forcing factors
             (e.g., Multiplicative, LeibigMinimum, etc.)
+        forcing_factor_labels : list, optional
+            List of identifiers for forcing_factors.
         overwrite_net_pathway : bool, optional
             Pass if net_pathway has been created but not yet unified with
             the host's locale.
@@ -79,6 +82,12 @@ class Metaboliser:
             self.forcing_factors = [Bioenergetic()]
         if self.aggregator == 'default':
             self.aggregator = Multiplicative()
+
+
+        if not forcing_factor_labels:
+            self.forcing_factor_labels = range(len(self.forcing_factors))
+        else:
+            self.forcing_factor_labels = forcing_factor_labels
 
         self.rate = None
         self.max_rate = None
@@ -105,3 +114,6 @@ class Metaboliser:
         values = [f.compute(host, locale) for f in self.forcing_factors]
         self.rate =  self.aggregator.combine(self.max_rate, values)
         return self.rate
+
+    def get_forcing_factors(self, host, locale):
+        return {k:f.compute(host, locale) for k,f in zip(self.forcing_factor_labels, self.forcing_factors)}

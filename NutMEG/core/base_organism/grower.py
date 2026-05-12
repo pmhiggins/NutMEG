@@ -29,6 +29,7 @@ class Grower:
       forcing_factors = 'default',
       aggregator = 'default',
       growth_model = 'default',
+      forcing_factor_labels = [],
       nutrient_sources={}):
 
         # self.host = host
@@ -54,6 +55,11 @@ class Grower:
         self.max_growth_rate = None
         self.gross_growth_rate = None
 
+        if not forcing_factor_labels:
+            self.forcing_factor_labels = range(len(self.forcing_factors))
+        else:
+            self.forcing_factor_labels = forcing_factor_labels
+
 
 
     def set_max_rate(self, _rate):
@@ -74,3 +80,6 @@ class Grower:
         """ Use the growth model to estimate the cell-specific growth rate of host."""
         g_out = self.growth_model.compute(host, locale)
         return g_out
+
+    def get_forcing_factors(self, host, locale):
+        return {k:f.compute(host, locale) for k,f in zip(self.forcing_factor_labels, self.forcing_factors)}
