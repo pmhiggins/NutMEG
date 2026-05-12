@@ -20,7 +20,7 @@ class Arrhenius(BaseRateModel):
         object in a NutMEG.core class to look in.
     """
 
-    def __init__(self, A, Ea):
+    def __init__(self, A, Ea, **kwargs):
         """
         extends BaseRateModel.__init__()
 

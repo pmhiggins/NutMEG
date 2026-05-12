@@ -15,7 +15,7 @@ class FirstOrderChemical(BaseRateModel):
         First-order rate constant in current environment condition
     """
 
-    def __init__(self, k_env):
+    def __init__(self, k_env, **kwargs):
         """
         extends BaseRateModel.__init__()
 

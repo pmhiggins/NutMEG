@@ -21,7 +21,7 @@ class BioenergeticGrowthModel(GrowthModel):
         powers are cell-specific.
     """
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         super().__init__()
         self.cs_powers = {'P_s': None, 'P_m':None, 'P_g_gross':None, 'P_g_net':None}
 

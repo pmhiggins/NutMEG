@@ -12,7 +12,7 @@ class Constant(BaseRateModel):
         object in a NutMEG.core class to look in.
     """
 
-    def __init__(self, val):
+    def __init__(self, val, **kwargs):
         """
         extends BaseRateModel.__init__()
 

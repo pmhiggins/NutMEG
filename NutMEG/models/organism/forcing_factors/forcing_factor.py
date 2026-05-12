@@ -13,7 +13,7 @@ class ForcingFactor:
         object in a NutMEG.core class to look in.
     """
 
-    def __init__(self):
+    def __init__(self, **kwargs):
 
         self.requires = None
 

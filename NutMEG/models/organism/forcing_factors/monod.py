@@ -20,7 +20,7 @@ class Monod(ForcingFactor):
         object in a NutMEG.core class to look in.
     """
 
-    def __init__(self, substrate, K_s, conctype='molality'):
+    def __init__(self, substrate, K_s, conctype='molality', **kwargs):
         """
         Extends ForcingFactor.__init__()
 
