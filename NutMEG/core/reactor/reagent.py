@@ -238,6 +238,8 @@ class Reagent:
             if activity:
                 self.activity = activity
                 self.mol = 55.5*locale.kgH2O
+            else:
+                self.activity = 1.
             return self.mol, self.activity
 
         # update activity coefficeints if they have been passed.
