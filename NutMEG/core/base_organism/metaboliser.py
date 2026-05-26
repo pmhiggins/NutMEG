@@ -74,20 +74,23 @@ class Metaboliser:
         self.forcing_factors = forcing_factors
         self.aggregator = aggregator
 
+        if not forcing_factor_labels:
+            self.forcing_factor_labels = range(len(self.forcing_factors))
+        else:
+            self.forcing_factor_labels = forcing_factor_labels
+
         if self.base_rate == 'default':
             self.base_rate = BaseRateModel()
         elif self.base_rate is float:
             self.base_rate = Constant(self.base_rate)
         if self.forcing_factors == 'default':
             self.forcing_factors = [Bioenergetic()]
+            self.forcing_factor_labels = ['Bioenergetic']
         if self.aggregator == 'default':
             self.aggregator = Multiplicative()
 
 
-        if not forcing_factor_labels:
-            self.forcing_factor_labels = range(len(self.forcing_factors))
-        else:
-            self.forcing_factor_labels = forcing_factor_labels
+
 
         self.rate = None
         self.max_rate = None
@@ -117,3 +120,7 @@ class Metaboliser:
 
     def get_forcing_factors(self, host, locale):
         return {k:f.compute(host, locale) for k,f in zip(self.forcing_factor_labels, self.forcing_factors)}
+
+    def update_DeltaG(self, locale):
+        self.net_pathway.update_molar_gibbs_from_quotient(locale)
+        return self.net_pathway.molar_gibbs
