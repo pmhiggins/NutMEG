@@ -37,6 +37,9 @@ base_MG.growth.set_max_rate(float('inf'))
 MG_Monod = nmm.forcing_factors.Monod('H2(aq)', 1e-5)
 base_MG.metabolism.forcing_factors.append(MG_Monod)
 
+# we can perform a quick habitability check to see if this organism is viable
+print(base_MG.check_habitability(R))
+
 # now let's make a community of methanogens numbering 1000
 Pop1 = nmc.OrgPop(base_MG, 100)
 
