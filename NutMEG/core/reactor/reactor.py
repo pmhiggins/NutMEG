@@ -541,7 +541,7 @@ class Reactor:
         """
         concH, pH = 0.,0.
         if _from=='pH':
-            if not udpate:
+            if not update:
                 pH = self.pH
             else:
                 pH = update
