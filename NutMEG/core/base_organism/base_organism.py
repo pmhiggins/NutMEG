@@ -3,6 +3,8 @@ from .grower import Grower
 from .maintainer import Maintainer
 from .metaboliser import Metaboliser
 from NutMEG.core.reactor.reaction import Reaction
+from NutMEG.models.organism.growth_models.bioenergetic_growth_model import BioenergeticGrowthModel
+
 
 
 class BaseOrganism:
@@ -186,6 +188,29 @@ class BaseOrganism:
     def get_growth_rate(self):
         """Return current growth rate (does not update it)."""
         return self.growth.growth_rate
+
+
+    def check_habitability(self, locale=None, update=True):
+        """
+        Perform bioenergetic habitability assessment for this organism.
+
+        Returns a tuple containing: (bool of habitability result, Power supply, Maintenance power)
+
+        Parameters
+        ----------
+        locale : Reactor, optional
+            Local reactor, required if organism properties will be updated
+        update : bool, optional
+            Pass as True to update organism properties. Default True
+        """
+        if type(self.growth.growth_model) != type(BioenergeticGrowthModel()):
+            raise ValueError('check_habtiability is not able to check non-bioenergetic habitability')
+
+        if update:
+            self.update(locale)
+
+        p = self.growth.growth_model.cs_powers
+        return p['P_s'] > p['P_m'], p['P_s'], p['P_m']
 
 
     # def get_ESynth(self, AA=False, comp=None):
