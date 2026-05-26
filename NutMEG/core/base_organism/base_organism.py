@@ -165,8 +165,23 @@ class BaseOrganism:
         """Return current metabolic overall reaction equation."""
         return self.metabolism.net_pathway.equation
 
-    def get_DeltaG(self):
-        return self.metabolism.net_pathway.molar_gibbs
+    def get_DeltaG(self, update=False, locale=None):
+        """
+        Return the molar Gibbs free energy of metabolism in J/mol
+
+        Parameters
+        ----------
+        update : bool, optional
+            Pass as True to update the free energy based on local context.
+            Requires a locale is also passed.
+        locale : Reactor, optional
+            Local Reactor. Only required if update is True.
+        """
+        if update:
+            return self.metabolism.update_DeltaG(locale)
+        else:
+            return self.metabolism.net_pathway.molar_gibbs
+
 
     def get_growth_rate(self):
         """Return current growth rate (does not update it)."""
