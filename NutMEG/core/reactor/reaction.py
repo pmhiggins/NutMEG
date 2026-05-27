@@ -18,6 +18,8 @@ import os.path
 # import sqlite3
 from uncertainties import ufloat, umath
 
+from .reagent import Reagent as rgt
+
 gas_const = 8.314472  # J/mol.K
 
 # import NutMEG.util.NutMEGparams as nmp
@@ -74,6 +76,7 @@ class Reaction:
     def __init__(self, locale, reactants, products,
       frequency_factor=None,
       molar_activation_E=None,
+      add_missing_rgts=False,
       add_to_locale = True):
         """
         Parameters
@@ -89,6 +92,9 @@ class Reaction:
         molar_activation_E : float
             Molar activation energy for an arrhenius equation. Unit J/K mol.
             Default None.
+        add_missing_rgts : bool, optional
+            If reactants or product keys passed are not yet initialised in the
+            locale, add them at 1e-16 molal. Default False.
         add_to_locale : bool, optional
             Identifies if upon initialisation the reagent should be added to
             the locale's composition. Default True.
@@ -102,6 +108,12 @@ class Reaction:
         self.molar_activation_E = molar_activation_E
         self.rate_constant_RTP = None
         self.rate_constant_env = None
+
+        if add_missing_rgts:
+            for _rgt in chain(reactants, products):
+                if _rgt not in locale.composition.keys():
+                    # create placeholder rgt in the locale
+                    rgt(_rgt, locale, amount=(1e-16, 'molal'))
 
         self.all_activities = self.activity_finder(locale)
         self.equation = self.get_equation()
