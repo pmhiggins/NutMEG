@@ -9,6 +9,9 @@ from uncertainties import ufloat as uf
 
 
 class Enceladus:
+    """
+    Class for building Reactors that resemble Enceladus's subsurface ocean.
+    """
 
     Waite2017ratios_uf = {'CO2': uf(0.55, 0.25), 'CH4': uf(0.2, 0.1), 'NH3': uf(0.85, 0.45), 'H2': uf(0.9,0.5), 'H2S':uf(0.0021,0.001)}
     Waite2017ratios_nom = {'CO2': 0.55, 'CH4': 0.2, 'NH3': 0.85, 'H2': 0.9, 'H2S':0.0021}
@@ -18,7 +21,7 @@ class Enceladus:
     def get_Enceladus(key, enc_kwargs={}, rtr_kwargs={}):
         """
         Return a Reactor object mimicking an Enceladus environment. Multiple
-        models are available, and the model of choice can be selected using the
+        models will be available, and the model of choice can be selected using the
         `key` parameter. Options currently include:
 
         'Higgins2024' : The chemical speciations reported in Higgins et al (2024)
@@ -111,7 +114,7 @@ class Enceladus:
             spec_fn = from_fn
         else:
             # use builtin spec file
-            specdir = os.path.dirname(__file__)+'/../data/Enceladus/H24speciation/Clconc_'+str(Cl)
+            specdir = os.path.dirname(__file__)+'/../data/presets/Enceladus/H24speciation/Clconc_'+str(Cl)
             spec_fn = specdir+'/spec_'+str(int(P))+'bar_'+spec_model+'.csv'
         df = pd.read_csv(spec_fn)
         _df = df[df['T'] == _this.T]
