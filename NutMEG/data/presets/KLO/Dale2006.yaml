@@ -1,0 +1,247 @@
+SulfateReduction_H2_Dale06:
+  Reactants:
+    H2(aq): 0.25
+    SO4-2: 0.125
+    H+: 0.125
+  Products:
+    HS-: 0.125
+    H2O(aq): 0.5
+  Metabolic:
+    Rate:
+      func: ConstantRate
+      val : 7.30e-21
+    Forcing:
+      F_B:
+        func: Bioenergetic
+        xi: 1
+        n_ATP: 0.66
+      F_A:
+        func: Monod
+        K_s: 1.e-3
+        substrate: SO4-2
+      F_D:
+        func: Monod
+        K_s: 1.e-8
+        substrate: H2(aq)
+    Growth:
+      Rate:
+        func: ConstantRate
+        val: 8.28e-7
+
+
+SulfateReduction_Acetate_Dale06:
+  Reactants:
+    Acetate-: 0.125
+    SO4-2: 0.125
+  Products:
+    HS-: 0.125
+    HCO3-: 0.25
+  Metabolic:
+    Rate:
+      func: ConstantRate
+      val : 4.76e-22
+    Forcing:
+      F_B:
+        func: Bioenergetic
+        xi: 1
+        n_ATP: 0.66
+      F_A:
+        func: Monod
+        K_s: 1.e-3
+        substrate: SO4-2
+      F_D:
+        func: Monod
+        K_s: 1.e-4
+        substrate: Acetate-
+    Growth:
+      Rate:
+        func: ConstantRate
+        val: 1.28e-6
+
+
+Methanogenesis_H2_HCO3_Dale06:
+  Reactants:
+    H2(aq): 0.5
+    HCO3-: 0.125
+    H+: 0.125
+  Products:
+    Methane(aq): 0.125
+    H2O(aq): 0.375
+  Metabolic:
+    Rate:
+      func: ConstantRate
+      val : 3.63e-21
+    Forcing:
+      F_B:
+        func: Bioenergetic
+        xi: 1
+        n_ATP: 0.66
+      F_D:
+        func: Monod
+        K_s: 1.e-6
+        substrate: H2(aq)
+    Growth:
+      Rate:
+        func: ConstantRate
+        val: 7.36e-7
+
+
+Methanogenesis_Acetate_Dale06:
+  Reactants:
+    Acetate-: 0.125
+    H2O(aq): 0.125
+  Products:
+    Methane(aq): 0.125
+    HCO3-: 0.125
+  Metabolic:
+    Rate:
+      func: ConstantRate
+      val : 4.64e-22
+    Forcing:
+      F_B:
+        func: Bioenergetic
+        xi: 1
+        n_ATP: 0.66
+      F_D:
+        func: Monod
+        K_s: 1.5e-3
+        substrate: Acetate-
+    Growth:
+      Rate:
+        func: ConstantRate
+        val: 8.28e-7
+
+
+MethaneOxidation_H2O_Dale06:
+  Reactants:
+    H2O(aq): 0.375
+    Methane(aq): 0.125
+  Products:
+    HCO3-: 0.125
+    H2(aq): 0.5
+    H+: 0.125
+  Metabolic:
+    Rate:
+      func: ConstantRate
+      val : 1.80e-21
+    Forcing:
+      F_B:
+        func: Bioenergetic
+        xi: 1
+        n_ATP: 0.66
+      F_D:
+        func: Monod
+        K_s: 1.5e-3
+        substrate: Methane(aq)
+    Growth:
+      Rate:
+        func: ConstantRate
+        val: 5.8e-7
+
+
+MethaneOxidation_HCO3_Dale06:
+  Reactants:
+    HCO3-: 0.125
+    Methane(aq): 0.125
+  Products:
+    Acetate-: 0.125
+    H2O(aq): 0.125
+  Metabolic:
+    Rate:
+      func: ConstantRate
+      val : 1.80e-21
+    Forcing:
+      F_B:
+        func: Bioenergetic
+        xi: 1
+        n_ATP: 0.66
+      F_D:
+        func: Monod
+        K_s: 1.5e-3
+        substrate: Methane(aq)
+    Growth:
+      Rate:
+        func: ConstantRate
+        val: 5.8e-7
+
+
+Acetogenesis_Dale06:
+  Reactants:
+    HCO3-: 0.25
+    H2(aq): 0.5
+    H+: 0.125
+  Products:
+    Acetate-: 0.125
+    H2O(aq): 0.5
+  Metabolic:
+    Rate:
+      func: ConstantRate
+      val : 3.59e-21
+    Forcing:
+      F_B:
+        func: Bioenergetic
+        xi: 1
+        n_ATP: 0.66
+      F_D:
+        func: Monod
+        K_s: 1.e-7
+        substrate: H2(aq)
+    Growth:
+      Rate:
+        func: ConstantRate
+        val: 5.68e-7
+
+
+Acetotrophy_Dale06:
+  Reactants:
+    Acetate-: 0.125
+    H2O(aq): 0.5
+  Products:
+    HCO3-: 0.25
+    H2(aq): 0.5
+    H+: 0.125
+  Metabolic:
+    Rate:
+      func: ConstantRate
+      val : 4.56e-22
+    Forcing:
+      F_B:
+        func: Bioenergetic
+        xi: 1
+        n_ATP: 0.66
+      F_D:
+        func: Monod
+        K_s: 1.e-3
+        substrate: Acetate-
+    Growth:
+      Rate:
+        func: ConstantRate
+        val: 5.8e-7
+
+
+Fermentation_Dale06:
+  Reactants:
+    Glucose(aq): 0.125
+    H2O(aq): 0.5
+  Products:
+    Acetate-: 0.25
+    H2(aq): 0.5
+    H+: 0.5
+    HCO3-: 0.25
+  Metabolic:
+    Rate:
+      func: ConstantRate
+      val : 1.76e-22
+    Forcing:
+      F_B:
+        func: Bioenergetic
+        xi: 1
+        n_ATP: 0.66
+      F_D:
+        func: Monod
+        K_s: 1.e-3
+        substrate: Glucose(aq)
+    Growth:
+      Rate:
+        func: ConstantRate
+        val: 3.19e-6

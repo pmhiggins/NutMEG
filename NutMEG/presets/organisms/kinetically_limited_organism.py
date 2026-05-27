@@ -6,32 +6,63 @@ from ...models.organism.forcing_factors import find_ff
 from ...models.organism.base_rate_models import find_brm
 from ...models.organism.growth_models import find_gm
 
-import yaml
+import yaml, os
 
 
 class KineticallyLimitedOrganism:
+    """
+    Class for creating BaseOrganism objects using databases of pre-defined
+    organism specific kinetic and thermodynamic properties. 
+    """
 
-    def get(R, KLO_db, org_key, adjustments={}):
+    builtin_KLO_dbs = ['example_KLO_db.yaml', 'Dale2006.yaml']
 
+    def get(R, org_key, KLO_db='example_KLO_db.yaml', adjustments={}):
+        """
+        Return a BaseOrganism object constructued using a database of
+        organism-specific kinetic and thermodynamic parameters.
+
+        Parameters
+        ----------
+        R : Reactor
+            Local reactor to initialise the organism (and its metabolism) in.
+        org_key : str
+            String identifier for the organism in the database
+        KLO_db : str, optional
+            Name of built-in database to use, or the path to a user-defined one.
+            The database must be in yaml format.
+        adjustments : dict, optional
+            A dictionary which will be used to overwrite organism parameters as
+            they are in the database and/or upon initialisation.
+        """
+
+        # retrieve the KLO database and assign dict to org_data
+        KLO_fn = ''
         org_data = None
-        with open(KLO_db, 'r') as f:
+
+        if KLO_db in KineticallyLimitedOrganism.builtin_KLO_dbs:
+            KLO_fn = os.path.dirname(__file__)+'/../../data/presets/KLO/'+KLO_db
+        else:
+            KLO_fn = KLO_db
+
+        with open(KLO_fn, 'r') as f:
             org_data = yaml.safe_load(f)
 
+        # retrieve entry for target organism
         org_props = None
         try:
             org_props = org_data.get(org_key)
         except:
             raise ValueError(org_key+' not found in '+KLO_db)
 
-        # add adjustments to database entries passed by user.
+        # add adjustments to database organism as passed by user.
         org_props = KineticallyLimitedOrganism.deep_update(org_props, adjustments)
-
 
         # set up net metabolic reaction
         rgts = org_props.get('Reactants', {})
         prods = org_props.get('Products', {})
 
-        met_rxn = rxn(R, rgts, prods)
+        met_rxn = rxn(R, rgts, prods, add_missing_rgts=True)
 
         # Read in parameters for the Metaboliser
 
@@ -81,7 +112,7 @@ class KineticallyLimitedOrganism:
           forcing_factor_labels = growth_ff_labels,
           growth_model = growth_gm)
 
-        return nmc.BaseOrganism(org_key, _met, _gro)
+        return nmc.BaseOrganism(org_key, _met, _gro, **org_props.get('BaseOrganism', {}))
 
 
 
