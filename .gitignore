@@ -8,5 +8,13 @@ NutMEG_db
 NutMEG/data/synthesis/EColiSynth
 NutMEG/data/TPdb
 
-docs/
+# docs/
+docs/_build
+docs/source/api/NutMEG
+docs/source/api/index.rst
+
+# No user-generated figures from examples
+*.pdf
+*.png
+
 docsv2/

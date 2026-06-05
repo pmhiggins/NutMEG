@@ -132,8 +132,7 @@ for ax in axs:
     ax.legend()
 
 plt.tight_layout()
-plt.savefig('competition.pdf')
-plt.savefig('competition.png')
+plt.savefig('examples_figures/competition.pdf')
 
 plt.close()
 
