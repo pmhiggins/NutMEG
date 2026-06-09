@@ -53,7 +53,7 @@ class BioenergeticGrowthModel(GrowthModel):
         except NotImplementedError:
             host.growth.max_growth_rate = float('inf')
 
-        values = [f.compute(host, locale) for f in host.growth.forcing_factors]
+        values = [f.compute(host, locale) for _,f in host.growth.forcing_factors.items()]
         expected_growth_rate =  host.growth.aggregator.combine(host.growth.max_growth_rate, values)
         expected_P_growth = host.E_synth * expected_growth_rate
 

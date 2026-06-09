@@ -37,8 +37,9 @@ class Metaboliser:
       base_rate = 'default',
       forcing_factors = 'default',
       aggregator = 'default',
-      forcing_factor_labels = None,
-      overwrite_net_pathway=False):
+      # forcing_factor_labels = None,
+      overwrite_net_pathway=False,
+      extra_pathways={}):
         """
         Parameters
         ----------
@@ -74,18 +75,18 @@ class Metaboliser:
         self.forcing_factors = forcing_factors
         self.aggregator = aggregator
 
-        if not forcing_factor_labels:
-            self.forcing_factor_labels = range(len(self.forcing_factors))
-        else:
-            self.forcing_factor_labels = forcing_factor_labels
+        # if not forcing_factor_labels:
+        #     self.forcing_factor_labels = range(len(self.forcing_factors))
+        # else:
+        #     self.forcing_factor_labels = forcing_factor_labels
 
         if self.base_rate == 'default':
             self.base_rate = BaseRateModel()
         elif self.base_rate is float:
             self.base_rate = Constant(self.base_rate)
         if self.forcing_factors == 'default':
-            self.forcing_factors = [Bioenergetic()]
-            self.forcing_factor_labels = ['Bioenergetic']
+            self.forcing_factors = {'Bioenergetic':Bioenergetic()}
+            # self.forcing_factor_labels = ['Bioenergetic']
         if self.aggregator == 'default':
             self.aggregator = Multiplicative()
 
@@ -114,12 +115,12 @@ class Metaboliser:
         """
         self.max_rate = self.base_rate.compute(host, locale)
 
-        values = [f.compute(host, locale) for f in self.forcing_factors]
+        values = [f.compute(host, locale) for _,f in self.forcing_factors.items()]
         self.rate =  self.aggregator.combine(self.max_rate, values)
         return self.rate
 
     def get_forcing_factors(self, host, locale):
-        return {k:f.compute(host, locale) for k,f in zip(self.forcing_factor_labels, self.forcing_factors)}
+        return {k:f.compute(host, locale) for k,f in self.forcing_factors.items()}
 
     def update_DeltaG(self, locale):
         self.net_pathway.update_molar_gibbs_from_quotient(locale)

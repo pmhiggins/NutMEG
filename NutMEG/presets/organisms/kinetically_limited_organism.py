@@ -6,13 +6,13 @@ from ...models.organism.forcing_factors import find_ff
 from ...models.organism.base_rate_models import find_brm
 from ...models.organism.growth_models import find_gm
 
-import yaml, os
+import yaml, os, collections
 
 
 class KineticallyLimitedOrganism:
     """
     Class for creating BaseOrganism objects using databases of pre-defined
-    organism specific kinetic and thermodynamic properties. 
+    organism specific kinetic and thermodynamic properties.
     """
 
     builtin_KLO_dbs = ['example_KLO_db.yaml', 'Dale2006.yaml']
@@ -82,8 +82,7 @@ class KineticallyLimitedOrganism:
 
         _met = nmc.org.Metaboliser(met_rxn,
           base_rate = kinetic_brm,
-          forcing_factors = kinetic_ff_objs,
-          forcing_factor_labels = kinetic_ff_labels)
+          forcing_factors = {l:o for l,o in zip(kinetic_ff_labels, kinetic_ff_objs)})
 
         # Read in parameters for the Grower
         Gro_dict = org_props.get('Growth', {})
@@ -108,8 +107,7 @@ class KineticallyLimitedOrganism:
             growth_ff_objs.append(_cls(**v))
 
         _gro = nmc.org.Grower(base_rate=growth_brm,
-          forcing_factors = growth_ff_objs,
-          forcing_factor_labels = growth_ff_labels,
+          forcing_factors = {l:o for l,o in zip(growth_ff_labels, growth_ff_objs)},
           growth_model = growth_gm)
 
         return nmc.BaseOrganism(org_key, _met, _gro, **org_props.get('BaseOrganism', {}))

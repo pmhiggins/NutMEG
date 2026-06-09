@@ -29,7 +29,7 @@ class Grower:
       forcing_factors = 'default',
       aggregator = 'default',
       growth_model = 'default',
-      forcing_factor_labels = [],
+      # forcing_factor_labels = [],
       nutrient_sources={}):
 
         # self.host = host
@@ -55,10 +55,10 @@ class Grower:
         self.max_growth_rate = None
         self.gross_growth_rate = None
 
-        if not forcing_factor_labels:
-            self.forcing_factor_labels = range(len(self.forcing_factors))
-        else:
-            self.forcing_factor_labels = forcing_factor_labels
+        # if not forcing_factor_labels:
+        #     self.forcing_factor_labels = range(len(self.forcing_factors))
+        # else:
+        #     self.forcing_factor_labels = forcing_factor_labels
 
 
 
@@ -82,4 +82,4 @@ class Grower:
         return g_out
 
     def get_forcing_factors(self, host, locale):
-        return {k:f.compute(host, locale) for k,f in zip(self.forcing_factor_labels, self.forcing_factors)}
+        return {k:f.compute(host, locale) for k,f in self.forcing_factors.items()}

@@ -32,6 +32,6 @@ class ClassicGrowthModel(GrowthModel):
         """
         host.growth.max_growth_rate = host.growth.base_rate.compute(host, locale)
 
-        values = [f.compute(host, locale) for f in host.growth.forcing_factors]
+        values = [f.compute(host, locale) for _,f in host.growth.forcing_factors.items()]
         host.growth.growth_rate =  host.growth.aggregator.combine(host.growth.max_growth_rate, values)
         return host.growth.growth_rate, host.growth.growth_rate

@@ -61,6 +61,10 @@ class GrowthModel:
                 for h in loc:
                     if n in h.outputs():
                         subparams[n] = h.outputs()[n]
+            elif type(loc) == dict:
+                for k, h in loc.items():
+                    if n in h.outputs():
+                        subparams[n] = h.outputs()[n]
             else:
                 if n in h.outputs:
                     subparams[n] = h.outputs[n]
