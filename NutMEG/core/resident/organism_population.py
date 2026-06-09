@@ -60,6 +60,8 @@ class OrganismPopulation(Resident):
         # perform the catabolic reaction with the locale
         moles_consumed = self.num*self.base.get_metabolic_rate()*dt
         ES.reactor.perform_reaction(self.base.get_metabolic_equation(), moles_consumed)
+        for k,v in self.base.metabolism.extra_pathways:
+            ES.reactor.perform_reaction(v[0], self.num*v[1]*dt)
 
         # update num based on growth
         net_gr = max(-1., self.base.get_growth_rate() - self.death_rate)

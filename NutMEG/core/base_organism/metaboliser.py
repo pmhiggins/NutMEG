@@ -66,9 +66,17 @@ class Metaboliser:
         overwrite_net_pathway : bool, optional
             Pass if net_pathway has been created but not yet unified with
             the host's locale.
+        extra_pathways : dict, optional
+            Dictionary in the form {key : [Reaction, rate]}, where the key is
+            an identifier, the `Reaction` is an interaction with the local
+            environment (e.g., nutrient uptake, or alterantive metabolites),
+            and rate is a `float` of the cell-specific reaction rate of the
+            Reaction. These reactions are performed with the locale in a
+            dynamic simulation.
         """
 
         self.net_pathway = net_pathway
+        self.extra_pathways = extra_pathways
 
         #### set up kinetics
         self.base_rate = base_rate
