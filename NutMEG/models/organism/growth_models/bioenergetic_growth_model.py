@@ -14,6 +14,10 @@ class BioenergeticGrowthModel(GrowthModel):
         this GrowthModel. Keys are property identifiers, and values are the
         object in a NutMEG.core class to look in. For BioenergeticGrowthModel,
         this is initialised upon running the compute() method.
+    adjust_metabolic_rate : bool, optional
+        if True, adjust the host's metabolim.rate when not all metabolic power
+        supply will go to use (e.g., nutrient limitation). If False, do not
+        change the metabolic rate even if growth is not optimal.
     cs_powers : dict
         Dictionary of useful outputs from this growth model, structured as:
         {'P_s':Power Supply, 'P_m': Maintenance Power,
@@ -21,12 +25,13 @@ class BioenergeticGrowthModel(GrowthModel):
         powers are cell-specific.
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, adjust_metabolic_rate=True, **kwargs):
         super().__init__()
+        self.adjust_metabolic_rate = adjust_metabolic_rate
         self.cs_powers = {'P_s': None, 'P_m':None, 'P_g_gross':None, 'P_g_net':None}
 
 
-    def compute(self, host, locale, adjust_metabolic_rate=True):
+    def compute(self, host, locale):
         """ Calculate and return the growth rate according to this model. If
         growth is not energetically limited, the model will also reduce
         the host's metabolic rate accordingly by default.
@@ -39,10 +44,6 @@ class BioenergeticGrowthModel(GrowthModel):
         locale : Reactor
             Host chemical reactor. Some GrowthModels will need this to initialise and
             some won't. It is best to assume they will (else they may throw an error)
-        adjust_metabolic_rate : bool, optional
-            if True, adjust the host's metabolim.rate when not all metabolic power
-            supply will go to use (e.g., nutrient limitation). If False, do not
-            change the metabolic rate even if growth is not optimal.
         """
 
         self.requires = {'G_C':host.metabolism.forcing_factors}
@@ -82,7 +83,7 @@ class BioenergeticGrowthModel(GrowthModel):
 
             # reduce the metabolic rate to accord to the actual
             # power supply that is useable.
-            if adjust_metabolic_rate:
+            if self.adjust_metabolic_rate:
                 host.metabolism.rate -= (P_growth - expected_P_growth)/G_C
 
         host.growth.growth_rate = net_growth_P / host.E_synth
