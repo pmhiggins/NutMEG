@@ -294,7 +294,7 @@ class Reactor:
             Reaction object to be added
         """
         if rxxn.equation in list(self.reactionlist.keys()):
-            raise ValueError('Reaction with this eq already present in this reactor!')
+            warnings.warn('Reaction with eq: '+rxxn.equation+' already present in this reactor!')
         # add the reaction into reationlist
         self.reactionlist[rxxn.equation] = rxxn
 
