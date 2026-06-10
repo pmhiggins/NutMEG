@@ -1,7 +1,10 @@
-import math
 import warnings
+from uncertainties import ufloat as uf
+from uncertainties.core import AffineScalarFunc, Variable
+
 from .forcing_factor import ForcingFactor
 from NutMEG.core.reactor.reaction import Reaction as rxn
+from NutMEG.utils.math import math
 
 class Bioenergetic(ForcingFactor):
     """
@@ -108,14 +111,16 @@ class Bioenergetic(ForcingFactor):
                 raise ValueError('No n_ATP or G_C passed to Bioenergetics ForcingFactor')
 
         else:
-            if type(G_C) is float or type(G_C) is int:
+            if isinstance(G_C, int) or isinstance(G_C, float):
                 warnings.warn("Both G_C and n_ATP have been passed to Bioenegetic. Using G_C (n_ATP may change).")
                 self.G_C = float(G_C)
                 self.n_ATP = self.G_C / self.G_ATP
-            else:
+            elif isinstance(n_ATP, int):
                 self.n_ATP = float(n_ATP)
                 self.G_C = self.G_ATP * self.n_ATP
-
+            else:
+                self.n_ATP = n_ATP
+                self.G_C = self.G_ATP * self.n_ATP
 
 
 
@@ -145,7 +150,17 @@ class Bioenergetic(ForcingFactor):
         if _f <=0.:
             return 0.
         else:
-            return max(0., 1-math.exp(-(_f)/(self.xi*8.314472*locale.T)))
+            F_B = 1-math.exp(-(_f)/(self.xi*8.314472*locale.T))
+            return max(0., F_B)
+            # if isinstance(F_B, float):
+            #     return max(0., F_B)
+            # elif isinstance(F_B, (AffineScalarFunc, Variable)):
+            #     return 0. if max(0., F_B.n) is 0. else F_B
+            # else:
+            #     try:
+            #         return max(0., F_B)
+            #     except:
+            #         raise ValueError('Type '+type(F_B)+'incompatible with max() function')
 
 
     def outputs(self):

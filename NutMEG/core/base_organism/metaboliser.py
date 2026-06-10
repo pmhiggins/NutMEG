@@ -1,5 +1,5 @@
 
-import sys, warnings, math
+import sys, warnings
 from NutMEG.core.reactor.reaction import Reaction
 from NutMEG.core.reactor.reagent import Reagent
 

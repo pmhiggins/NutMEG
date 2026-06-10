@@ -47,7 +47,7 @@ class BioenergeticGrowthModel(GrowthModel):
         """
 
         self.requires = {'G_C':host.metabolism.forcing_factors}
-        G_C = float(self.find_subparams()['G_C'])
+        G_C = self.find_subparams()['G_C']
         try:
             host.growth.max_growth_rate = host.growth.base_rate.compute(host, locale)
         except NotImplementedError:

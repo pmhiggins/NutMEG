@@ -177,10 +177,10 @@ class Reagent:
         """
         if locale.T != 298.15 or locale.P != 101325.0:
             rprops = self.rkt_twin.props(locale.T, 'K', locale.P, 'Pa')
-            self.std_formation_gibbs_env = rprops.G0
-            self.std_formation_enthalpy_env = rprops.H0
-            self.std_formation_entropy_env = rprops.S0
-            self.Cp_env = rprops.Cp0
+            self.std_formation_gibbs_env = float(rprops.G0)
+            self.std_formation_enthalpy_env = float(rprops.H0)
+            self.std_formation_entropy_env = float(rprops.S0)
+            self.Cp_env = float(rprops.Cp0)
         else:
             # we're in RTP so no need to look up the data again
             self.std_formation_enthalpy_env = self.std_formation_enthalpy_RTP
@@ -192,10 +192,10 @@ class Reagent:
     def update_thermo_RTP(self):
         """Import the reagent's thermal parameters at RTP."""
         rprops = self.rkt_twin.props(298.15, 'K', 101325.0, 'Pa')
-        self.std_formation_gibbs_RTP = rprops.G0
-        self.std_formation_enthalpy_RTP = rprops.H0
-        self.std_formation_entropy_RTP = rprops.S0
-        self.Cp_RTP = rprops.Cp0
+        self.std_formation_gibbs_RTP = float(rprops.G0)
+        self.std_formation_enthalpy_RTP = float(rprops.H0)
+        self.std_formation_entropy_RTP = float(rprops.S0)
+        self.Cp_RTP = float(rprops.Cp0)
 
 
     """

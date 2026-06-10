@@ -1,4 +1,4 @@
-import math
+from NutMEG.utils.math import math
 from .maintenance_model import MaintenanceModel
 
 class Lever2015(MaintenanceModel):

@@ -9,14 +9,14 @@ Most recent changes: v2 overhaul 2026
 # from NutMEG.reaction.thermo.reaction_thermo import reaction_thermo
 
 import sys
-import math
+from NutMEG.utils.math import math
 from itertools import chain
 import numpy as np
 import warnings
 from os import system
 import os.path
 # import sqlite3
-from uncertainties import ufloat, umath
+from uncertainties import ufloat
 
 from .reagent import Reagent as rgt
 
@@ -265,12 +265,12 @@ class Reaction:
         for p, mr in self.products.items():
             _p = locale.composition[p]
             if _p.phase_ss == False:
-                multiplier = multiplier * umath.pow(_p.activity, mr)
+                multiplier = multiplier * math.pow(_p.activity, mr)
 
         for r, mr in self.reactants.items():
             _r = locale.composition[r]
             if _r.phase_ss == False:
-                multiplier = multiplier / umath.pow(_r.activity, mr)
+                multiplier = multiplier / math.pow(_r.activity, mr)
 
         self.quotient = multiplier
 
@@ -430,5 +430,5 @@ class Reaction:
         rprops = self.rkt_twin.props(locale.T, 'K', locale.P, 'Pa')
 
         # update reaction parameters
-        self.std_molar_gibbs = rprops.dG0
-        self.lnK = rprops.lgK * math.log(10)
+        self.std_molar_gibbs = float(rprops.dG0)
+        self.lnK = float(rprops.lgK) * math.log(10)

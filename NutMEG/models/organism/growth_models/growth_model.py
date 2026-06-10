@@ -57,11 +57,11 @@ class GrowthModel:
 
         subparams = {}
         for n, loc in this_req.items():
-            if type(loc) == list:
+            if isinstance(loc, list):
                 for h in loc:
                     if n in h.outputs():
                         subparams[n] = h.outputs()[n]
-            elif type(loc) == dict:
+            elif isinstance(loc, dict):
                 for k, h in loc.items():
                     if n in h.outputs():
                         subparams[n] = h.outputs()[n]

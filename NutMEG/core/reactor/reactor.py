@@ -15,7 +15,7 @@ from .reagent import Reagent as rgt
 import warnings
 from itertools import chain
 from copy import copy
-import math
+from NutMEG.utils.math import math
 import sys, os, ast
 # from datetime import date
 # from .reactor_dbhelper import rdb_helper
