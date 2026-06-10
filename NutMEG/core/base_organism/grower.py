@@ -44,7 +44,7 @@ class Grower:
             self.base_rate = Constant(self.base_rate)
 
         if self.forcing_factors == 'default':
-            self.forcing_factors = []
+            self.forcing_factors = {}
         if self.aggregator == 'default':
             self.aggregator = Multiplicative()
         if self.growth_model == 'default':
