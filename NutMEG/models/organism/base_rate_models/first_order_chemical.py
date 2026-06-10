@@ -15,7 +15,7 @@ class FirstOrderChemical(BaseRateModel):
         First-order rate constant in current environment condition
     """
 
-    def __init__(self, k_env, **kwargs):
+    def __init__(self, k_env, max='inf', **kwargs):
         """
         extends BaseRateModel.__init__()
 
@@ -29,6 +29,10 @@ class FirstOrderChemical(BaseRateModel):
 
         super().__init__()
         self.k_env = k_env
+        if max == 'inf':
+            self.max = float('inf')
+        else:
+            self.max = max
 
 
     def compute(self, host, locale):
@@ -47,4 +51,4 @@ class FirstOrderChemical(BaseRateModel):
         for r, mr in host.metabolism.net_pathway.reactants.items():
             conc_multiplier = conc_multiplier*(locale.composition[r].activity**mr)
 
-        return self.k_env * conc_multiplier
+        return min(self.max, self.k_env * conc_multiplier)
