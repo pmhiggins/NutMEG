@@ -268,7 +268,7 @@ class Reagent:
                 # to get an estimated molar quantity.
                 self.mol = self.activity * locale.kgH2O
 
-        elif not activity and mol:
+        elif mol and not activity:
             self.mol = mol
 
             self.molality = self.mol / locale.kgH2O
@@ -276,7 +276,7 @@ class Reagent:
 
             if self.gamma_molal:
                 self.activity = self.gamma_molal * self.molality
-            elif self. gamma_molar:
+            elif self.gamma_molar:
                 self.activity = self.gamma_molar * self.molality
             else:
                 # should we keep this, or refrain from setting activity altogether?
@@ -289,7 +289,7 @@ class Reagent:
             self.molarity = self.mol / locale.V_L
 
         else:
-            if zero_warn:
+            if zero_warn and mol != 0. and activity !=0.:
                 warnings.warn('no amounts passed to update '+self.name+' with. Setting amounts to zero.')
             self.mol = 1e-16
             self.activity=1e-16
