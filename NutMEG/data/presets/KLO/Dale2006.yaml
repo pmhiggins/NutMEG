@@ -1,6 +1,6 @@
 SulfateReduction_H2_Dale06:
   Reactants:
-    H2(aq): 0.25
+    H2(aq): 0.5
     SO4-2: 0.125
     H+: 0.125
   Products:
@@ -9,7 +9,7 @@ SulfateReduction_H2_Dale06:
   Metabolic:
     Rate:
       func: ConstantRate
-      val : 7.30e-21
+      val : 3.65e-18
     Forcing:
       F_B:
         func: Bioenergetic
@@ -39,7 +39,7 @@ SulfateReduction_Acetate_Dale06:
   Metabolic:
     Rate:
       func: ConstantRate
-      val : 4.76e-22
+      val : 5.08e-19
     Forcing:
       F_B:
         func: Bioenergetic
@@ -59,6 +59,40 @@ SulfateReduction_Acetate_Dale06:
         val: 1.28e-6
 
 
+SulfateReduction_CH4_Dale06:
+  Note: Created based on half-reactions in Dale et al., not explicitly modelled by them.
+  Reactants:
+    Methane(aq): 0.125
+    SO4-2: 0.125
+  Products:
+    HS-: 0.125
+    H2O(aq): 0.125
+    HCO3-: 0.125
+  Metabolic:
+    Rate:
+      func: ConstantRate
+      val : 1.80e-18
+    Forcing:
+      F_B:
+        func: Bioenergetic
+        xi: 1
+        n_ATP: 0.66
+      F_A:
+        func: Monod
+        K_s: 1.e-3
+        substrate: SO4-2
+      F_D:
+        func: Monod
+        K_s: 1.5e-3
+        substrate: Methane(aq)
+    Growth:
+      Rate:
+        func: ConstantRate
+        val: 5.8e-7
+
+
+
+
 Methanogenesis_H2_HCO3_Dale06:
   Reactants:
     H2(aq): 0.5
@@ -70,7 +104,7 @@ Methanogenesis_H2_HCO3_Dale06:
   Metabolic:
     Rate:
       func: ConstantRate
-      val : 3.63e-21
+      val : 3.63e-18
     Forcing:
       F_B:
         func: Bioenergetic
@@ -96,7 +130,7 @@ Methanogenesis_Acetate_Dale06:
   Metabolic:
     Rate:
       func: ConstantRate
-      val : 4.64e-22
+      val : 4.64e-19
     Forcing:
       F_B:
         func: Bioenergetic
@@ -123,7 +157,7 @@ MethaneOxidation_H2O_Dale06:
   Metabolic:
     Rate:
       func: ConstantRate
-      val : 1.80e-21
+      val : 1.80e-18
     Forcing:
       F_B:
         func: Bioenergetic
@@ -149,7 +183,7 @@ MethaneOxidation_HCO3_Dale06:
   Metabolic:
     Rate:
       func: ConstantRate
-      val : 1.80e-21
+      val : 1.80e-18
     Forcing:
       F_B:
         func: Bioenergetic
@@ -176,7 +210,7 @@ Acetogenesis_Dale06:
   Metabolic:
     Rate:
       func: ConstantRate
-      val : 3.59e-21
+      val : 3.65e-18
     Forcing:
       F_B:
         func: Bioenergetic
