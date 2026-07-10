@@ -35,7 +35,7 @@ base_MG.growth.set_max_rate(float('inf'))
 # Another concentration dependency can be added using a forcing factor.
 # Let's add a Monod dependency on H2:
 MG_Monod = nmm.forcing_factors.Monod('H2(aq)', 1e-5)
-base_MG.metabolism.forcing_factors.append(MG_Monod)
+base_MG.metabolism.add_forcing_factor('F_D', MG_Monod)
 
 # we can perform a quick habitability check to see if this organism is viable
 print(base_MG.check_habitability(R))
@@ -55,7 +55,7 @@ thermalSR = nmc.Reaction(R, {'H2(aq)':4, 'SO4-2':1}, {'HS-':1, 'H2O(aq)':4})
 
 # Finally, we can create the organism
 base_SR = nmc.BaseOrganism('SulfateReducer',
-  nmc.org.Metaboliser(thermalSR, base_rate=SR_MetRate, forcing_factors=[SR_Monod, nmm.forcing_factors.Bioenergetic()]),
+  nmc.org.Metaboliser(thermalSR, base_rate=SR_MetRate, forcing_factors={'F_D': SR_Monod, 'F_B':nmm.forcing_factors.Bioenergetic()}),
   growth = nmc.org.Grower(base_rate=SR_GroRate))
 
 # create an OrgPop of sulfate reducers
