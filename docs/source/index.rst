@@ -50,6 +50,7 @@ As an academic project, NutMEG is forever a work-in-progress. We welcome communi
     guides/monod_example
     guides/presets
     guides/citing_nutmeg
+    guides/nutmeg_publications
 
 
 
