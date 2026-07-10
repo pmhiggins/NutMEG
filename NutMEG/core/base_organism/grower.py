@@ -83,3 +83,6 @@ class Grower:
 
     def get_forcing_factors(self, host, locale):
         return {k:f.compute(host, locale) for k,f in self.forcing_factors.items()}
+
+    def add_forcing_factor(self, ff_ID, ff_obj):
+        self.forcing_factors[ff_ID] = ff_obj

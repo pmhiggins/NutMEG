@@ -130,6 +130,9 @@ class Metaboliser:
     def get_forcing_factors(self, host, locale):
         return {k:f.compute(host, locale) for k,f in self.forcing_factors.items()}
 
+    def add_forcing_factor(self, ff_ID, ff_obj):
+        self.forcing_factors[ff_ID] = ff_obj
+
     def update_DeltaG(self, locale):
         self.net_pathway.update_molar_gibbs_from_quotient(locale)
         return self.net_pathway.molar_gibbs
