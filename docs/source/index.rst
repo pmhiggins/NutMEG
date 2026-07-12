@@ -6,7 +6,7 @@
 
 .. important ::
 
-  Lucky you, you're looking at the in-development NutMEG v2 documentation! v2 is mostly functional but isn't formally released yet. It is also **not** backward compatible with v1. If you're working on a project using v1, please refer to the `v1 docs <https://higginsetal.com/docs/html/index.html>`_
+  Lucky you, you're looking at the in-development NutMEG v2 documentation! v2 is mostly functional but isn't formally released yet. You can access the latest build of NutMEG v2 `here <https://github.com/pmhiggins/NutMEG/tree/nm_v2>`_. v2 is **not** backward compatible with v1. If you're working on a project using v1, please refer to the `v1 docs <https://higginsetal.com/docs/html/index.html>`_
 
 
 .. image:: _static/NutMEG_logo_2026.png
