@@ -74,10 +74,9 @@ class Reaction:
 
 
     def __init__(self, locale, reactants, products,
-      frequency_factor=None,
-      molar_activation_E=None,
       add_missing_rgts=False,
-      add_to_locale = True):
+      add_to_locale = True,
+      base_rate_model = None):
         """
         Parameters
         ----------
@@ -87,25 +86,20 @@ class Reaction:
             Participating reactants in the form {name:molar ratio}
         products : dict
             Participating products in the form {name:molar ratio}
-        frequency_factor : float, optional
-            the pre-exponential factor in an arrhenius equation. Default None
-        molar_activation_E : float
-            Molar activation energy for an arrhenius equation. Unit J/K mol.
-            Default None.
         add_missing_rgts : bool, optional
             If reactants or product keys passed are not yet initialised in the
             locale, add them at 1e-16 molal. Default False.
         add_to_locale : bool, optional
             Identifies if upon initialisation the reagent should be added to
             the locale's composition. Default True.
+        base_rate_model : BaseRateModel, optional
+            Model to be used for calculating the rate of reaction. Default None.
         """
 
 
         self.reactants = reactants
         self.products = products
         self.quotient = None
-        self.frequency_factor = frequency_factor
-        self.molar_activation_E = molar_activation_E
         self.rate_constant_RTP = None
         self.rate_constant_env = None
 
@@ -128,6 +122,9 @@ class Reaction:
         if add_to_locale:
             locale.add_reaction(self)
 
+        self.base_rate_model = base_rate_model
+        if base_rate_model:
+            self.calulate_rate()
 
     def __str__(self):
         return self.equation
@@ -231,13 +228,11 @@ class Reaction:
     def calculate_rate(self):
         """Update the rate constant using the arrhenius equation."""
 
-        if self.frequency_factor == None or self.molar_activation_E == None:
-            raise ValueError("You have not initialised the frequency_factor "+\
-              "and/or the molar_activation_E for your reaction. An "+\
-              "Arrhenius calculation cannot be performed.")
+        if self.base_rate_model == None:
+            raise ValueError("Rate function not available for this "+\
+              "reaction. Makes sure base_rate_model is assigned.")
         else:
-            self.rate_constant_env = (self.frequency_factor *
-              math.exp(-self.molar_activation_E/(gas_const*self.env.T)))
+            self.rate_constant_env = self.base_rate_model(None, self)
 
 
 
