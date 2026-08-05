@@ -7,8 +7,10 @@ class LeibigMinimum(RateAggregator):
     r"""
     RateAggregator that computes a rate and forcing factors according to
     Leibig's law of the minimum, i.e.,:
+
     .. math::
-        r = r_{max} \times \min\{F_1, F_2, F_3, ...\}
+
+        r = r_{max} \times \min\left\{F_1, F_2, F_3, ...\right\}
 
     """
 

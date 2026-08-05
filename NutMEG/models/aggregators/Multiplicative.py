@@ -4,7 +4,9 @@ class Multiplicative(RateAggregator):
     r"""
     RateAggregator that computes a rate and forcing factors according to
     a multiplicative law on all forcing factors i.e.,:
+
     .. math::
+
         r = r_{max} \times \prod_{i} F_i
 
     """
