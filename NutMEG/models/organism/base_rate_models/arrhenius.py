@@ -1,4 +1,5 @@
 from .base_rate_model import BaseRateModel
+from NutMEG.utils.math import math
 
 class Arrhenius(BaseRateModel):
     """
@@ -12,8 +13,8 @@ class Arrhenius(BaseRateModel):
         this ForcingFactor.
     A : float
         Pre-exponential Arrhenius factor
-    E_a : float
-        Activation energy
+    Ea : float
+        Molar activation energy. Unit J/K mol.
     requires : dict or Nonetype
         Dictionary of additional required host properties to run
         this GrowthModel. Keys are property identifiers, and values are the
@@ -24,41 +25,33 @@ class Arrhenius(BaseRateModel):
         """
         extends BaseRateModel.__init__()
 
-        TODO: add ability to pass alternative k values, like k_RTP.
+        TODO: add ability to have E_a as a temperature-dependent function.
 
         Parameters
         ----------
         A : float
             Pre-exponential Arrhenius factor
-        E_a : float
-            Activation energy
+        Ea : float
+            Molar activation energy. Unit J/K mol.
         """
 
         super().__init__()
         self.A = A
-        self.E_a = E_a
+        self.Ea = Ea
 
 
     def compute(self, host, locale):
         """
         Calculate and return the base rate for this process, following an
-        Arrhenius law. This is the default rate calculation in NutMEG.reaction.
-
-        The passed host.metabolism.net_pathway will have its rate constants,
-        activation energies and pre-exponential factors updated based on the
-        attributes of this object.
+        Arrhenius law.
 
         Parameters
         ----------
-        host : base_organism
-            Host organism.
+        host : base_organism or None
+            Host organism. Can be passed as None for this BaseRateModel.
         locale : reactor
             Host chemical reactor. Must have the correct temperature for
             this calculation to be accurate.
         """
 
-        host.metabolism.net_pathway.frequency_factor = self.A
-        host.metabolism.net_pathway.molar_activation_E = self.E_a
-        host.metabolism.net_pathway.calculate_rate()
-        _r = host.metabolism.net_pathway.rate_const_env
-        return _r
+        return self.A * math.exp(-self.Ea/(9.81*locale.T))
