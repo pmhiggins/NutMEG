@@ -149,7 +149,23 @@ class Reagent:
             # phase unknown, assume it is aqueous
             return 'aq'
 
-    def get_amount(self):
+    def get_amount(self, amt_type='mol'):
+        """
+        Return concentration measure according to amt_type which may be any of
+        'mol', 'molality', 'molarity' (alt: 'conc'), or 'activity'
+        """
+        if amt_type == 'mol':
+            return self.get_mol()
+        elif amt_type == 'molality' or amt_type=='molal':
+            return self.get_molality()
+        elif amt_type == 'molarity' or amt_type == 'conc':
+            return self.get_molarity()
+        elif amt_type == 'activity':
+            return self.get_activity()
+        else:
+            raise ValueError('Unknown amt_type sent to Reagent.get_amount()')
+
+    def get_mol(self):
         """Return amount in moles"""
         return self.mol
 
