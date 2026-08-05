@@ -51,13 +51,5 @@ class Monod(ForcingFactor):
             Host chemical reactor. Must have a correct concentration of
             ``substrate``.
         """
-        S = None
-        if self.conctype == 'molality':
-            S = locale.composition[self.substrate].molality
-        elif self.conctype == 'molarity':
-            S = locale.composition[self.substrate].molarity
-        elif self.conctype == 'activity':
-            S = locale.composition[self.substrate].activity
-        else:
-            raise ValueError('Unknown conctype passed to Monod model')
+        S = locale.composition[self.substrate].get_amount(self.conctype)
         return S / (S + self.K_s)

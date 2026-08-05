@@ -49,13 +49,8 @@ class LowerLimit(ForcingFactor):
             Host chemical reactor. Must have a correct concentration of
             ``substrate``.
         """
-        S = None
-        if self.conctype == 'molality':
-            S = locale.composition[self.species].molality
-        elif self.conctype == 'molarity':
-            S = locale.composition[self.species].molarity
-        elif self.conctype == 'activity':
-            S = locale.composition[self.species].activity
+        S = locale.composition[self.species].get_amount(self.conctype)
+
         if isinstance(self.val, Iterable):
             _ret = deepcopy(self.val)
             for i in range(len(self.val)):
