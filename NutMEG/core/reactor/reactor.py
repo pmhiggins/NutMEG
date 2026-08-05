@@ -55,6 +55,9 @@ class Reactor:
         Thermodynamic database to be used for all thermodynamic calculations.
     thermodb_name : str
         Name identifier for thermodb.
+    PAR : float
+        local flux of photosynthetically active radiation, in micromoles of
+        photons per meter squared per second.
     """
 
 
@@ -86,6 +89,8 @@ class Reactor:
             If there is a net flow of reagents in/out of the reactor, add them
             to this dictionary with their name as the key, and rate in M/s as the
             value.
+        PAR : float, kwarg
+            Inbound flux of photosynthetically active radiation, if any.
         """
 
         self.T = T
@@ -130,6 +135,8 @@ class Reactor:
         self.reactionlist = {}
 
         self.composition_inputs = kwargs.pop('composition_inputs', {})
+        self.PAR = kwargs.pop('PAR', None)
+
 
 
 
