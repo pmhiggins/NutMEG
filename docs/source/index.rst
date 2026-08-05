@@ -36,23 +36,22 @@ As an academic project, NutMEG is forever a work-in-progress. We welcome communi
     guides/installation
     guides/coreframework
     guides/coreconcept
-    api/index
+    guides/tutorials/index
+    guides/examples/index
 
 
 .. toctree::
     :maxdepth: 1
-    :caption: Examples & Tutorials
+    :caption: Paperwork
 
-    guides/creating_reactor
-    guides/creating_organism
-    guides/creating_ecosystem
-    guides/competition_example
-    guides/monod_example
-    guides/presets
     guides/citing_nutmeg
     guides/nutmeg_publications
 
+.. toctree::
+    :maxdepth: 1
+    :caption: API
 
+    api/NutMEG/index
 
 * :ref:`genindex`
 * :ref:`modindex`

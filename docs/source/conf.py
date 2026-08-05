@@ -23,6 +23,7 @@ extensions = [
     "sphinx.ext.viewcode",
     'sphinx_rtd_theme',
     "autoapi.extension",
+    "sphinx.ext.mathjax",
     # "sphinx_copybutton",
     # "myst_parser",
     # "sphinx_nested_apidoc",

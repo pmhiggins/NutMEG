@@ -6,6 +6,7 @@ The :any:`BaseOrganism` class represents a model organism and collects its organ
 A minimal initialisation requires the overall metabolic reaction the organism performs, and it's maximum metabolic rate and growth rate and could take the form:
 
 .. code::
+
   base_MG = nmc.BaseOrganism('Methanogen', thermalMG)
   base_MG.metabolism.set_max_rate(1e-17) # mol/s/cell
   base_MG.growth.set_max_rate(float('inf')) #/s
@@ -27,8 +28,8 @@ This would allow the organism to grow as fast as it can practically access energ
   # now build our model sulfate reducer
   base_SR = nmc.BaseOrganism(
     'SulfateReducer',
-    nmc.org.Metaboliser(thermalSR, base_rate=SR_MetRate, forcing_factors=[SR_Monod, SR_BE]),
-    growth = nmc.org.Grower(base_rate=SR_GroRate, forcing_factors=[SR_Phosphate])
+    nmc.org.Metaboliser(thermalSR, base_rate=SR_MetRate, forcing_factors={'Monod_H2':SR_Monod, 'Bioenergetic':SR_BE}),
+    growth = nmc.org.Grower(base_rate=SR_GroRate, forcing_factors={'Monod_P':SR_Phosphate})
   )
 
-Here, the sulfate reducers rate can be controlled by both the available [H2] (via a Monod expression), Bioenergetics and its ATP energy yield, and the available [PO4] (via a seperate Monod expression). Check out the :any:``NutMEG.models.organism`` subpackage for a variety of rate-limiting models to try!
+Here, the sulfate reducers rate can be controlled by both the available [H2] (via a Monod expression), Bioenergetics and its ATP energy yield, and the available [PO4] (via a seperate Monod expression). For more information using rate laws, rate limitation and aggregation, check out later tutorials in this series.
