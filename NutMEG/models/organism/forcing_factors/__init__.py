@@ -4,9 +4,16 @@ from .monod import Monod
 from .upper_limit import UpperLimit
 from .lower_limit import LowerLimit
 from .combo_add import ComboAdd
+from .inhibition_chemical import InhibitionChemical
+from .inhibition_platt_jassby import InhibitionPlattJassby
+from .biological_performance import BiologicalPerformance
 
 
-__all__ = ['ForcingFactor', 'Bioenergetic', 'Monod', 'UpperLimit', 'LowerLimit', 'ComboAdd']
+
+
+
+__all__ = ['ForcingFactor', 'Bioenergetic', 'Monod', 'UpperLimit',
+    'LowerLimit', 'ComboAdd', 'InhibitionChemical', 'InhibitionJassbyPlatt']
 
 def find_ff(key):
     if key == 'ForcingFactor':
@@ -21,3 +28,9 @@ def find_ff(key):
         return LowerLimit
     if key == 'ComboAdd':
         return ComboAdd
+    if key == 'InhibitionChemical':
+        return InhibitionChemical
+    if key == 'InhibitionPlattJassby':
+        return InhibitionPlattJassby
+    if key == 'BiologicalPerformance':
+        return BiologicalPerformance

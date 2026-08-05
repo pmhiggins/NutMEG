@@ -3,12 +3,14 @@ from ...aggregators.rate_aggregator import RateAggregator
 import numpy as np
 
 class ComboAdd(ForcingFactor):
-    """
+    r"""
     Compute an additive forcing factor by adding together multiple ForcingFactor
     values. An example use-case is when there are two
     sources of a key nutrient and both can be used used, e.g.:
+
     .. math::
-        F = \min\{(F_1 + F_2 + ...), m\}
+
+        F = \min\left\{(F_1 + F_2 + ...), m\right\}
 
     where m is a hard maximum, default 1.0.
 
