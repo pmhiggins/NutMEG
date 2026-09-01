@@ -51,6 +51,14 @@ class InhibitionPlattJassby(ForcingFactor):
         self.alpha = alpha
         self.mu_max = mu_max
         self.I = I
+        self.unique_mu_max = False
+        try:
+            if self.mu_max:
+                self.unique_mu_max = True
+        except ValueError:
+            # likely a numpy array
+            self.unique_mu_max = True
+
 
     def compute(self, host, locale):
         """
@@ -73,7 +81,7 @@ class InhibitionPlattJassby(ForcingFactor):
             except:
                 raise ValueError('Unable to retrieve PAR. Did you set reactor.PAR?')
 
-        if self.mu_max:
+        if self.unique_mu_max:
             return np.tanh(self.alpha * _I  /self.mu_max)
         else:
             return np.tanh(self.alpha * _I  /host.growth.max_growth_rate)
