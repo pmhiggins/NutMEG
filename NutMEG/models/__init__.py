@@ -1,3 +1,5 @@
+from NutMEG import core
+
 from .organism import forcing_factors
 from .organism import growth_models
 from .organism import base_rate_models

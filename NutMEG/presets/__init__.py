@@ -1,3 +1,5 @@
+from NutMEG import core
+
 from .enceladus import Enceladus
 
 
