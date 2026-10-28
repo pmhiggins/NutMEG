@@ -37,5 +37,5 @@ ax.set_ylabel('Rate [mol / s]')
 ax.set_xlabel('Temperature [K]')
 
 
-plt.savefig('examples_figures/base_rates.png')
+plt.savefig('tutorials_figures/base_rates.png')
 plt.close()

@@ -54,5 +54,5 @@ axs[0].set_title('Multiplicative aggregator')
 axs[1].set_title('Minimum aggregator')
 
 
-plt.savefig('examples_figures/aggregators.png')
+plt.savefig('tutorials_figures/aggregators.png')
 plt.close()

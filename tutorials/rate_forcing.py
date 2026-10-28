@@ -39,5 +39,5 @@ ax.set_ylabel('Forcing factor')
 ax.set_xlabel('[H2S]')
 
 
-plt.savefig('examples_figures/rate_forcing.png')
+plt.savefig('tutorials_figures/rate_forcing.png')
 plt.close()

@@ -16,6 +16,6 @@ docs/source/api/index.rst
 # No user-generated figures from examples
 *.pdf
 *.png
-examples/examples_figures
+
 
 docsv2/
