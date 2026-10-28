@@ -1,16 +1,19 @@
 import sys
-sys.path.append('..')
+# sys.path.append('..')
 import NutMEG as nm
-import NutMEG.core as nmc
+# from NutMEG import core as nmc
+# import NutMEG.core as nmc
 import NutMEG.models as nmm
+import NutMEG.presets as nmp
+
 
 
 import numpy as np
 import matplotlib.pyplot as plt
 
 
-R = nmc.Reactor()
-nmc.Reagent('N', R, amount=(0.001, 'molal'), thermo=False)
+# R = nmc.Reactor()
+# nmc.Reagent('N', R, amount=(0.001, 'molal'), thermo=False)
 
 # assign a constant max rate.
 c = nmm.base_rate_models.ConstantRate(10.)

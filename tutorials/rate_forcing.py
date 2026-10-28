@@ -1,5 +1,5 @@
 import sys
-sys.path.append('..')
+# sys.path.append('..')
 import NutMEG as nm
 import NutMEG.core as nmc
 import NutMEG.models as nmm
