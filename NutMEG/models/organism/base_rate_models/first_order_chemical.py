@@ -1,0 +1,54 @@
+from .base_rate_model import BaseRateModel
+
+class FirstOrderChemical(BaseRateModel):
+    """
+    A maximum rate calculated using a first-order chemical calculation
+    with the net metabolic pathway.
+
+    Attributes
+    ----------
+    requires : dict or Nonetype
+        Dictionary of additional required host properties to run
+        this GrowthModel. Keys are property identifiers, and values are the
+        object in a NutMEG.core class to look in.
+    k_env : float
+        First-order rate constant in current environment condition
+    """
+
+    def __init__(self, k_env, max='inf', **kwargs):
+        """
+        extends BaseRateModel.__init__()
+
+        TODO: add ability to pass alternative k values, like k_RTP.
+
+        Parameters
+        ----------
+        k_env : float
+            First-order rate constant in current environment condition
+        """
+
+        super().__init__()
+        self.k_env = k_env
+        if max == 'inf':
+            self.max = float('inf')
+        else:
+            self.max = max
+
+
+    def compute(self, host, locale):
+        """
+        Calculate and return the base rate for this process, following a
+        generic first order rate law.
+
+        Parameters
+        ----------
+        host : base_organism
+            Host organism. Can be passed as None for this calculation.
+        locale : reactor, optional
+            Local reactor.
+        """
+        conc_multiplier = 1.0
+        for r, mr in host.metabolism.net_pathway.reactants.items():
+            conc_multiplier = conc_multiplier*(locale.composition[r].activity**mr)
+
+        return min(self.max, self.k_env * conc_multiplier)

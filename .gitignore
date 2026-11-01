@@ -3,7 +3,15 @@
 *.DS_Store
 *.log
 
-# no NutMEG databases
-NutMEG_db
-NutMEG/data/synthesis/EColiSynth
-NutMEG/data/TPdb
+# Documentation
+docs/_build
+docs/source/api/NutMEG
+docs/source/api/index.rst
+
+# No user-generated figures from examples
+*.pdf
+*.png
+
+# build files
+dist
+NutMEG_astrobiology.egg-info
